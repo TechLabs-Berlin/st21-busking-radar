@@ -1,9 +1,15 @@
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
+import RegisterPage from './components/RegisterPage';
 
-function App() {
+const App = () => {
+
+
   return (
-    <div className="App">
-      Hello Buskers!
+    <div className='App'>
+      <Header />
+      <RegisterPage />
     </div>
   );
 }
