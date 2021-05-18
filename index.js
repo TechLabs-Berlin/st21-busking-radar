@@ -8,6 +8,8 @@ app.set('PORT', PORT);
 //testing the requests and connection
 const users = []
 
+const userInfo = [{ name: 'newname', userType: 'busker' }]
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -19,9 +21,11 @@ app.post('/login', (req, res) => {
     console.log(users)
 })
 
-app.post('/user', (req, res) => {
-    res.send(users)
+app.get('/user', (req, res) => {
+    res.send(userInfo)
 })
+
+
 
 app.listen(PORT, () => {
     console.log('Server 8080 is up!')

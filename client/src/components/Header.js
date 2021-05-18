@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Header = () => {
     const [userName, setUserName] = useState('')
-    const getData = async () => {
-        const res = await axios.get('http://localhost:8080/user')
-        console.log(res)
-    }
+
+    axios.get('/user').then(res => {
+        console.log(res.data)
+    })
 
 
 
     return (
         <div className='menu'>
             <header>
-                <p>{getData}</p>
+                <p></p>
             </header>
         </div>
     )

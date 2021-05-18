@@ -27,15 +27,8 @@ const RegisterPage = () => {
             setState({ error: 'Please provide password' })
         } else if ({ error: '' }) {
             axios.post('/login', { userData })
-                .then(res => {
-                    console.log(res);
-                    console.log(res.data[0].userData);
-                })
         }
     }
-    // useEffect(() => {
-
-    // }, handleSubmit)
 
     return (
         <div className='reg-page'>
