@@ -1,5 +1,7 @@
 # st21-busking-radar
+Client: CRA(Create React App) with Functional Components and Hooks, Redux (state Managment), Thunk(middleware), axios(sending http requests), Node-Sass(styling), Moment.js and react-dates(managing dates) 
 
+Server: Node.js with Express, Cors(controlling access)
 
 1. Work Plan and Deadlines
 - Together
