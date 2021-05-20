@@ -23,7 +23,7 @@ module.exports.createEvent = async (req, res) => {
     try {
         await newEvent.save()
     } catch (e) {
-        console.log('This did not work!', e.message)
+        console.log('This did not work', e.message)
     }
 }
 

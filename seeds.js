@@ -10,6 +10,7 @@ mongoose.connect(CONNECTION_URL, {
 }).catch((e) => {
     console.log('This did not work', e.message)
 })
+//Here is some mockData for events
 
 // const mockEvent = new Event({
 //     name: 'Open Air Jazz Jam',

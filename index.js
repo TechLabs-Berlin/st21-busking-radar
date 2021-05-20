@@ -17,8 +17,10 @@ const eventRoutes = require('./routes/events.js');
 //all the routes are now is localhost:8080/events
 app.use('/events', eventRoutes)
 
-//connecting to mongoose => connection url must be secured later!!!
-const CONNECTION_URL = 'mongodb+srv://Basan:HeyBuskers@cluster0.17vvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+//connecting to mongoose => connection url must be secured later!!! after mongodb+srv should be the username and password written
+//in order to be able to connect ask me for the password and username, but please always delete them before pushing to github
+//I will try to figure out how to secure that as soon as possible.
+const CONNECTION_URL = 'mongodb+srv://@cluster0.17vvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 mongoose.connect(CONNECTION_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
