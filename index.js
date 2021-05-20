@@ -1,33 +1,33 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+
+
 app.set('PORT', PORT);
-
-//testing the requests and connection
-const users = []
-
-const userInfo = [{ name: 'newname', userType: 'busker' }]
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.post('/login', (req, res) => {
-    users.push(req.body)
-    console.log(req.body)
-    console.log('user data received')
-    console.log(users)
+//importing routes
+const eventRoutes = require('./routes/events.js');
+//this says that every route in the routes/events is gonna start with /events
+//all the routes are now is localhost:8080/events
+app.use('/events', eventRoutes)
+
+//connecting to mongoose => connection url must be secured later!!!
+const CONNECTION_URL = 'mongodb+srv://Basan:HeyBuskers@cluster0.17vvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+mongoose.connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is up! Port: ${PORT}!`)
+    })
+}).catch((e) => {
+    console.log('This did not work', e.message)
 })
-
-app.get('/user', (req, res) => {
-    res.send(userInfo)
-})
-
-
-
-app.listen(PORT, () => {
-    console.log('Server 8080 is up!')
-})
+mongoose.set('useFindAndModify', false)
 

@@ -1,5 +1,5 @@
 # st21-busking-radar
-Client: CRA(Create React App) with Functional Components and Hooks, Redux (state Managment), Thunk(middleware), axios(sending http requests), Node-Sass(styling), Moment.js and react-dates(managing dates) 
+Client: CRA(Create React App) with Functional Components and Hooks, Redux (state Managment), Thunk(middleware), axios(sending http requests), Node-Sass(styling), Moment.js and react-dates(managing dates), maybe react-router-dom 4 with history(for client side routing)?
 
 Server: Node.js with Express, Cors(controlling access)
 
