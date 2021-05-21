@@ -16,9 +16,6 @@ const eventSchema = new mongoose.Schema({
     about: {
         type: String
     },
-    links: {
-        type: String
-    },
     tags: {
         type: [String]
     },
