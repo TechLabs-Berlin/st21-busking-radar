@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 const Header = () => {
     const [userName, setUserName] = useState('')
-
-    axios.get('/user').then(res => {
-        console.log(res.data)
-    })
-
 
 
     return (
         <div className='menu'>
             <header>
-                <p></p>
+                <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Registeration</NavLink>
+                <NavLink activeClassName='is-active' className='nav-link' to='/events'>Events</NavLink>
             </header>
         </div>
     )

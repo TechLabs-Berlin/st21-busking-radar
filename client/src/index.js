@@ -1,14 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleWare, compose, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 import App from './App';
 
-const store = createStore()
+//This is a redux store
+const store = configureStore();
+
+//Provider connects redux store to the react app
+const jsx = (
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
 
 ReactDOM.render(
-  <App />,
+  jsx,
   document.getElementById('root')
 );
 

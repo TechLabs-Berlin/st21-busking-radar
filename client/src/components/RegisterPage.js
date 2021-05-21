@@ -26,7 +26,7 @@ const RegisterPage = () => {
         } else if (!state.password) {
             setState({ error: 'Please provide password' })
         } else if ({ error: '' }) {
-            axios.post('/login', { userData })
+            // axios.post('/login', { userData })
         }
     }
 
