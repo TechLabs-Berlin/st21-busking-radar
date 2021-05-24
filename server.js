@@ -22,8 +22,8 @@ app.use('/events', eventRoutes)
 //I will try to figure out how to secure that as soon as possible.
 const CONNECTION_URL = 'mongodb+srv://@cluster0.17vvk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 mongoose.connect(CONNECTION_URL, {
-    useNewUrlParser: true,
     useUnifiedTopology: true,
+    useNewUrlParser: true,
 }).then(() => {
     app.listen(PORT, () => {
         console.log(`Server is up! Port: ${PORT}!`)
