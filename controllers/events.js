@@ -1,5 +1,7 @@
+const { Mongoose } = require('mongoose');
 const Event = require('../models/event.js')
 
+//fetching events
 module.exports.getEvents = async (req, res) => {
     try {
         //it has to be asynchronous function, because getting events 
@@ -12,6 +14,7 @@ module.exports.getEvents = async (req, res) => {
     }
 }
 
+//creating event
 module.exports.createEvent = async (req, res) => {
     //req.body <-getting the event data from the front end create event form
     const event = req.body
@@ -25,5 +28,18 @@ module.exports.createEvent = async (req, res) => {
     } catch (e) {
         console.log('This did not work', e.message)
     }
+}
+
+//updating event
+
+module.exports.updateEvent = async (req, res) => {
+    //we have to rename id into _id, because this is what mongodb atlas expects
+    const { id: _id } = req.params;
+    const event = req.body;
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.send('No event with that id');
+
+    const updatedEvent = await Event.findByIdAndUpdate(_id, event, { new: true }) //<- {new: true} checks if we actually received the updated version of event
+
+    res.json(updatedEvent);
 }
 

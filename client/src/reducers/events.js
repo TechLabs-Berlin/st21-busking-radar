@@ -6,7 +6,15 @@ const eventsReducer = (state = eventsReducerDefaultState, action) => {
         case 'GET_ALL_EVENTS':
             return action.payload;
         case 'CREATE_EVENT':
-            return state;
+            return [...state, action.eventData];
+        case 'UPDATE_EVENT':
+            return state.map(event => {
+                if (event._id === action.updates._id) {
+                    return action.updates
+                } else {
+                    return event
+                }
+            });
         default:
             return state;
     }

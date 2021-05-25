@@ -2,8 +2,10 @@
   "name": "busking-radar",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start:client": "cd /client && npm start",
+    "start:server": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

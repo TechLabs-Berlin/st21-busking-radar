@@ -13,4 +13,6 @@ router.get('/', events.getEvents)
 
 router.post('/', events.createEvent)
 
+router.patch('/update/:id', events.updateEvent)
+
 module.exports = router;
