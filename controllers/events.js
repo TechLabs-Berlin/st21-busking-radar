@@ -1,4 +1,4 @@
-const { Mongoose } = require('mongoose');
+const { mongoose } = require('mongoose');
 const Event = require('../models/event.js')
 
 //fetching events
@@ -35,11 +35,9 @@ module.exports.createEvent = async (req, res) => {
 module.exports.updateEvent = async (req, res) => {
     //we have to rename id into _id, because this is what mongodb atlas expects
     const { id: _id } = req.params;
+    console.log(_id)
     const event = req.body;
     if (!mongoose.Types.ObjectId.isValid(_id)) return res.send('No event with that id');
-
-    const updatedEvent = await Event.findByIdAndUpdate(_id, event, { new: true }) //<- {new: true} checks if we actually received the updated version of event
-
-    res.json(updatedEvent);
+    await Event.findByIdAndUpdate(_id, event) //<- {new: true} checks if we actually received the updated version of event
 }
 
