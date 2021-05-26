@@ -3,6 +3,7 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 import moment from 'moment';
+import { endOfDecadeWithOptions } from 'date-fns/fp';
 
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
@@ -11,8 +12,8 @@ const EventForm = (props) => {
         genre: props.event ? props.event.genre : '',
         about: props.event ? props.event.about : '',
         tags: props.event ? props.event.tags : '',
-        startTime: props.event ? props.event.startTime : 0,
-        endTime: props.event ? props.event.endTime : 0,
+        startTime: props.event ? props.event.startTime : '',
+        endTime: props.event ? props.event.endTime : '',
         location: props.event ? props.event.location : '',
         active: props.event ? props.event.active : false,
         error: ''
@@ -28,16 +29,18 @@ const EventForm = (props) => {
     //missing the event property, which is null. It means we cannot access neither its name nor value through the normal
     //handlers like other input elements. These kind of things are done behind the scene by material ui component.
     //select date
-    const [selectedDate, setSelectDate] = useState(Date)
-    const [startTime, setStartTime] = useState(Date)
-    const [endTime, setEndTime] = useState(Date)
+    const [selectedDate, setSelectDate] = useState(new Date)
+    const [startTime, setStartTime] = useState(new Date)
+    const [endTime, setEndTime] = useState(new Date)
     const handleDateChange = (date) => {
         setSelectDate(date)
+        setStartTime(date)
+        setEndTime(date)
     }
-    const handleStartTimeChange = (startTime) => {
+    const handleStartTimeChange = async (startTime) => {
         setStartTime(startTime)
     }
-    const handleEndTimeChange = (endTime) => {
+    const handleEndTimeChange = async (endTime) => {
         //conditional to make sure that the provided end time is later thn the start time
         if (moment(endTime).unix() > moment(startTime).unix()) {
             setEndTime(endTime)
@@ -46,10 +49,9 @@ const EventForm = (props) => {
     // console.log(new Date(converted * 1000))
     //it has to be outside of the handleDateChange function, because otherwise, it state.date updates with the delay
     //because it is within the context of handDateChange function.
-    eventData.startTime = eventData.startTime + moment(selectedDate).unix()
-    eventData.endTime = eventData.endTime + moment(selectedDate).unix()
-    eventData.startTime = eventData.startTime + moment(startTime).unix()
-    eventData.endTime = eventData.endTime + moment(endTime).unix()
+    eventData.startTime = startTime
+    eventData.endTime = endTime
+
     // eventData.startTime = new Date(eventData.startTime * 1000)
     // eventData.endTime = new Date(eventData.endTime * 1000)
     const handleSubmit = (e) => {
@@ -84,7 +86,7 @@ const EventForm = (props) => {
                         margin='normal'
                         id='date-picker'
                         label='Date'
-                        value={endTime}
+                        value={selectedDate}
                         name="date"
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
