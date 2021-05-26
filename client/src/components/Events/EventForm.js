@@ -29,9 +29,9 @@ const EventForm = (props) => {
     //missing the event property, which is null. It means we cannot access neither its name nor value through the normal
     //handlers like other input elements. These kind of things are done behind the scene by material ui component.
     //select date
-    const [selectedDate, setSelectDate] = useState(new Date)
-    const [startTime, setStartTime] = useState(new Date)
-    const [endTime, setEndTime] = useState(new Date)
+    const [selectedDate, setSelectDate] = useState(props.event ? props.event.startTime : new Date)
+    const [startTime, setStartTime] = useState(props.event ? props.event.startTime : new Date)
+    const [endTime, setEndTime] = useState(props.event ? props.event.endTime : new Date,)
     //shitty solution. It does not work properly! When I change the date after the startTime and endTime, the startTime and endTime change their value to current time.
     const handleDateChange = (date) => {
         setSelectDate(date)
@@ -59,7 +59,7 @@ const EventForm = (props) => {
         e.preventDefault();
         if (!eventData.name) {
             setEventData({ error: 'Please provide user name' })
-        } else if (!eventData.time) {
+        } else if (!eventData.startTime || !eventData.endTime) {
             setEventData({ error: 'Please provide time' })
         } else if (!eventData.location) {
             setEventData({ error: 'Please provide location' })

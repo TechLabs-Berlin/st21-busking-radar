@@ -61,3 +61,22 @@ export const startUpdateEvent = (id, updates) => async (dispatch) => {
         console.log('This did not work', e.message)
     }
 }
+
+//delete event 
+
+const deleteEvent = (id) => {
+    return {
+        type: 'DELETE_EVENT',
+        id
+    }
+}
+
+export const startDeleteEvent = (id) => async (dispatch) => {
+    try {
+        await axios.delete(`/events/${id}`)
+
+        dispatch(deleteEvent(id))
+    } catch (e) {
+        console.log('This did not work', e.message)
+    }
+}

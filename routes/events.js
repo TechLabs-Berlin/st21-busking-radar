@@ -15,4 +15,6 @@ router.post('/', events.createEvent)
 
 router.patch('/update/:id', events.updateEvent)
 
+router.delete('/:id', events.deleteEvent)
+
 module.exports = router;

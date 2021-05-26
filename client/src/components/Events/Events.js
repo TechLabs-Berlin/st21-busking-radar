@@ -20,11 +20,12 @@ const Events = ({ history }) => {
 
     //fetching events
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
-    const events = useSelector((state) => state.events)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
+    const events = useSelector((state) => state.events)
+    console.log(events)
     return (
         <div>
             <main id='events' className='events'>
@@ -43,7 +44,9 @@ const Events = ({ history }) => {
                                     name={event.name}
                                     genre={event.genre}
                                     location={event.location}
-                                    time={moment(event.time).format('MMMM Do YYYY, h:mm:ss a')}
+                                    date={moment(event.startTime).format('MMMM Do YYYY')}
+                                    startTime={moment(event.startTime).format('h:mm:ss a')}
+                                    endTime={moment(event.endTime).format('h:mm:ss a')}
                                     about={event.about}
                                     tags={event.tags}
                                     creator={event.creator}

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { findByIdAndRemove } = require('../models/event.js');
 const Event = require('../models/event.js')
 
 //fetching events
@@ -34,7 +35,6 @@ module.exports.createEvent = async (req, res) => {
 module.exports.updateEvent = async (req, res) => {
     //we have to rename id into _id, because this is what mongodb atlas expects
     const { id: _id } = req.params;
-    console.log(_id)
     const event = req.body;
     //checking if Id is valid
     if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -43,3 +43,13 @@ module.exports.updateEvent = async (req, res) => {
     await Event.findByIdAndUpdate(_id, event, { new: true }) //<- {new: true} checks if we actually received the updated version of event
 }
 
+//delete event
+
+module.exports.deleteEvent = async (req, res) => {
+    const { id } = req.params
+    console.log(id)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.send('No event with that id');
+    }
+    await Event.findByIdAndRemove(id)
+}
