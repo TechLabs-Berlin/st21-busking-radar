@@ -25,7 +25,6 @@ const Events = ({ history }) => {
         dispatch(startGetAllEvents())
     }, [])
     const events = useSelector((state) => state.events)
-    console.log(events)
     return (
         <div>
             <main id='events' className='events'>
