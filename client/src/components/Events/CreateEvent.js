@@ -12,6 +12,7 @@ const CreateEvent = () => {
                 <h1 id='hd-create-event' className='hd-lg'>Create Event</h1>
                 <EventForm handleSubmit={(eventData) => {
                     dispatch(startCreateEvent(eventData));
+                    console.log(eventData)
                     history.push('/events')
                 }
                 } />

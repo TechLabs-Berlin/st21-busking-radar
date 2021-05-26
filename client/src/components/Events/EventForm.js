@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import moment from 'moment';
 
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
@@ -10,15 +11,12 @@ const EventForm = (props) => {
         genre: props.event ? props.event.genre : '',
         about: props.event ? props.event.about : '',
         tags: props.event ? props.event.tags : '',
-        time: props.event ? props.event.time : '',
+        startTime: props.event ? props.event.startTime : 0,
+        endTime: props.event ? props.event.endTime : 0,
         location: props.event ? props.event.location : '',
         active: props.event ? props.event.active : false,
         error: ''
     })
-    //I have to set the date separately and use a separate handler, because in the MUI date picker, we are 
-    //missing the event property, which is null. It means we cannot access neither its name nor value through the normal
-    //handlers like other input elements. These kind of things are done behind the scene by material ui component.
-
     const handleChange = (e) => {
         setEventData({
             ...eventData,
@@ -26,13 +24,34 @@ const EventForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
-    const [selectedDate, setSelectDate] = useState(new Date)
-    const handleDateChange = (e) => {
-        setSelectDate(e)
+    //I had to set the date and start and end time separately and use a separate handler, because in the MUI date picker, we are 
+    //missing the event property, which is null. It means we cannot access neither its name nor value through the normal
+    //handlers like other input elements. These kind of things are done behind the scene by material ui component.
+    //select date
+    const [selectedDate, setSelectDate] = useState(Date)
+    const [startTime, setStartTime] = useState(Date)
+    const [endTime, setEndTime] = useState(Date)
+    const handleDateChange = (date) => {
+        setSelectDate(date)
     }
+    const handleStartTimeChange = (startTime) => {
+        setStartTime(startTime)
+    }
+    const handleEndTimeChange = (endTime) => {
+        //conditional to make sure that the provided end time is later thn the start time
+        if (moment(endTime).unix() > moment(startTime).unix()) {
+            setEndTime(endTime)
+        }
+    }
+    // console.log(new Date(converted * 1000))
     //it has to be outside of the handleDateChange function, because otherwise, it state.date updates with the delay
     //because it is within the context of handDateChange function.
-    eventData.time = selectedDate
+    eventData.startTime = eventData.startTime + moment(selectedDate).unix()
+    eventData.endTime = eventData.endTime + moment(selectedDate).unix()
+    eventData.startTime = eventData.startTime + moment(startTime).unix()
+    eventData.endTime = eventData.endTime + moment(endTime).unix()
+    // eventData.startTime = new Date(eventData.startTime * 1000)
+    // eventData.endTime = new Date(eventData.endTime * 1000)
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!eventData.name) {
@@ -42,7 +61,7 @@ const EventForm = (props) => {
         } else if (!eventData.location) {
             setEventData({ error: 'Please provide location' })
         } else {
-            props.handleSubmit(eventData)
+            props.handleSubmit({ ...eventData, startTime: new Date(eventData.startTime * 1000), endTime: new Date(eventData.endTime * 1000) })
         }
     }
     return (
@@ -65,7 +84,7 @@ const EventForm = (props) => {
                         margin='normal'
                         id='date-picker'
                         label='Date'
-                        value={selectedDate}
+                        value={endTime}
                         name="date"
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
@@ -73,21 +92,33 @@ const EventForm = (props) => {
                         }}
                     />
                 </div>
-                <div id="time-picker" className='time-picker'>
+                <div id="start-time-picker" className='time-picker'>
                     <KeyboardTimePicker
                         margin='normal'
                         id='time-picker'
-                        label='Time'
-                        value={selectedDate}
+                        label='Start Time'
+                        value={startTime}
                         name="time"
-                        onChange={handleDateChange}
+                        onChange={handleStartTimeChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date'
+                        }}
+                    />
+                </div>
+                <div id="start-time-picker" className='time-picker'>
+                    <KeyboardTimePicker
+                        margin='normal'
+                        id='time-picker'
+                        label='End Time'
+                        value={endTime}
+                        name="time"
+                        onChange={handleEndTimeChange}
                         KeyboardButtonProps={{
                             'aria-label': 'change date'
                         }}
                     />
                 </div>
             </MuiPickersUtilsProvider>
-            <p>Date Time Picker should be here</p>
             <p>Choose location:</p>
             <div>
                 <select name='location' value={eventData.location || ''} onChange={handleChange}>
@@ -98,6 +129,7 @@ const EventForm = (props) => {
                     <option value="admiral-brucke">Admiral Brücke</option>
                 </select>
             </div>
+            {eventData.error && <p>{eventData.error}</p>}
             <button className='btn btn-create'>Submit</button>
         </form>
     )

@@ -1,4 +1,4 @@
-const { mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const Event = require('../models/event.js')
 
 //fetching events
@@ -7,7 +7,6 @@ module.exports.getEvents = async (req, res) => {
         //it has to be asynchronous function, because getting events 
         //from the database takes some time
         const events = await Event.find({});
-        console.log(events);
         res.send(events);
     } catch (e) {
         console.log('This did not work!', e.message)
@@ -37,7 +36,10 @@ module.exports.updateEvent = async (req, res) => {
     const { id: _id } = req.params;
     console.log(_id)
     const event = req.body;
-    if (!mongoose.Types.ObjectId.isValid(_id)) return res.send('No event with that id');
-    await Event.findByIdAndUpdate(_id, event) //<- {new: true} checks if we actually received the updated version of event
+    //checking if Id is valid
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.send('No event with that id');
+    }
+    await Event.findByIdAndUpdate(_id, event, { new: true }) //<- {new: true} checks if we actually received the updated version of event
 }
 
