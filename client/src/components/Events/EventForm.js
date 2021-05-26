@@ -32,7 +32,7 @@ const EventForm = (props) => {
     const [selectedDate, setSelectDate] = useState(new Date)
     const [startTime, setStartTime] = useState(new Date)
     const [endTime, setEndTime] = useState(new Date)
-    //shitty solution. It does not work properly! Change that.
+    //shitty solution. It does not work properly! When I change the date after the startTime and endTime, the startTime and endTime change their value to current time.
     const handleDateChange = (date) => {
         setSelectDate(date)
         setStartTime(date)
