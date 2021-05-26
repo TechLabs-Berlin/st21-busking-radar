@@ -32,6 +32,7 @@ const EventForm = (props) => {
     const [selectedDate, setSelectDate] = useState(new Date)
     const [startTime, setStartTime] = useState(new Date)
     const [endTime, setEndTime] = useState(new Date)
+    //shitty solution. It does not work properly! Change that.
     const handleDateChange = (date) => {
         setSelectDate(date)
         setStartTime(date)
@@ -63,7 +64,7 @@ const EventForm = (props) => {
         } else if (!eventData.location) {
             setEventData({ error: 'Please provide location' })
         } else {
-            props.handleSubmit({ ...eventData, startTime: new Date(eventData.startTime * 1000), endTime: new Date(eventData.endTime * 1000) })
+            props.handleSubmit(eventData)
         }
     }
     return (
