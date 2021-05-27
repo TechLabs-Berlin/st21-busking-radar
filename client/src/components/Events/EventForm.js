@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { endOfDecadeWithOptions } from 'date-fns/fp';
 
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
@@ -25,36 +24,27 @@ const EventForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
-    //I had to set the date and start and end time separately and use a separate handler, because in the MUI date picker, we are 
-    //missing the event property, which is null. It means we cannot access neither its name nor value through the normal
-    //handlers like other input elements. These kind of things are done behind the scene by material ui component.
-    //select date
-    const [selectedDate, setSelectDate] = useState(props.event ? props.event.startTime : new Date)
-    const [startTime, setStartTime] = useState(props.event ? props.event.startTime : new Date)
-    const [endTime, setEndTime] = useState(props.event ? props.event.endTime : new Date,)
-    //shitty solution. It does not work properly! When I change the date after the startTime and endTime, the startTime and endTime change their value to current time.
-    const handleDateChange = (date) => {
-        setSelectDate(date)
+
+    //date-time picker
+    const [startTime, setStartTime] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date())
+
+    const handleStartTimeChange = (date) => {
         setStartTime(date)
-        setEndTime(date)
     }
-    const handleStartTimeChange = async (startTime) => {
-        setStartTime(startTime)
-    }
-    const handleEndTimeChange = async (endTime) => {
-        //conditional to make sure that the provided end time is later thn the start time
-        if (moment(endTime).unix() > moment(startTime).unix()) {
-            setEndTime(endTime)
-        }
-    }
-    // console.log(new Date(converted * 1000))
-    //it has to be outside of the handleDateChange function, because otherwise, it state.date updates with the delay
-    //because it is within the context of handDateChange function.
     eventData.startTime = startTime
+
+    const handleEndTimeChange = (date) => {
+        if (moment(endTime).unix() > moment(startTime).unix()) {
+            setEndTime(date)
+        } else {
+            setEventData({ error: 'Please choose correct end time' })
+        }
+        setEventData({ error: '' })
+    }
+
     eventData.endTime = endTime
 
-    // eventData.startTime = new Date(eventData.startTime * 1000)
-    // eventData.endTime = new Date(eventData.endTime * 1000)
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!eventData.name) {
@@ -77,51 +67,26 @@ const EventForm = (props) => {
             <input type="text" placeholder="about" name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
             <p>Tags</p>
             <input type="text" placeholder="tags" name="tags" autoFocus value={eventData.tags || ''} onChange={handleChange} />
-            <p>Date and Time</p>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div id='date-picker' className='date-picker'>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant='inline'
-                        format='MM/dd/yy'
-                        margin='normal'
-                        id='date-picker'
-                        label='Date'
-                        value={selectedDate}
-                        name="date"
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date'
-                        }}
-                    />
-                </div>
-                <div id="start-time-picker" className='time-picker'>
-                    <KeyboardTimePicker
-                        margin='normal'
-                        id='time-picker'
-                        label='Start Time'
-                        value={startTime}
-                        name="time"
-                        onChange={handleStartTimeChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date'
-                        }}
-                    />
-                </div>
-                <div id="start-time-picker" className='time-picker'>
-                    <KeyboardTimePicker
-                        margin='normal'
-                        id='time-picker'
-                        label='End Time'
-                        value={endTime}
-                        name="time"
-                        onChange={handleEndTimeChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date'
-                        }}
-                    />
-                </div>
-            </MuiPickersUtilsProvider>
+            <p>Event begins on:</p>
+            <DatePicker
+                selected={startTime}
+                name='startTime'
+                onChange={handleStartTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                dateFormat="MMMM d, yyyy HH:mm aa"
+                minDate={new Date()}
+            />
+            <p>Event ends on:</p>
+            <DatePicker
+                selected={endTime}
+                name='startTime'
+                onChange={handleEndTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                dateFormat="MMMM d, yyyy HH:mm aa"
+                minDate={new Date()}
+            />
             <p>Choose location:</p>
             <div>
                 <select name='location' value={eventData.location || ''} onChange={handleChange}>
