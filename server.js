@@ -17,6 +17,12 @@ const eventRoutes = require('./routes/events.js');
 //all the routes are now is localhost:8080/events
 app.use('/events', eventRoutes)
 
+const testRoute = require('./routes/testAPI.js')
+
+app.use('/test', testRoute)
+
+
+
 //connecting to mongoose => connection url must be secured later!!! after mongodb+srv should be the username and password written
 //in order to be able to connect ask me for the password and username, but please always delete them before pushing to github
 //I will try to figure out how to secure that as soon as possible.

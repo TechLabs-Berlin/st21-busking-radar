@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios'
+
 
 const RegisterPage = () => {
+     axios.get('/test').then((data) => {
+        console.log(data)
+  }) 
+
     const [state, setState] = useState({
         name: '',
         password: '',
