@@ -1,0 +1,30 @@
+
+main{
+    &#events{
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0;
+        .events-ls{
+            width: 100%;
+            margin-top: 10vh;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+            justify-content: center;
+            overflow-y: hidden;
+            position: absolute;
+            top: 8vh;
+            z-index: 100;
+            background-color: rgba(250,250,250, 0.6);
+        }
+        .events-map{
+            width: 100%;
+            height: 90vh;
+        }
+    }
+}

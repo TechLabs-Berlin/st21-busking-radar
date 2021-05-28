@@ -67,7 +67,7 @@ const EventForm = (props) => {
             <input type="text" placeholder="about" name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
             <p>Tags</p>
             <input type="text" placeholder="tags" name="tags" autoFocus value={eventData.tags || ''} onChange={handleChange} />
-            <p>Event begins on:</p>
+            <p>Event begins:</p>
             <DatePicker
                 selected={startTime}
                 name='startTime'
@@ -77,7 +77,7 @@ const EventForm = (props) => {
                 dateFormat="MMMM d, yyyy HH:mm aa"
                 minDate={new Date()}
             />
-            <p>Event ends on:</p>
+            <p>Event ends:</p>
             <DatePicker
                 selected={endTime}
                 name='startTime'
