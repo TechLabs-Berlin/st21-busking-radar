@@ -7,8 +7,17 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { Grid, CircularProgress } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
-import WrappedMap from './EventsMap';
+import EventsMap from './EventsMap';
+// import WrappedMap from './EventsMap';
 //polling mechanism
+
+// <WrappedMap
+// googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
+// loadingElement={<div style={{ height: '100%', width: '100%' }} />}
+// containerElement={<div style={{ height: '100%', width: '100%' }} />}
+// mapElement={<div style={{ height: '100%', width: '100%' }} />}
+// />
+
 
 const Events = ({ history }) => {
     //supporting hooks 
@@ -33,12 +42,14 @@ const Events = ({ history }) => {
     const events = useSelector((state) => state.events)
     return (
         <main id='events' className='events'>
-            <h1 id='hd-events' className='hd-lg' >Events</h1>
-            <Button size='small' onClick={createEvent}>
-                <AddBoxIcon fontSize='small' />
+            <div className='events-top'>
+                <h1 id='hd-events' className='hd-lg' >Events</h1>
+                <Button size='small' onClick={createEvent}>
+                    <AddBoxIcon fontSize='small' />
                     Create Event
                 </Button>
-            <Button size='small' onClick={handleShowList}><KeyboardArrowDownIcon /> Show Events List</Button>
+                <Button size='small' onClick={handleShowList}><KeyboardArrowDownIcon /> Show Events List</Button>
+            </div>
             {events.length === 0 ? <CircularProgress /> : showList &&
                 <div className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
                     {events.map((event => {
@@ -62,12 +73,7 @@ const Events = ({ history }) => {
                     }))}
                 </div>}
             <div className='events-map'>
-                <WrappedMap
-                    googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
-                    loadingElement={<div style={{ height: '100%', width: '100%' }} />}
-                    containerElement={<div style={{ height: '100%', width: '100%' }} />}
-                    mapElement={<div style={{ height: '100%', width: '100%' }} />}
-                />
+                <EventsMap />
             </div>
         </main >
     )
@@ -76,3 +82,4 @@ const Events = ({ history }) => {
 
 
 export default Events;
+
