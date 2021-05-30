@@ -12,16 +12,20 @@ mongoose.connect(CONNECTION_URL, {
 })
 //Here is some mockData for events
 
-// const mockEvent = new Event({
-//     name: 'Open Air Jazz Jam',
-//     creator: 'Super Jazz Band',
-//     genre: 'Jazz',
-//     about: 'This will be the best street concert in your life',
-//     links: 'check out our youtube channel: youtube.com/ourawesomechannel',
-//     tags: '#Jazz#StreetMusic',
-//     time: '12 June 2021',
-//     location: 'Mauer Park'
-// })
+const mockEvent = new Event({
+    name: 'Open Air Jazz Jam',
+    creator: 'Super Jazz Band',
+    genre: 'Jazz',
+    about: 'This will be the best street concert in your life',
+    links: 'check out our youtube channel: youtube.com/ourawesomechannel',
+    tags: '#Jazz#StreetMusic',
+    startTime: new Date,
+    endTime: new Date,
+    locationName: 'Mauer Park',
+    locationCoordinates: [13.403210, 52.542681]
+})
+
+mockEvent.save()
 
 const mockEvents = [
     {
@@ -31,8 +35,10 @@ const mockEvents = [
         about: 'Come and join us!',
         links: 'listen to our music on spotify',
         tags: '#OnlyMetal#Metal',
-        time: '6 July 2021',
-        location: 'Warschauer Straße U-Bahn'
+        startTime: new Date,
+        endTime: new Date,
+        locationName: 'Warschauer Straße U-Bahn',
+        locationCoordinates: [13.44948175, 52.5060345]
     },
     {
         name: 'New Hip Hop Band in Town',
@@ -41,8 +47,10 @@ const mockEvents = [
         about: 'I will shake this city',
         links: 'visit my page facebook.com/woodencube',
         tags: '#HipHop#StreetHipHop',
-        time: '6 June 2021',
-        location: 'Eiserner Brücke'
+        startTime: new Date,
+        endTime: new Date,
+        locationName: 'Eiserner Brücke',
+        locationCoordinates: [13.397288, 52.519315]
     },
     {
         name: 'Sakura',
@@ -51,8 +59,10 @@ const mockEvents = [
         about: 'A very rare chance to learn more about Japanese culture',
         links: '',
         tags: '#Japana #Folk Music',
-        time: '30 May 2021',
-        location: 'Hackescher Markt'
+        startTime: new Date,
+        endTime: new Date,
+        locationName: 'Hackescher Markt',
+        locationCoordinates: [13.402751, 52.523119]
     }
 ]
 

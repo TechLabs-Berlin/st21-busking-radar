@@ -73,7 +73,7 @@ const Events = ({ history }) => {
                     }))}
                 </div>}
             <div className='events-map'>
-                <EventsMap />
+                <EventsMap events={events} />
             </div>
         </main >
     )

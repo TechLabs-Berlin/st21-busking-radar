@@ -1,6 +1,6 @@
 import React from 'react';
 //We are using react-router-dom@4.2.2 with history separately
-import './styles/main.scss';
+
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Header from './components/Header';
