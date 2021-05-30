@@ -23,23 +23,36 @@ const Events = ({ history }) => {
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
-    // const dispatch = useDispatch();
-    //Navigation
-    const [showList, setShowList] = useState(false)
-    const handleShowList = () => {
-        setShowList(!showList)
-    }
-
-    const createEvent = () => {
-        history.push('/events/create')
-    }
-    //fetching events
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
+
+    //Fetching events!!!
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
     const events = useSelector((state) => state.events)
+
+    //Navigation to create event page
+    const createEvent = () => {
+        history.push('/events/create', { coordinates: newLocation })
+    }
+
+    //Show list logic
+    const [showList, setShowList] = useState(false)
+    const handleShowList = () => {
+        setShowList(!showList)
+    }
+
+
+    //Map logic, choose location by click
+    const [newLocation, setNewLocation] = useState(null)
+    const handleAddClick = (e) => {
+        const [long, lat] = e.lngLat;
+        setNewLocation({
+            lat,
+            long
+        })
+    }
     return (
         <main id='events' className='events'>
             <div className='events-top'>
@@ -73,7 +86,10 @@ const Events = ({ history }) => {
                     }))}
                 </div>}
             <div className='events-map'>
-                <EventsMap events={events} />
+                <EventsMap
+                    handleAddClick={handleAddClick}
+                    newLocation={newLocation}
+                    events={events} />
             </div>
         </main >
     )

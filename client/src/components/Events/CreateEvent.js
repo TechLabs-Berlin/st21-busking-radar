@@ -6,6 +6,7 @@ import { history } from '../../App';
 
 const CreateEvent = () => {
     const dispatch = useDispatch();
+    console.log(history.coordinates)
     return (
         <div>
             <main id='create-event' className='create-event'>

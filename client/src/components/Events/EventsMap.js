@@ -9,7 +9,7 @@ import { Room } from '@material-ui/icons';
 
 // using it this tutorials for building a map for events https://www.youtube.com/watch?v=9oEQvI7K-rA and https://www.youtube.com/watch?v=5pQsl9u_10M
 
-const EventsMap = ({ events }) => {
+const EventsMap = ({ events, handleAddClick, newLocation }) => {
 
     const [viewport, setViewport] = useState({
         // latitude: 52.5373,
@@ -20,15 +20,7 @@ const EventsMap = ({ events }) => {
         height: '82vh',
         zoom: 11
     })
-    const [newLocation, setNewLocation] = useState(null)
     const mapRef = useRef();
-    const handleAddClick = (e) => {
-        const [long, lat] = e.lngLat;
-        setNewLocation({
-            lat,
-            long
-        })
-    }
     const handleViewportChange = useCallback((viewport) =>
         setViewport(viewport), [])
     // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
