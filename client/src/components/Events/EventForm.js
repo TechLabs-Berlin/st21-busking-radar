@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Button } from '@material-ui/core';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import moment from 'moment';
 
 const EventForm = (props) => {
@@ -60,6 +63,17 @@ const EventForm = (props) => {
     }
     return (
         <form onSubmit={handleSubmit}>
+            <p>Choose location:</p>
+            <div>
+
+                <select name='location' value={eventData.location || ''} onChange={handleChange}>
+                    <option value="mauer-park">Mauer Park</option>
+                    <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
+                    <option value="hackescher-markt">Hackescher Markt</option>
+                    <option value="tempelhofer-feld">Tempelhofer Feld</option>
+                    <option value="admiral-brucke">Admiral Brücke</option>
+                </select>
+            </div>
             <p>Event name</p>
             <input type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
             <p>Genre</p>
@@ -88,16 +102,6 @@ const EventForm = (props) => {
                 dateFormat="MMMM d, yyyy HH:mm aa"
                 minDate={new Date()}
             />
-            <p>Choose location:</p>
-            <div>
-                <select name='location' value={eventData.location || ''} onChange={handleChange}>
-                    <option value="mauer-park">Mauer Park</option>
-                    <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
-                    <option value="hackescher-markt">Hackescher Markt</option>
-                    <option value="tempelhofer-feld">Tempelhofer Feld</option>
-                    <option value="admiral-brucke">Admiral Brücke</option>
-                </select>
-            </div>
             {eventData.error && <p>{eventData.error}</p>}
             <button className='btn btn-create'>Submit</button>
         </form>

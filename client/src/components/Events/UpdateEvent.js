@@ -2,9 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import EventForm from './EventForm';
 import { startUpdateEvent } from '../../actions/events';
-import { history } from '../../App';
 
-const UpdateEvent = ({ match }) => {
+const UpdateEvent = ({ match, history }) => {
     const dispatch = useDispatch();
     const events = useSelector((state) => state.events)
     const selectedEvent = events.find(event => {

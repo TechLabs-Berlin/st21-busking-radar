@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
-// import { GoogleMap, withScriptjs, withGoogleMap } from 'react-google-maps';
+import moment from 'moment';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -9,8 +8,17 @@ import { Room } from '@material-ui/icons';
 
 // using it this tutorials for building a map for events https://www.youtube.com/watch?v=9oEQvI7K-rA and https://www.youtube.com/watch?v=5pQsl9u_10M
 
-const EventsMap = ({ events, handleAddClick, newLocation }) => {
+const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult }) => {
 
+    //show popup with event info logic
+    //here we are setting id, if Id is set and it is the same as the marker's id,
+    //the popup with event info is displayed
+    const [currentPlaceId, setCurrentPlaceId] = useState(null);
+    const handleMarkerClick = (id) => {
+        setCurrentPlaceId(id)
+    }
+
+    //setting the map with geocoder
     const [viewport, setViewport] = useState({
         // latitude: 52.5373,
         // longitude: 13.3603,
@@ -32,16 +40,7 @@ const EventsMap = ({ events, handleAddClick, newLocation }) => {
                 ...newViewport,
                 ...geocoderDefaultOverrides
             });
-        },
-        []
-    );
-    const handleOnResult = (result) => {
-        console.log(result)
-        // setNewLocation({
-        //     long,
-        //     lat
-        // })
-    }
+        }, []);
 
     return (
         <ReactMapGL
@@ -53,10 +52,55 @@ const EventsMap = ({ events, handleAddClick, newLocation }) => {
             onDblClick={handleAddClick}
         >
             {events.map(event => {
-                return <Marker
-                    key={event._id}
-                    latitude={event.locationCoordinates[1]}
-                    longitude={event.locationCoordinates[0]}
+                return <div>
+                    <Marker
+                        key={event._id}
+                        latitude={event.locationCoordinates[1]}
+                        longitude={event.locationCoordinates[0]}
+                    >
+                        <Room
+                            style={{
+                                fontSize: viewport.zoom * 3,
+                                cursor: 'pointer',
+                                zIndex: -100
+                                //here we should have a color, if event is active, it should have a different color
+                            }}
+                            onClick={() => handleMarkerClick(event._id)}
+                        />
+                    </Marker>
+                    {event._id === currentPlaceId && <Popup
+                        key={event._id + event.name}
+                        latitude={event.locationCoordinates[1]}
+                        longitude={event.locationCoordinates[0]}
+                        closeButton={true}
+                        closeOnClick={false}
+                        onClose={() => setCurrentPlaceId(null)}
+                        anchor='left'
+                        className='event-popup'
+                    >
+                        <div className='event-popup'>
+                            <h3>{event.name}</h3>
+                            <p>{event.creator}</p>
+                            <p>{event.location}</p>
+                            <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
+                            <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
+                            <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
+                        </div>
+                    </Popup>
+                    }
+                </div>
+            })}
+            <Geocoder
+                mapRef={mapRef}
+                onViewportChange={handleGeocoderViewportChange}
+                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+                position="top-left"
+                onResult={handleOnResult}
+            />
+            {
+                newLocation && <Marker
+                    latitude={newLocation.lat}
+                    longitude={newLocation.long}
                 >
                     <Room
                         style={{
@@ -66,36 +110,9 @@ const EventsMap = ({ events, handleAddClick, newLocation }) => {
                         }}
                     />
                 </Marker>
-            })}
-            <Geocoder
-                mapRef={mapRef}
-                onViewportChange={handleGeocoderViewportChange}
-                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-                position="top-left"
-                onResult={handleOnResult}
-            />
-            {newLocation && <Marker
-                latitude={newLocation.lat}
-                longitude={newLocation.long}
-            >
-                <Room
-                    style={{
-                        fontSize: viewport.zoom * 3,
-                        cursor: 'pointer',
-                        //here we should have a color, if event is active, it should have a different color
-                    }}
-                />
-            </Marker>}
-        </ReactMapGL>
+            }
+        </ReactMapGL >
     )
 }
 
-export default EventsMap
-
-//     < Marker >
-//     Here the location and pin
-// </Marker >
-//     <Popup>
-//         Here the info about the event
-// </Popup>
-
+export default EventsMap;

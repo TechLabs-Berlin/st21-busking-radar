@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
-import { Button } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventsMap from './EventsMap';
 // import WrappedMap from './EventsMap';
@@ -25,6 +24,15 @@ const Events = ({ history }) => {
     //test for it. Is it possible? Check it out later for sure!!!)
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
 
+
+
+    //getting the geolocation of the place logic
+    const handleOnResult = (result) => {
+        setNewLocation({
+            long: result.result.center[0],
+            lat: result.result.center[1]
+        })
+    }
     //Fetching events!!!
     const dispatch = useDispatch();
     useEffect(() => {
@@ -32,17 +40,11 @@ const Events = ({ history }) => {
     }, [])
     const events = useSelector((state) => state.events)
 
-    //Navigation to create event page
-    const createEvent = () => {
-        history.push('/events/create', { coordinates: newLocation })
-    }
-
     //Show list logic
     const [showList, setShowList] = useState(false)
     const handleShowList = () => {
         setShowList(!showList)
     }
-
 
     //Map logic, choose location by click
     const [newLocation, setNewLocation] = useState(null)
@@ -53,18 +55,32 @@ const Events = ({ history }) => {
             long
         })
     }
+
+    //Navigation to create event page and passing the chosen location
+    const createEvent = () => {
+        history.push({
+            pathname: '/events/create',
+            newLocation
+        })
+    }
+    console.log(newLocation)
     return (
         <main id='events' className='events'>
             <div className='events-top'>
                 <h1 id='hd-events' className='hd-lg' >Events</h1>
-                <Button size='small' onClick={createEvent}>
-                    <AddBoxIcon fontSize='small' />
-                    Create Event
+                <div className='btn-events'>
+                    <Button size='small' onClick={createEvent}>
+                        <AddBoxIcon />
+                        Create Event
+                    </Button>
+                    <Button size='small' onClick={handleShowList}>
+                        <KeyboardArrowDownIcon />
+                Show Events List
                 </Button>
-                <Button size='small' onClick={handleShowList}><KeyboardArrowDownIcon /> Show Events List</Button>
+                </div>
             </div>
             {events.length === 0 ? <CircularProgress /> : showList &&
-                <div className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
+                <div key={123} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
                     {events.map((event => {
                         return <Grid item xs={10} sm={8}>
                             <EventInfoCard
@@ -89,9 +105,11 @@ const Events = ({ history }) => {
                 <EventsMap
                     handleAddClick={handleAddClick}
                     newLocation={newLocation}
-                    events={events} />
+                    events={events}
+                    handleOnResult={handleOnResult}
+                />
             </div>
-        </main >
+        </main>
     )
 };
 

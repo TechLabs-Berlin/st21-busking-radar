@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
-import { history } from '../../App';
 import { useDispatch } from 'react-redux';
 import { startDeleteEvent } from '../../actions/events';
 
@@ -17,7 +16,8 @@ const EventInfoCard = ({ creator,
     about,
     tags,
     location,
-    active
+    active,
+    history
 }) => {
 
     const dispatch = useDispatch();
