@@ -8,7 +8,7 @@ import { Room } from '@material-ui/icons';
 
 // using it this tutorials for building a map for events https://www.youtube.com/watch?v=9oEQvI7K-rA and https://www.youtube.com/watch?v=5pQsl9u_10M
 
-const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult }) => {
+const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, chooseLocation }) => {
 
     //show popup with event info logic
     //here we are setting id, if Id is set and it is the same as the marker's id,
@@ -49,7 +49,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult }) => {
             {...viewport}
             mapStyle='mapbox://styles/mapbox/streets-v11'
             onViewportChange={handleViewportChange}
-            onDblClick={handleAddClick}
+            onClick={handleAddClick}
         >
             {events.map(event => {
                 return <div>
@@ -98,7 +98,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult }) => {
                 onResult={handleOnResult}
             />
             {
-                newLocation && <Marker
+                chooseLocation && newLocation ? <Marker
                     latitude={newLocation.lat}
                     longitude={newLocation.long}
                 >
@@ -109,7 +109,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult }) => {
                             //here we should have a color, if event is active, it should have a different color
                         }}
                     />
-                </Marker>
+                </Marker> : ''
             }
         </ReactMapGL >
     )

@@ -5,7 +5,7 @@ import { startCreateEvent } from '../../actions/events';
 
 const CreateEvent = ({ history }) => {
     const dispatch = useDispatch();
-    console.log(history)
+    console.log(history.newLocation)
     return (
         <div>
             <main id='create-event' className='create-event'>
