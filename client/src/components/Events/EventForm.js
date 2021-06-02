@@ -16,11 +16,12 @@ const EventForm = (props) => {
         tags: props.event ? props.event.tags : '',
         startTime: props.event ? props.event.startTime : '',
         endTime: props.event ? props.event.endTime : '',
-        locationName: props.event ? props.event.locationName : '',
-        locationCoordinates: props.event ? props.event.locationCoordinates : '',
+        locationName: props.event ? props.event.locationName : props.newLocation.locationName || '',
+        locationCoordinates: props.event ? props.event.locationCoordinates : props.newLocation.locationCoordinates,
         active: props.event ? props.event.active : false,
         error: ''
     })
+    console.log(props.newLocation)
     const handleChange = (e) => {
         setEventData({
             ...eventData,
@@ -63,17 +64,8 @@ const EventForm = (props) => {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <p>Choose location:</p>
-            <div>
-
-                <select name='location' value={eventData.location || ''} onChange={handleChange}>
-                    <option value="mauer-park">Mauer Park</option>
-                    <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
-                    <option value="hackescher-markt">Hackescher Markt</option>
-                    <option value="tempelhofer-feld">Tempelhofer Feld</option>
-                    <option value="admiral-brucke">Admiral Brücke</option>
-                </select>
-            </div>
+            <p>Location:</p>
+            <input type="text" placeholder="Please type in the location name" name="locationName" autofocus value={eventData.locationName || ''} onChange={handleChange} />
             <p>Event name</p>
             <input type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
             <p>Genre</p>
@@ -109,3 +101,15 @@ const EventForm = (props) => {
 }
 
 export default EventForm;
+
+
+// <div>
+
+// <select name='location' value={eventData.location || ''} onChange={handleChange}>
+//     <option value="mauer-park">Mauer Park</option>
+//     <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
+//     <option value="hackescher-markt">Hackescher Markt</option>
+//     <option value="tempelhofer-feld">Tempelhofer Feld</option>
+//     <option value="admiral-brucke">Admiral Brücke</option>
+// </select>
+// </div>

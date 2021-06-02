@@ -39,13 +39,13 @@ const EventInfoCard = ({ creator,
                 <p>created at: {createdAt}</p>
                 {active === true ? <p>Event is happenning now</p> : ''}
                 <div className='event-cd-btn'>
-                    <Button size='small' onClick={() => {
+                    <Button className='btn-sm' size='small' onClick={() => {
                         history.push(`/events/update/${id}`)
                     }}>
                         <UpdateIcon fontSize='small' />
                         Update
                     </Button>
-                    <Button size='small' onClick={() => { dispatch(startDeleteEvent(id)) }}>
+                    <Button className='btn-sm' size='small' onClick={() => { dispatch(startDeleteEvent(id)) }}>
                         <DeleteIcon fontSize='small' />
                         Delete
                     </Button>

@@ -4,18 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventsMap from './EventsMap';
-// import WrappedMap from './EventsMap';
+
 //polling mechanism
 
-// <WrappedMap
-// googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
-// loadingElement={<div style={{ height: '100%', width: '100%' }} />}
-// containerElement={<div style={{ height: '100%', width: '100%' }} />}
-// mapElement={<div style={{ height: '100%', width: '100%' }} />}
-// />
 
 
 const Events = ({ history }) => {
@@ -24,20 +19,13 @@ const Events = ({ history }) => {
     //test for it. Is it possible? Check it out later for sure!!!)
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
 
-    //getting the geolocation of the place logic
-    const handleOnResult = (result) => {
-        setNewLocation({
-            long: result.result.center[0],
-            lat: result.result.center[1]
-        })
-    }
-
     //Fetching events!!!
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
     const events = useSelector((state) => state.events)
+    console.log(events)
 
     //Show list logic
     const [showList, setShowList] = useState(false)
@@ -45,13 +33,21 @@ const Events = ({ history }) => {
         setShowList(!showList)
     }
 
-    //Map logic, choose location by click
+    //Map logic, choose location by clicking
     const [newLocation, setNewLocation] = useState(null)
     const handleAddClick = (e) => {
         const [long, lat] = e.lngLat;
         setNewLocation({
-            lat,
-            long,
+            locationCoordinates: [long, lat],
+            locationName: ''
+        })
+    }
+    console.log(newLocation)
+    //getting the geolocation of the place logic
+    const handleOnResult = (result) => {
+        setNewLocation({
+            locationCoordinates: [result.result.center[0], result.result.center[1]],
+            locationName: result.result.place_name
         })
     }
     //choose location logic
@@ -66,31 +62,30 @@ const Events = ({ history }) => {
             })
         }
     }
-
-
     return (
         <main id='events' className='events'>
             <div className='events-top'>
-                {chooseLocation ?
-                    <h1>Please choose event location</h1> :
-                    <h1 id='hd-events' className='hd-lg' >Events</h1>
-                }
-                {(chooseLocation === true && newLocation) ?
-                    <div>
-                        <p>Choose this location and proceed to create event</p>
-                        <Button onClick={createEvent}>Yes</Button>
-                    </div>
+                <h1 id='hd-events' className='hd-lg' >Events</h1>
+                {chooseLocation === true && !newLocation ? <p>Please choose the event location from the list or by clicking on the map</p>
                     :
-                    <div className='btn-events'>
-                        <Button size='small' onClick={() => setChooseLocation(!chooseLocation)}>
-                            <AddBoxIcon />
+                    (chooseLocation === true && newLocation) ?
+                        <div className=''>
+                            <p>Choose this location and proceed to create event</p>
+                            <Button className='btn-lg' size='small' onClick={createEvent}>Yes
+                            <ArrowForwardIosIcon />
+                            </Button>
+                        </div>
+                        :
+                        <div className='events-btn'>
+                            <Button className='btn-lg' size='small' onClick={() => setChooseLocation(!chooseLocation)}>
+                                <AddBoxIcon />
                         Create Event
                     </Button>
-                        <Button size='small' onClick={handleShowList}>
-                            <KeyboardArrowDownIcon />
-                Show Events List
-                </Button>
-                    </div>
+                            <Button className='btn-lg' size='small' onClick={handleShowList}>
+                                <KeyboardArrowDownIcon />
+                        Show Events List
+                    </Button>
+                        </div>
                 }
             </div>
             {
