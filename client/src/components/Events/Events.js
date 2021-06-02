@@ -42,7 +42,6 @@ const Events = ({ history }) => {
             locationName: ''
         })
     }
-    console.log(newLocation)
     //getting the geolocation of the place logic
     const handleOnResult = (result) => {
         setNewLocation({
@@ -51,6 +50,10 @@ const Events = ({ history }) => {
         })
     }
     //choose location logic
+    const handleChooseLocation = () => {
+        setChooseLocation(!chooseLocation)
+        setShowList(false)
+    }
     const [chooseLocation, setChooseLocation] = useState(false)
 
     //Navigation to create event page and passing the chosen location
@@ -77,7 +80,7 @@ const Events = ({ history }) => {
                         </div>
                         :
                         <div className='events-btn'>
-                            <Button className='btn-lg' size='small' onClick={() => setChooseLocation(!chooseLocation)}>
+                            <Button className='btn-lg' size='small' onClick={handleChooseLocation}>
                                 <AddBoxIcon />
                         Create Event
                     </Button>

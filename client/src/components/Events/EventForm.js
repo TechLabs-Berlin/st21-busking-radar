@@ -3,8 +3,7 @@ import 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '@material-ui/core';
-import AddLocationIcon from '@material-ui/icons/AddLocation';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import PublishIcon from '@material-ui/icons/Publish';
 import moment from 'moment';
 
 const EventForm = (props) => {
@@ -21,7 +20,6 @@ const EventForm = (props) => {
         active: props.event ? props.event.active : false,
         error: ''
     })
-    console.log(props.newLocation)
     const handleChange = (e) => {
         setEventData({
             ...eventData,
@@ -36,16 +34,18 @@ const EventForm = (props) => {
 
     const handleStartTimeChange = (date) => {
         setStartTime(date)
+        setEndTime(date)
     }
     eventData.startTime = startTime
 
     const handleEndTimeChange = (date) => {
-        if (moment(endTime).unix() > moment(startTime).unix()) {
+        if (moment(date).unix() > moment(startTime).unix()) {
             setEndTime(date)
         } else {
-            setEventData({ error: 'Please choose correct end time' })
+            setEventData({
+                error: 'Please provide correct time'
+            })
         }
-        setEventData({ error: '' })
     }
 
     eventData.endTime = endTime
@@ -56,7 +56,7 @@ const EventForm = (props) => {
             setEventData({ error: 'Please provide user name' })
         } else if (!eventData.startTime || !eventData.endTime) {
             setEventData({ error: 'Please provide time' })
-        } else if (!eventData.location) {
+        } else if (!eventData.locationCoordinates || !eventData.locationName) {
             setEventData({ error: 'Please provide location' })
         } else {
             props.handleSubmit(eventData)
@@ -95,7 +95,10 @@ const EventForm = (props) => {
                 minDate={new Date()}
             />
             {eventData.error && <p>{eventData.error}</p>}
-            <button className='btn btn-create'>Submit</button>
+            <Button type='submit' className='btn-lg' size='small'>
+                <PublishIcon />
+            Publish Event
+            </Button>
         </form>
     )
 }

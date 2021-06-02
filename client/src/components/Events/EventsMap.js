@@ -13,6 +13,11 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
     //referring to the geocoder container outside of the map
     let geocoderContainerRef = createRef();
 
+    //get clusters
+    const clusters = events.map(event => ({
+
+    }))
+
     //show popup with event info logic
     //here we are setting id, if Id is set and it is the same as the marker's id,
     //the popup with event info is displayed
@@ -31,6 +36,9 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
         height: '82vh',
         zoom: 11
     })
+
+    //this is needed in order to adjust the pin so it would resize and stay on the same spot when zooming on the map
+    let size = 40;
     const mapRef = useRef();
     const handleViewportChange = useCallback((viewport) =>
         setViewport(viewport), [])
@@ -65,8 +73,10 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                                 latitude={event.locationCoordinates[1]}
                                 longitude={event.locationCoordinates[0]}
                             >
+
                                 <Room
                                     style={{
+                                        transform: `translate(${-size / 2}px,${-size}px)`,
                                         fontSize: viewport.zoom * 3,
                                         cursor: 'pointer',
                                         zIndex: -100
@@ -75,25 +85,26 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                                     onClick={() => handleMarkerClick(event._id)}
                                 />
                             </Marker>
-                            {event._id === currentPlaceId && <Popup
-                                key={event._id + event.name}
-                                latitude={event.locationCoordinates[1]}
-                                longitude={event.locationCoordinates[0]}
-                                closeButton={true}
-                                closeOnClick={false}
-                                onClose={() => setCurrentPlaceId(null)}
-                                anchor='left'
-                                className='event-popup'
-                            >
-                                <div className='event-popup'>
-                                    <h3>{event.name}</h3>
-                                    <p>{event.creator}</p>
-                                    <p>{event.location}</p>
-                                    <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
-                                    <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
-                                    <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
-                                </div>
-                            </Popup>
+                            {
+                                event._id === currentPlaceId && <Popup
+                                    key={event._id + event.name}
+                                    latitude={event.locationCoordinates[1]}
+                                    longitude={event.locationCoordinates[0]}
+                                    closeButton={true}
+                                    closeOnClick={false}
+                                    onClose={() => setCurrentPlaceId(null)}
+                                    anchor='left'
+                                    className='event-popup'
+                                >
+                                    <div className='event-popup'>
+                                        <h3>{event.name}</h3>
+                                        <p>{event.creator}</p>
+                                        <p>{event.location}</p>
+                                        <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
+                                        <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
+                                        <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
+                                    </div>
+                                </Popup>
                             }
                         </div>
                     })}
@@ -122,7 +133,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                     />
                 </ReactMapGL>
             </div>
-        </div>
+        </div >
     )
 }
 
