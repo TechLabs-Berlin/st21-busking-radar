@@ -15,8 +15,8 @@ const EventForm = (props) => {
         tags: props.event ? props.event.tags : '',
         startTime: props.event ? props.event.startTime : '',
         endTime: props.event ? props.event.endTime : '',
-        locationName: props.event ? props.event.locationName : props.newLocation.locationName || '',
-        locationCoordinates: props.event ? props.event.locationCoordinates : props.newLocation.locationCoordinates,
+        locationName: props.event ? props.event.locationName : props.newLocation[0] || '',
+        locationCoordinates: props.event ? props.event.locationCoordinates : [props.newLocation[1], props.newLocation[2]],
         active: props.event ? props.event.active : false,
         error: ''
     })

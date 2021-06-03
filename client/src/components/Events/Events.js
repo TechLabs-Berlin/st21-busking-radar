@@ -60,8 +60,8 @@ const Events = ({ history }) => {
     const createEvent = () => {
         if (newLocation) {
             history.push({
-                pathname: '/events/create',
-                newLocation
+                pathname: `/events/create`,
+                search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
             })
         }
     }
