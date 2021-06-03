@@ -5,6 +5,9 @@ import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Room } from '@material-ui/icons';
+import { Button, Grid } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import EventInfoCard from './EventInfoCard';
 
 
 // using it this tutorials for building a map for events https://www.youtube.com/watch?v=9oEQvI7K-rA and https://www.youtube.com/watch?v=5pQsl9u_10M
@@ -21,9 +24,9 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
     //show popup with event info logic
     //here we are setting id, if Id is set and it is the same as the marker's id,
     //the popup with event info is displayed
-    const [currentPlaceId, setCurrentPlaceId] = useState(null);
-    const handleMarkerClick = (id) => {
-        setCurrentPlaceId(id)
+    const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
+    const handleMarkerClick = (locationCoordinates) => {
+        setCurrentLocationCoordinates(locationCoordinates)
     }
 
     //setting the map with geocoder
@@ -36,7 +39,6 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
         height: '82vh',
         zoom: 11
     })
-
     //this is needed in order to adjust the pin so it would resize and stay on the same spot when zooming on the map
     let size = 40;
     const mapRef = useRef();
@@ -57,6 +59,33 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                 ref={geocoderContainerRef}
                 className='map-geocoder'
             />
+            {currentLocationCoordinates && <div className='events-ls'>
+                <h2>Events in Here should be the opened location name</h2>
+                {events.map(event => {
+                    if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1])
+                        return <Grid item xs={10} sm={8}>
+                            <EventInfoCard
+                                id={event._id}
+                                key={event._id}
+                                name={event.name}
+                                genre={event.genre}
+                                location={event.location}
+                                date={moment(event.startTime).format('MMMM Do YYYY')}
+                                startTime={moment(event.startTime).format('h:mm:ss a')}
+                                endTime={moment(event.endTime).format('h:mm:ss a')}
+                                about={event.about}
+                                tags={event.tags}
+                                creator={event.creator}
+                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                active={event.active}
+                            />
+                        </Grid>
+                })}
+                <Button onClick={() => setCurrentLocationCoordinates(null)} size='small'>
+                    <CloseIcon />
+                </Button>
+            </div>
+            }
             <div className='map'>
                 <ReactMapGL
                     ref={mapRef}
@@ -82,32 +111,12 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                                         zIndex: -100
                                         //here we should have a color, if event is active, it should have a different color
                                     }}
-                                    onClick={() => handleMarkerClick(event._id)}
+                                    onClick={() => handleMarkerClick(event.locationCoordinates)}
                                 />
                             </Marker>
-                            {
-                                event._id === currentPlaceId && <Popup
-                                    key={event._id + event.name}
-                                    latitude={event.locationCoordinates[1]}
-                                    longitude={event.locationCoordinates[0]}
-                                    closeButton={true}
-                                    closeOnClick={false}
-                                    onClose={() => setCurrentPlaceId(null)}
-                                    anchor='left'
-                                    className='event-popup'
-                                >
-                                    <div className='event-popup'>
-                                        <h3>{event.name}</h3>
-                                        <p>{event.creator}</p>
-                                        <p>{event.location}</p>
-                                        <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
-                                        <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
-                                        <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
-                                    </div>
-                                </Popup>
-                            }
                         </div>
                     })}
+
                     {newLocation && chooseLocation
                         ? <Marker
                             latitude={newLocation.locationCoordinates[1]}
@@ -138,3 +147,25 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
 }
 
 export default EventsMap;
+
+// <Popup
+//     key={event._id + event.name}
+//     latitude={event.locationCoordinates[1]}
+//     longitude={event.locationCoordinates[0]}
+//     closeButton={true}
+//     closeOnClick={false}
+//     onClose={() => setCurrentLocationCoordinates(null)}
+//     anchor='left'
+//     className='event-popup'
+//     dynamicPosition={false}
+// >
+//     <div className='event-popup'>
+//         <h3>{event.name}</h3>
+//         <p>{event.creator}</p>
+//         <p>{event.location}</p>
+//         <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
+//         <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
+//         <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
+//     </div>
+// </Popup>
+

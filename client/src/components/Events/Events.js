@@ -86,7 +86,7 @@ const Events = ({ history }) => {
                     </Button>
                             <Button className='btn-lg' size='small' onClick={handleShowList}>
                                 <KeyboardArrowDownIcon />
-                        Show Events List
+                        Show All Events
                     </Button>
                         </div>
                 }
