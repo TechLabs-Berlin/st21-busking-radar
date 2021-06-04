@@ -32,14 +32,15 @@ main{
             flex-direction: column;
             align-items: center;
             .events-ls{
-                position: absolute;
+                overflow-y: scroll;
             }
             .map-geocoder{
                 position: fixed;
-                top: 17vh;
+                top: 18vh;
                 border: black;
                 border-width: 0.1em;
                 border-style: solid;
+                z-index: 2;
             }
             .map{
                 margin-top: 3em;
@@ -48,6 +49,7 @@ main{
                 bottom: 0;
                 left: 0;
                 position: fixed;
+                z-index: 1;
             }
             .event-popup{
                 z-index: 3000;

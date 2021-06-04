@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, createRef } from 'react';
 import moment from 'moment';
-import ReactMapGL, { Marker, Popup } from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -16,10 +16,6 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
     //referring to the geocoder container outside of the map
     let geocoderContainerRef = createRef();
 
-    //get clusters
-    const clusters = events.map(event => ({
-
-    }))
 
     //show popup with event info logic
     //here we are setting id, if Id is set and it is the same as the marker's id,
@@ -28,7 +24,6 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
     const handleMarkerClick = (locationCoordinates) => {
         setCurrentLocationCoordinates(locationCoordinates)
     }
-
     //setting the map with geocoder
     const [viewport, setViewport] = useState({
         // latitude: 52.5373,
@@ -41,6 +36,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
     })
     //this is needed in order to adjust the pin so it would resize and stay on the same spot when zooming on the map
     let size = 40;
+
     const mapRef = useRef();
     const handleViewportChange = useCallback((viewport) =>
         setViewport(viewport), [])
@@ -59,8 +55,12 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                 ref={geocoderContainerRef}
                 className='map-geocoder'
             />
-            {currentLocationCoordinates && <div className='events-ls'>
-                <h2>Events in Here should be the opened location name</h2>
+            {currentLocationCoordinates && <div className='events-ls' key={'selected-events-list'}>
+                <h2>Events at {events.map(event => {
+                    if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1]) {
+                        return event.locationName.split(' ').splice(0, 2).join(' ')
+                    }
+                })}</h2>
                 {events.map(event => {
                     if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1])
                         return <Grid item xs={10} sm={8}>
@@ -96,7 +96,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                     onDblClick={handleAddClick}
                 >
                     {events.map(event => {
-                        return <div>
+                        return <div key={event._id} className='marker-pin-container'>
                             <Marker
                                 key={event._id}
                                 latitude={event.locationCoordinates[1]}
@@ -104,6 +104,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                             >
 
                                 <Room
+                                    key={event._id + event.name}
                                     style={{
                                         transform: `translate(${-size / 2}px,${-size}px)`,
                                         fontSize: viewport.zoom * 3,
@@ -139,6 +140,15 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                         onViewportChange={handleGeocoderViewportChange}
                         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
                         onResult={handleOnResult}
+                        proximity={{
+                            latitude: 52.520008,
+                            longitude: 13.404954
+                        }}
+                        clearOnBlue={true}
+                        reverseGeocode={true}
+                        inputValue={
+                            newLocation && `${newLocation.locationCoordinates[1]}, ${newLocation.locationCoordinates[0]}`
+                        }
                     />
                 </ReactMapGL>
             </div>
@@ -148,24 +158,4 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
 
 export default EventsMap;
 
-// <Popup
-//     key={event._id + event.name}
-//     latitude={event.locationCoordinates[1]}
-//     longitude={event.locationCoordinates[0]}
-//     closeButton={true}
-//     closeOnClick={false}
-//     onClose={() => setCurrentLocationCoordinates(null)}
-//     anchor='left'
-//     className='event-popup'
-//     dynamicPosition={false}
-// >
-//     <div className='event-popup'>
-//         <h3>{event.name}</h3>
-//         <p>{event.creator}</p>
-//         <p>{event.location}</p>
-//         <p>Date:{moment(event.startTime).format('MMMM Do YYYY')}</p>
-//         <p>Starts: {moment(event.startTime).format('h:mm:ss a')}</p>
-//         <p>Ends: {moment(event.endTime).format('h:mm:ss a')}</p>
-//     </div>
-// </Popup>
 

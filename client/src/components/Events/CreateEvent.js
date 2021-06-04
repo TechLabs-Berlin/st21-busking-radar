@@ -10,7 +10,6 @@ const CreateEvent = ({ history }) => {
     const { search } = useLocation()
     const { locationName, longitude, latitude } = queryString.parse(search)
     const newLocation = [locationName, longitude, latitude]
-    // const { locationName, locationCoordinates } = queryString.parse(search)
     return (
         <div>
             <main id='create-event' className='create-event'>

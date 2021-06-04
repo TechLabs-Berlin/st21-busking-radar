@@ -65,7 +65,7 @@ const EventForm = (props) => {
     return (
         <form onSubmit={handleSubmit}>
             <p>Location:</p>
-            <input type="text" placeholder="Please type in the location name" name="locationName" autofocus value={eventData.locationName || ''} onChange={handleChange} />
+            <input type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
             <p>Event name</p>
             <input type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
             <p>Genre</p>

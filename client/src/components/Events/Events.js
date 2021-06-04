@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
@@ -25,7 +25,6 @@ const Events = ({ history }) => {
         dispatch(startGetAllEvents())
     }, [])
     const events = useSelector((state) => state.events)
-    console.log(events)
 
     //Show list logic
     const [showList, setShowList] = useState(false)
@@ -55,7 +54,6 @@ const Events = ({ history }) => {
         setShowList(false)
     }
     const [chooseLocation, setChooseLocation] = useState(false)
-
     //Navigation to create event page and passing the chosen location
     const createEvent = () => {
         if (newLocation) {
@@ -93,7 +91,7 @@ const Events = ({ history }) => {
             </div>
             {
                 events.length === 0 ? <CircularProgress /> : showList &&
-                    <div key={123} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
+                    <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
                         {events.map((event => {
                             return <Grid item xs={10} sm={8}>
                                 <EventInfoCard
