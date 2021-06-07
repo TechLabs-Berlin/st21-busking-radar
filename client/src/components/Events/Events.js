@@ -14,11 +14,14 @@ import EventsMap from './EventsMap';
 
 
 const Events = ({ history }) => {
+    const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
+    const [showList, setShowList] = useState(false)
+    const [newLocation, setNewLocation] = useState(null)
+    const [chooseLocation, setChooseLocation] = useState(false)
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
-
     //Fetching events!!!
     const dispatch = useDispatch();
     useEffect(() => {
@@ -26,14 +29,14 @@ const Events = ({ history }) => {
     }, [])
     const events = useSelector((state) => state.events)
 
+
+    //Handlers
     //Show list logic
-    const [showList, setShowList] = useState(false)
     const handleShowList = () => {
         setShowList(!showList)
     }
 
     //Map logic, choose location by clicking
-    const [newLocation, setNewLocation] = useState(null)
     const handleAddClick = (e) => {
         const [long, lat] = e.lngLat;
         setNewLocation({
@@ -43,17 +46,19 @@ const Events = ({ history }) => {
     }
     //getting the geolocation of the place logic
     const handleOnResult = (result) => {
+        console.log(result)
         setNewLocation({
             locationCoordinates: [result.result.center[0], result.result.center[1]],
             locationName: result.result.place_name
         })
     }
+
     //choose location logic
     const handleChooseLocation = () => {
         setChooseLocation(!chooseLocation)
+        setCurrentLocationCoordinates(null)
         setShowList(false)
     }
-    const [chooseLocation, setChooseLocation] = useState(false)
     //Navigation to create event page and passing the chosen location
     const createEvent = () => {
         if (newLocation) {
@@ -62,6 +67,14 @@ const Events = ({ history }) => {
                 search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
             })
         }
+    }
+
+    //show popup with event info logic
+    //here we are setting id, if Id is set and it is the same as the marker's id,
+    //the popup with event info is displayed
+    const handleMarkerClick = (locationCoordinates) => {
+        if (!chooseLocation)
+            setCurrentLocationCoordinates(locationCoordinates)
     }
     return (
         <main id='events' className='events'>
@@ -120,6 +133,8 @@ const Events = ({ history }) => {
                     events={events}
                     handleOnResult={handleOnResult}
                     chooseLocation={chooseLocation}
+                    handleMarkerClick={handleMarkerClick}
+                    currentLocationCoordinates={currentLocationCoordinates}
                 />
             </div>
         </main >

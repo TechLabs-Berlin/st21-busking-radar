@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useRef, createRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import moment from 'moment';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Room } from '@material-ui/icons';
+import { Autorenew, Room } from '@material-ui/icons';
 import { Button, Grid } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import EventInfoCard from './EventInfoCard';
@@ -12,49 +12,53 @@ import EventInfoCard from './EventInfoCard';
 
 // using it this tutorials for building a map for events https://www.youtube.com/watch?v=9oEQvI7K-rA and https://www.youtube.com/watch?v=5pQsl9u_10M
 
-const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, chooseLocation }) => {
+const EventsMap = ({ events,
+    handleAddClick,
+    newLocation,
+    handleOnResult,
+    chooseLocation,
+    handleMarkerClick,
+    currentLocationCoordinates
+}) => {
     //referring to the geocoder container outside of the map
-    let geocoderContainerRef = createRef();
-
-
-    //show popup with event info logic
-    //here we are setting id, if Id is set and it is the same as the marker's id,
-    //the popup with event info is displayed
-    const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
-    const handleMarkerClick = (locationCoordinates) => {
-        setCurrentLocationCoordinates(locationCoordinates)
+    let geocoderContainerRef = useRef();
+    const [showEventsNumber, setShowEventsNumber] = useState(false)
+    const handleShowEventsNumber = () => {
+        setShowEventsNumber(!showEventsNumber)
     }
     //setting the map with geocoder
     const [viewport, setViewport] = useState({
-        // latitude: 52.5373,
-        // longitude: 13.3603,
         latitude: 52.520008,
         longitude: 13.404954,
         width: '100%',
-        height: '82vh',
+        height: '100%',
         zoom: 11
     })
     //this is needed in order to adjust the pin so it would resize and stay on the same spot when zooming on the map
     let size = 40;
 
     const mapRef = useRef();
-    const handleViewportChange = useCallback((viewport) =>
-        setViewport(viewport), [])
-    // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
-    const handleGeocoderViewportChange = useCallback(
-        (newViewport) => {
-            const geocoderDefaultOverrides = { transitionDuration: 1000 };
-            return handleViewportChange({
-                ...newViewport,
-                ...geocoderDefaultOverrides
-            });
-        }, []);
+    const handleViewportChange = useCallback((newViewport) => {
+        setViewport(newViewport)
+    }, []
+    )
+
+    //It has a bug, and I can not fix it. I am moving forward now, comeback later.
+    //when click on the same location in the after suggestion twice, the map crashes
+    // const handleGeocoderViewportChange = useCallback(
+    //     (newViewport) => {
+    //         const geocoderDefaultOverrides = { transitionDuration: 500 };
+    //         setViewport({
+    //             ...newViewport,
+    //             ...geocoderDefaultOverrides
+    //         });
+    //     }, [])
     return (
         <div className='events-map'>
-            <div
+            {chooseLocation && <div
                 ref={geocoderContainerRef}
                 className='map-geocoder'
-            />
+            />}
             {currentLocationCoordinates && <div className='events-ls' key={'selected-events-list'}>
                 <h2>Events at {events.map(event => {
                     if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1]) {
@@ -81,7 +85,7 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                             />
                         </Grid>
                 })}
-                <Button onClick={() => setCurrentLocationCoordinates(null)} size='small'>
+                <Button onClick={() => handleMarkerClick(null)} size='small'>
                     <CloseIcon />
                 </Button>
             </div>
@@ -96,6 +100,12 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                     onDblClick={handleAddClick}
                 >
                     {events.map(event => {
+                        let eventsNumber = 0;
+                        for (let i = 0; i < events.length; i++) {
+                            if (events[i].locationCoordinates[0] === event.locationCoordinates[0]) {
+                                eventsNumber++
+                            }
+                        }
                         return <div key={event._id} className='marker-pin-container'>
                             <Marker
                                 key={event._id}
@@ -114,6 +124,11 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                                     }}
                                     onClick={() => handleMarkerClick(event.locationCoordinates)}
                                 />
+                                {eventsNumber > 1 && <p style={{
+                                    transform: `translate(${-size / 5.5}px,${-size}px)`,
+                                    fontSize: viewport.zoom * 2,
+                                    //here we should have a color, if event is active, it should have a different color
+                                }} className='events-number'>{eventsNumber} </p>}
                             </Marker>
                         </div>
                     })}
@@ -125,34 +140,37 @@ const EventsMap = ({ events, handleAddClick, newLocation, handleOnResult, choose
                         >
                             <Room
                                 style={{
+                                    transform: `translate(${-size / 2}px,${-size}px)`,
                                     fontSize: viewport.zoom * 3,
                                     cursor: 'pointer',
-                                    //here we should have a color, if event is active, it should have a different color
+                                    color: 'red'
+                                    //     here we should have a color, if event is active, it should have a different color
                                 }}
                             />
+
                         </Marker>
                         :
                         ''
                     }
-                    <Geocoder
+                    {chooseLocation && <Geocoder
                         mapRef={mapRef}
                         containerRef={geocoderContainerRef}
-                        onViewportChange={handleGeocoderViewportChange}
                         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
                         onResult={handleOnResult}
                         proximity={{
                             latitude: 52.520008,
-                            longitude: 13.404954
+                            longitude: 13.404954,
                         }}
+                        // onViewportChange={handleGeocoderViewportChange}//<-this makes bug, should try to solve it later
                         clearOnBlue={true}
                         reverseGeocode={true}
                         inputValue={
                             newLocation && `${newLocation.locationCoordinates[1]}, ${newLocation.locationCoordinates[0]}`
                         }
-                    />
+                    />}
                 </ReactMapGL>
             </div>
-        </div >
+        </div>
     )
 }
 

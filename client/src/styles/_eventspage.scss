@@ -35,12 +35,12 @@ main{
                 overflow-y: scroll;
             }
             .map-geocoder{
-                position: fixed;
-                top: 18vh;
+                position: relative;
+                top: 10em;
                 border: black;
                 border-width: 0.1em;
                 border-style: solid;
-                z-index: 2;
+                z-index: 10;
             }
             .map{
                 margin-top: 3em;
@@ -50,11 +50,23 @@ main{
                 left: 0;
                 position: fixed;
                 z-index: 1;
+                .marker-pin-container{
+                    .events-number{
+                        position: absolute;
+                        color:white;
+                        background-color: black;
+                        border-radius: 2em;
+                        margin: 0;
+                        z-index: 10;
+                        font-size: 1em;
+                    }
+                }
             }
             .event-popup{
-                z-index: 3000;
+                z-index: 1;
                 background-color: white;
             }
+
         }
     }
 }
