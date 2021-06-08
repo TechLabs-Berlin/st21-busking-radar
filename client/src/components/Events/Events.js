@@ -8,6 +8,8 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventsMap from './EventsMap';
+import EventsFilters from './EventsFilters';
+import selectEvents from './../../filters/events';
 
 //polling mechanism
 
@@ -18,6 +20,7 @@ const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
+    const [showFilters, setShowFilters] = useState(false)
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
@@ -27,13 +30,14 @@ const Events = ({ history }) => {
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
-    const events = useSelector((state) => state.events)
+    const events = useSelector((state) => selectEvents(state.events, state.filters))
 
 
     //Handlers
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
+        setShowFilters(false)
     }
 
     //Map logic, choose location by clicking
@@ -58,6 +62,7 @@ const Events = ({ history }) => {
         setChooseLocation(!chooseLocation)
         setCurrentLocationCoordinates(null)
         setShowList(false)
+        setShowFilters(false)
     }
     //Navigation to create event page and passing the chosen location
     const createEvent = () => {
@@ -68,6 +73,11 @@ const Events = ({ history }) => {
             })
         }
     }
+    const handleShowFilters = () => {
+        setShowFilters(!showFilters)
+        setShowList(false)
+    }
+    console.log(showFilters)
 
     //show popup with event info logic
     //here we are setting id, if Id is set and it is the same as the marker's id,
@@ -99,8 +109,13 @@ const Events = ({ history }) => {
                                 <KeyboardArrowDownIcon />
                         Show All Events
                     </Button>
+                            <Button className='btn-lg' size='small' onClick={handleShowFilters}>
+                                <KeyboardArrowDownIcon />
+                                Show filters
+                            </Button>
                         </div>
                 }
+                <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
             {
                 events.length === 0 ? <CircularProgress /> : showList &&
