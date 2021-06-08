@@ -51,14 +51,19 @@ main{
                 position: fixed;
                 z-index: 1;
                 .marker-pin-container{
+                    .event-pin{
+                        color: rgb(10, 73, 10)
+                    }
                     .events-number{
                         position: absolute;
                         color:white;
-                        background-color: black;
-                        border-radius: 2em;
+                        bottom: 0.75em;
                         margin: 0;
-                        z-index: 10;
-                        font-size: 1em;
+                        // background-color: black;
+                        // border-radius: 2em;
+                        // margin: 0;
+                        // z-index: 10;
+                        // font-size: 1em;
                     }
                 }
             }
