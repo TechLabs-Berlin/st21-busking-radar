@@ -112,23 +112,36 @@ const EventsMap = ({ events,
                                 latitude={event.locationCoordinates[1]}
                                 longitude={event.locationCoordinates[0]}
                             >
-
-                                <Room
-                                    key={event._id + event.name}
-                                    style={{
-                                        transform: `translate(${-size / 2}px,${-size}px)`,
-                                        fontSize: viewport.zoom * 3,
-                                        cursor: 'pointer',
-                                        zIndex: -100
-                                        //here we should have a color, if event is active, it should have a different color
-                                    }}
-                                    onClick={() => handleMarkerClick(event.locationCoordinates)}
-                                />
-                                {eventsNumber > 1 && <p style={{
-                                    transform: `translate(${-size / 5.5}px,${-size}px)`,
-                                    fontSize: viewport.zoom * 2,
-                                    //here we should have a color, if event is active, it should have a different color
-                                }} className='events-number'>{eventsNumber} </p>}
+                                <span class='fa-stack fa-2x'
+                                    onClick={() => handleMarkerClick(event.locationCoordinates)}>
+                                    <i class="fas fa-map-marker fa-stack-2x event-pin"
+                                        key={event._id + event.name}
+                                        style={{
+                                            transform: `translate(${-size / 1}px,${-size}px)`,
+                                            fontSize: viewport.zoom * 3,
+                                            cursor: 'pointer',
+                                            zIndex: -100
+                                            //here we should have a color, if event is active, it should have a different color
+                                        }}
+                                        onClick={() => handleMarkerClick(event.locationCoordinates)}></i>
+                                    <strong
+                                        key={event._id + event.name}
+                                        style={{
+                                            transform: `translate(${-size / 1}px,${-size}px)`,
+                                            fontSize: viewport.zoom * 3,
+                                            cursor: 'pointer',
+                                            zIndex: -100
+                                            //here we should have a color, if event is active, it should have a different color
+                                        }}
+                                        className="fa-stack-2x text-primary events-number" style={{
+                                            transform: `translate(${-size / 1}px,${-size}px)`,
+                                            fontSize: viewport.zoom * 3,
+                                            cursor: 'pointer',
+                                            zIndex: -100,
+                                            fontSize: '0.7em'
+                                            //here we should have a color, if event is active, it should have a different color
+                                        }}>{eventsNumber > 1 && eventsNumber}</strong>
+                                </span>
                             </Marker>
                         </div>
                     })}
@@ -169,11 +182,27 @@ const EventsMap = ({ events,
                         }
                     />}
                 </ReactMapGL>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
 export default EventsMap;
 
 
+// <Room
+//                                     key={event._id + event.name}
+//                                     style={{
+//                                         transform: `translate(${-size / 2}px,${-size}px)`,
+//                                         fontSize: viewport.zoom * 3,
+//                                         cursor: 'pointer',
+//                                         zIndex: -100
+//                                         //here we should have a color, if event is active, it should have a different color
+//                                     }}
+//                                     onClick={() => handleMarkerClick(event.locationCoordinates)}
+//                                 />
+//                                 {eventsNumber > 1 && <p style={{
+//                                     transform: `translate(${-size / 5.5}px,${-size}px)`,
+//                                     fontSize: viewport.zoom * 2,
+//                                     //here we should have a color, if event is active, it should have a different color
+//                                 }} className='events-number'>{eventsNumber} </p>}
