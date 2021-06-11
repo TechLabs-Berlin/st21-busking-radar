@@ -3,9 +3,9 @@ import axios from 'axios'
 
 const RegisterPage = () => {
 
-    axios.get('/test').then((data) => {
-        console.log(data)
-    })
+    // axios.get('/test').then((data) => {
+    //     console.log(data)
+    // })
 
     const [state, setState] = useState({
         name: '',
@@ -31,12 +31,14 @@ const RegisterPage = () => {
         } else if (!state.password) {
             setState({ error: 'Please provide password' })
         } else if ({ error: '' }) {
+           console.dir(userData)
             // axios.post('/login', { userData })
         }
     }
 
     return (
         <div className='reg-page'>
+            <div>{state.error}</div>
             <form onSubmit={handleSubmit}>
                 <p>UserName</p>
                 <input type='text' name='name' placeholder='Enter your user name' onChange={handleChange} />
