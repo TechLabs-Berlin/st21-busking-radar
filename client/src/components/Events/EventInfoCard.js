@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
@@ -16,10 +17,9 @@ const EventInfoCard = ({ creator,
     about,
     tags,
     location,
-    active,
-    history
+    active
 }) => {
-
+    const history = useHistory();
     const dispatch = useDispatch();
     // const deleteEvent = () => {
     //     dispatch(startDeleteEvent(id))

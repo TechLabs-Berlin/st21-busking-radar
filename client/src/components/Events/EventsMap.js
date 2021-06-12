@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, createRef } from 'react';
 import moment from 'moment';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import MapGL, { Marker } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Autorenew, Room } from '@material-ui/icons';
+import { Room } from '@material-ui/icons';
 import { Button, Grid } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import EventInfoCard from './EventInfoCard';
@@ -22,27 +22,21 @@ const EventsMap = ({ events,
 }) => {
     //referring to the geocoder container outside of the map
     let geocoderContainerRef = useRef();
-    const [showEventsNumber, setShowEventsNumber] = useState(false)
-    const handleShowEventsNumber = () => {
-        setShowEventsNumber(!showEventsNumber)
-    }
+    const mapRef = useRef();
     //setting the map with geocoder
     const [viewport, setViewport] = useState({
         latitude: 52.520008,
         longitude: 13.404954,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         zoom: 11
     })
     //this is needed in order to adjust the pin so it would resize and stay on the same spot when zooming on the map
-    let size = 40;
+    const size = 40;
 
-    const mapRef = useRef();
-    const handleViewportChange = useCallback((newViewport) => {
-        setViewport(newViewport)
-    }, []
-    )
-
+    const handleViewportChange = useCallback((viewport) => {
+        setViewport(viewport)
+    }, [])
     //It has a bug, and I can not fix it. I am moving forward now, comeback later.
     //when click on the same location in the after suggestion twice, the map crashes
     // const handleGeocoderViewportChange = useCallback(
@@ -59,18 +53,14 @@ const EventsMap = ({ events,
                 ref={geocoderContainerRef}
                 className='map-geocoder'
             />}
-            {currentLocationCoordinates && <div className='events-ls' key={'selected-events-list'}>
-                <h2>Events at {events.map(event => {
-                    if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1]) {
-                        return event.locationName.split(' ').splice(0, 2).join(' ')
-                    }
-                })}</h2>
+            {currentLocationCoordinates && <div className='events-ls' key='selected-events123'>
+
                 {events.map(event => {
                     if (event.locationCoordinates[0] === currentLocationCoordinates[0] && event.locationCoordinates[1] === currentLocationCoordinates[1])
                         return <Grid item xs={10} sm={8}>
                             <EventInfoCard
                                 id={event._id}
-                                key={event._id}
+                                key={event._id + event.creator}
                                 name={event.name}
                                 genre={event.genre}
                                 location={event.location}
@@ -91,10 +81,10 @@ const EventsMap = ({ events,
             </div>
             }
             <div className='map'>
-                <ReactMapGL
+                <MapGL
+                    {...viewport}
                     ref={mapRef}
                     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-                    {...viewport}
                     mapStyle='mapbox://styles/mapbox/streets-v11'
                     onViewportChange={handleViewportChange}
                     onDblClick={handleAddClick}
@@ -106,9 +96,9 @@ const EventsMap = ({ events,
                                 eventsNumber++
                             }
                         }
-                        return <div key={event._id} className='marker-pin-container'>
+                        return <div key={event._id + event.locationName} className='marker-pin-container'>
                             <Marker
-                                key={event._id}
+                                key={event._id + event.locationCoordinates[0]}
                                 latitude={event.locationCoordinates[1]}
                                 longitude={event.locationCoordinates[0]}
                             >
@@ -125,7 +115,7 @@ const EventsMap = ({ events,
                                         }}
                                         onClick={() => handleMarkerClick(event.locationCoordinates)}></i>
                                     <strong
-                                        key={event._id + event.name}
+                                        key={event._id + event.locationCoordinates[1]}
                                         style={{
                                             transform: `translate(${-size / 1}px,${-size}px)`,
                                             fontSize: viewport.zoom * 3,
@@ -174,14 +164,14 @@ const EventsMap = ({ events,
                             latitude: 52.520008,
                             longitude: 13.404954,
                         }}
-                        // onViewportChange={handleGeocoderViewportChange}//<-this makes bug, should try to solve it later
+                        // onViewportChange={handleViewportChange}//<-this makes bug, should try to solve it later
                         clearOnBlue={true}
                         reverseGeocode={true}
                         inputValue={
                             newLocation && `${newLocation.locationCoordinates[1]}, ${newLocation.locationCoordinates[0]}`
                         }
                     />}
-                </ReactMapGL>
+                </MapGL>
             </div >
         </div >
     )
@@ -190,19 +180,44 @@ const EventsMap = ({ events,
 export default EventsMap;
 
 
-// <Room
-//                                     key={event._id + event.name}
-//                                     style={{
-//                                         transform: `translate(${-size / 2}px,${-size}px)`,
-//                                         fontSize: viewport.zoom * 3,
-//                                         cursor: 'pointer',
-//                                         zIndex: -100
-//                                         //here we should have a color, if event is active, it should have a different color
-//                                     }}
-//                                     onClick={() => handleMarkerClick(event.locationCoordinates)}
-//                                 />
-//                                 {eventsNumber > 1 && <p style={{
-//                                     transform: `translate(${-size / 5.5}px,${-size}px)`,
-//                                     fontSize: viewport.zoom * 2,
-//                                     //here we should have a color, if event is active, it should have a different color
-//                                 }} className='events-number'>{eventsNumber} </p>}
+<EventsMap
+    handleAddClick={handleAddClick}
+    newLocation={newLocation}
+    events={events}
+    handleOnResult={handleOnResult}
+    chooseLocation={chooseLocation}
+    handleMarkerClick={handleMarkerClick}
+    currentLocationCoordinates={currentLocationCoordinates}
+/>
+
+
+//buttons logic from the old mapbox
+{
+    chooseLocation === true && !newLocation ? <p>Please choose the event location from the list or by clicking on the map</p>
+        :
+        (chooseLocation === true && newLocation) ?
+            <div className=''>
+                <p>Choose this location and proceed to create event</p>
+                <Button className='btn-lg' size='small' onClick={createEvent}>Yes
+                            <ArrowForwardIosIcon />
+                </Button>
+            </div>
+            :
+            <div className='events-btn'>
+                <Button className='btn-lg' size='small' onClick={handleChooseLocation}>
+                    <AddBoxIcon />
+                        Create Event
+                    </Button>
+                <Button className='btn-lg' size='small' onClick={handleShowList}>
+                    <KeyboardArrowDownIcon />
+                        Show All Events
+                    </Button>
+                <Button className='btn-lg' size='small' onClick={handleShowFilters}>
+                    <KeyboardArrowDownIcon />
+                                Show filters
+                            </Button>
+            </div>
+}
+
+
+

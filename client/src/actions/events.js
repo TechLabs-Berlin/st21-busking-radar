@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios';
 
 
 //Get posts action. It sends http requests to server, where it hits route specified in the requests, which in turn

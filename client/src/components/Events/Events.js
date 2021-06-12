@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { Grid, CircularProgress, Button, isWidthUp } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
-import EventsMap from './EventsMap';
+import EventMap from './EventMap';
+import Geocoder from './Geocoder';
 import EventsFilters from './EventsFilters';
 import selectEvents from './../../filters/events';
 
@@ -16,11 +17,10 @@ import selectEvents from './../../filters/events';
 
 
 const Events = ({ history }) => {
-    const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
     const [showList, setShowList] = useState(false)
-    const [newLocation, setNewLocation] = useState(null)
-    const [chooseLocation, setChooseLocation] = useState(false)
     const [showFilters, setShowFilters] = useState(false)
+    const [newLocation, setNewLocation] = useState(null)
+
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
@@ -31,90 +31,52 @@ const Events = ({ history }) => {
         dispatch(startGetAllEvents())
     }, [])
     const events = useSelector((state) => selectEvents(state.events, state.filters))
+    const createEvent = () => {
+        history.push({
+            pathname: `/events/create`,
+            // search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
+        })
 
+    }
 
     //Handlers
+    const handleShowFilters = () => {
+        setShowFilters(!showFilters)
+        setShowList(false)
+    }
+
+    //choose new location logic
+    const handleChooseLocation = (name, long, lat) => {
+        setNewLocation({
+            name,
+            long,
+            lat
+        })
+    }
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
         setShowFilters(false)
     }
-
-    //Map logic, choose location by clicking
-    const handleAddClick = (e) => {
-        const [long, lat] = e.lngLat;
-        setNewLocation({
-            locationCoordinates: [long, lat],
-            locationName: ''
-        })
-    }
-    //getting the geolocation of the place logic
-    const handleOnResult = (result) => {
-        console.log(result)
-        setNewLocation({
-            locationCoordinates: [result.result.center[0], result.result.center[1]],
-            locationName: result.result.place_name
-        })
-    }
-
-    //choose location logic
-    const handleChooseLocation = () => {
-        setChooseLocation(!chooseLocation)
-        setCurrentLocationCoordinates(null)
-        setShowList(false)
-        setShowFilters(false)
-    }
-    //Navigation to create event page and passing the chosen location
-    const createEvent = () => {
-        if (newLocation) {
-            history.push({
-                pathname: `/events/create`,
-                search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
-            })
-        }
-    }
-    const handleShowFilters = () => {
-        setShowFilters(!showFilters)
-        setShowList(false)
-    }
-    console.log(showFilters)
-
-    //show popup with event info logic
-    //here we are setting id, if Id is set and it is the same as the marker's id,
-    //the popup with event info is displayed
-    const handleMarkerClick = (locationCoordinates) => {
-        if (!chooseLocation)
-            setCurrentLocationCoordinates(locationCoordinates)
-    }
+    console.log(newLocation)
     return (
         <main id='events' className='events'>
             <div className='events-top'>
                 <h1 id='hd-events' className='hd-lg' >Events</h1>
-                {chooseLocation === true && !newLocation ? <p>Please choose the event location from the list or by clicking on the map</p>
-                    :
-                    (chooseLocation === true && newLocation) ?
-                        <div className=''>
-                            <p>Choose this location and proceed to create event</p>
-                            <Button className='btn-lg' size='small' onClick={createEvent}>Yes
-                            <ArrowForwardIosIcon />
-                            </Button>
-                        </div>
-                        :
-                        <div className='events-btn'>
-                            <Button className='btn-lg' size='small' onClick={handleChooseLocation}>
-                                <AddBoxIcon />
+                <div className='events-btn'>
+                    <Button className='btn-lg' size='small' onClick={createEvent}>
+                        <AddBoxIcon />
                         Create Event
                     </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowList}>
-                                <KeyboardArrowDownIcon />
+                    <Button className='btn-lg' size='small' onClick={handleShowList}>
+                        <KeyboardArrowDownIcon />
                         Show All Events
                     </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowFilters}>
-                                <KeyboardArrowDownIcon />
-                                Show filters
-                            </Button>
-                        </div>
-                }
+                    <Button className='btn-lg' size='small' onClick={handleShowFilters}>
+                        <KeyboardArrowDownIcon />
+                        Show filters
+                    </Button>
+                </div>
                 <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
             {
@@ -141,18 +103,13 @@ const Events = ({ history }) => {
                         }))}
                     </div>
             }
+            <Geocoder handleChooseLocation={handleChooseLocation}
+                newLocation={newLocation}
+            />
             <div className='events-map'>
-                <EventsMap
-                    handleAddClick={handleAddClick}
-                    newLocation={newLocation}
-                    events={events}
-                    handleOnResult={handleOnResult}
-                    chooseLocation={chooseLocation}
-                    handleMarkerClick={handleMarkerClick}
-                    currentLocationCoordinates={currentLocationCoordinates}
-                />
+                <EventMap />
             </div>
-        </main >
+        </main>
     )
 };
 
@@ -160,3 +117,53 @@ const Events = ({ history }) => {
 
 export default Events;
 
+
+
+// //all the code from the old map
+    // //Map logic, choose location by clicking
+
+    // const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
+
+    // const [newLocation, setNewLocation] = useState(null)
+    // const [chooseLocation, setChooseLocation] = useState(false)
+    // const handleAddClick = (e) => {
+    //     const [long, lat] = e.lngLat;
+    //     setNewLocation({
+    //         locationCoordinates: [long, lat],
+    //         locationName: ''
+    //     })
+    // }
+    // //getting the geolocation of the place logic
+    // const handleOnResult = (result) => {
+    //     console.log(result)
+    //     setNewLocation({
+    //         locationCoordinates: [result.result.center[0], result.result.center[1]],
+    //         locationName: result.result.place_name
+    //     })
+    // }
+
+    // //choose location logic
+    // const handleChooseLocation = () => {
+    //     setChooseLocation(!chooseLocation)
+    //     setCurrentLocationCoordinates(null)
+    //     setShowList(false)
+    //     setShowFilters(false)
+    // }
+    // //Navigation to create event page and passing the chosen location
+    // const createEvent = () => {
+    //     if (newLocation) {
+    //         history.push({
+    //             pathname: `/events/create`,
+    //             search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
+    //         })
+    //     }
+    // }
+
+
+    // //show popup with event info logic
+    // //here we are setting id, if Id is set and it is the same as the marker's id,
+    // //the popup with event info is displayed
+    // const handleMarkerClick = (locationCoordinates) => {
+    //     if (!chooseLocation)
+    //         setCurrentLocationCoordinates(locationCoordinates)
+    //

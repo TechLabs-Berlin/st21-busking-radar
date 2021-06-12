@@ -14,8 +14,8 @@ main{
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 100;
-            position: fixed;
+            z-index: 20;
+            margin-top: 0;
             .filters{
                 width: 100%;
             }
@@ -31,54 +31,67 @@ main{
         }
         .events-map{
             width: 100%;
-            height: 85vh;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            .events-ls{
-                overflow-y: scroll;
-            }
-            .map-geocoder{
-                position: relative;
-                top: 10em;
-                border: black;
-                border-width: 0.1em;
-                border-style: solid;
-                z-index: 10;
-            }
-            .map{
-                margin-top: 3em;
-                height: 75vh;
+            height: 80vh;
+            margin: 0;
+            padding: 0;
+            .map-container{
                 width: 100%;
-                bottom: 0;
-                left: 0;
+                height: 100%;
                 position: fixed;
-                z-index: 1;
-                .marker-pin-container{
-                    .event-pin{
-                        color: rgb(10, 73, 10)
-                    }
-                    .events-number{
-                        position: absolute;
-                        color:white;
-                        bottom: 0.75em;
-                        margin: 0;
-                        // background-color: black;
-                        // border-radius: 2em;
-                        // margin: 0;
-                        // z-index: 10;
-                        // font-size: 1em;
-                    }
-                }
             }
-            .event-popup{
-                z-index: 1;
-                background-color: white;
-            }
-
         }
+        //old map styles
+        // .events-map{
+        //     width: 100%;
+        //     height: 85vh;
+        //     bottom: 0;
+        //     left: 0;
+        //     display: flex;
+        //     flex-direction: column;
+        //     align-items: center;
+        //     z-index: 0;
+        //     .events-ls{
+        //         overflow-y: scroll;
+        //     }
+        //     .map-geocoder{
+        //         position: relative;
+        //         top: 6em;
+        //         border: black;
+        //         border-width: 0.1em;
+        //         border-style: solid;
+        //         z-index: 100;
+        //     }
+        //     .map{
+        //         margin-top: 3em;
+        //         height: 75vh;
+        //         width: 100%;
+        //         bottom: 0;
+        //         left: 0;
+        //         position: fixed;
+        //         z-index: 1;
+        //         .marker-pin-container{
+        //             .event-pin{
+        //                 color: rgb(10, 73, 10)
+        //             }
+        //             .events-number{
+        //                 position: absolute;
+        //                 color:white;
+        //                 bottom: 0.75em;
+        //                 margin: 0;
+        //                 // background-color: black;
+        //                 // border-radius: 2em;
+        //                 // margin: 0;
+        //                 // z-index: 10;
+        //                 // font-size: 1em;
+        //             }
+        //         }
+        //     }
+        //     .event-popup{
+        //         z-index: 1;
+        //         background-color: white;
+        //     }
+
+        // }
     }
 }
 
