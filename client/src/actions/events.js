@@ -74,7 +74,7 @@ const deleteEvent = (id) => {
 export const startDeleteEvent = (id) => async (dispatch) => {
     try {
         //for some reason, if I await for axios.delete the action does not dispatch to store
-        axios.delete(`/events/${id}`)
+        await axios.delete(`/events/${id}`)
         dispatch(deleteEvent(id))
     } catch (e) {
         console.log('This did not work', e.message)

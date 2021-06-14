@@ -52,7 +52,7 @@ const Events = ({ history }) => {
         }
     }
 
-
+    console.log(events)
     //choose new location logic
     const handleChooseLocation = (name, long, lat) => {
         setNewLocation({
@@ -65,12 +65,12 @@ const Events = ({ history }) => {
     const handleAbortChoice = () => {
         setNewLocation(null)
     }
-
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
         setShowFilters(false)
     }
+
     return (
         <main id='events' className='events'>
             <div className='events-search'>
