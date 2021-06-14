@@ -5,7 +5,8 @@ import { startGetAllEvents } from '../../actions/events';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { Grid, CircularProgress, Button, isWidthUp } from '@material-ui/core';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
 import Geocoder from './Geocoder';
@@ -20,6 +21,7 @@ const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
     const [showFilters, setShowFilters] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
+    const [chooseLocation, setChooseLocation] = useState(false)
 
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
@@ -32,11 +34,7 @@ const Events = ({ history }) => {
     }, [])
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
-        history.push({
-            pathname: `/events/create`,
-            // search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
-        })
-
+        setChooseLocation(true)
     }
 
     //Handlers
@@ -44,6 +42,16 @@ const Events = ({ history }) => {
         setShowFilters(!showFilters)
         setShowList(false)
     }
+    //confirm the choice of the new location logic
+    const handleConfirmChoice = () => {
+        if (newLocation) {
+            history.push({
+                pathname: `/events/create`,
+                search: `?locationName=${newLocation.name}&longitude=${newLocation.long}&latitude=${newLocation.lat}`,
+            })
+        }
+    }
+
 
     //choose new location logic
     const handleChooseLocation = (name, long, lat) => {
@@ -53,59 +61,82 @@ const Events = ({ history }) => {
             lat
         })
     }
+    //abort choice logic 
+    const handleAbortChoice = () => {
+        setNewLocation(null)
+    }
+
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
         setShowFilters(false)
     }
-    console.log(newLocation)
     return (
         <main id='events' className='events'>
-            <div className='events-top'>
+            <div className='events-search'>
                 <h1 id='hd-events' className='hd-lg' >Events</h1>
-                <div className='events-btn'>
-                    <Button className='btn-lg' size='small' onClick={createEvent}>
-                        <AddBoxIcon />
-                        Create Event
-                    </Button>
-                    <Button className='btn-lg' size='small' onClick={handleShowList}>
-                        <KeyboardArrowDownIcon />
-                        Show All Events
-                    </Button>
-                    <Button className='btn-lg' size='small' onClick={handleShowFilters}>
-                        <KeyboardArrowDownIcon />
-                        Show filters
-                    </Button>
-                </div>
+                {chooseLocation === true && !newLocation
+                    ?
+                    <p>
+                        Please choose the event location from the list or by typing an adress
+                        <Geocoder handleChooseLocation={handleChooseLocation}
+                            newLocation={newLocation}
+                        />
+                    </p>
+                    :
+                    (chooseLocation === true && newLocation)
+                        ?
+                        <div className=''>
+                            <p>Chosen event location: {newLocation.name}</p>
+                            <Button className='btn-lg' size='small' onClick={handleConfirmChoice}>Confirm and proceed
+                                <ArrowForwardIosIcon />
+                            </Button>
+                            <Button onClick={handleAbortChoice}>
+                                Choose another location
+                                <ArrowBackIosIcon />
+                            </Button>
+                        </div>
+                        :
+                        <div className='events-btn'>
+                            <Button className='btn-lg' size='small' onClick={createEvent}>
+                                <AddBoxIcon />
+                                Create Event
+                            </Button>
+                            <Button className='btn-lg' size='small' onClick={handleShowList}>
+                                <KeyboardArrowDownIcon />
+                                Show All Events
+                            </Button>
+                            <Button className='btn-lg' size='small' onClick={handleShowFilters}>
+                                <KeyboardArrowDownIcon />
+                                Show filters
+                            </Button>
+                        </div>
+                }
                 <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
-            {
-                events.length === 0 ? <CircularProgress /> : showList &&
-                    <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                        {events.map((event => {
-                            return <Grid item xs={10} sm={8}>
-                                <EventInfoCard
-                                    id={event._id}
-                                    key={event._id}
-                                    name={event.name}
-                                    genre={event.genre}
-                                    location={event.location}
-                                    date={moment(event.startTime).format('MMMM Do YYYY')}
-                                    startTime={moment(event.startTime).format('h:mm:ss a')}
-                                    endTime={moment(event.endTime).format('h:mm:ss a')}
-                                    about={event.about}
-                                    tags={event.tags}
-                                    creator={event.creator}
-                                    createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
-                                    active={event.active}
-                                />
-                            </Grid>
-                        }))}
-                    </div>
-            }
-            <Geocoder handleChooseLocation={handleChooseLocation}
-                newLocation={newLocation}
-            />
+
+            {events.length === 0 ? <CircularProgress /> : showList &&
+                <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
+                    {events.map((event => {
+                        return <Grid item xs={10} sm={8}>
+                            <EventInfoCard
+                                id={event._id}
+                                key={event._id}
+                                name={event.name}
+                                genre={event.genre}
+                                location={event.location}
+                                date={moment(event.startTime).format('MMMM Do YYYY')}
+                                startTime={moment(event.startTime).format('h:mm:ss a')}
+                                endTime={moment(event.endTime).format('h:mm:ss a')}
+                                about={event.about}
+                                tags={event.tags}
+                                creator={event.creator}
+                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                active={event.active}
+                            />
+                        </Grid>
+                    }))}
+                </div>}
             <div className='events-map'>
                 <EventMap />
             </div>

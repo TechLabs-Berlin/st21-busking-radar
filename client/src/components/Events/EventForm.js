@@ -29,9 +29,8 @@ const EventForm = (props) => {
     }
 
     //date-time picker
-    const [startTime, setStartTime] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date())
-
+    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
+    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
     const handleStartTimeChange = (date) => {
         setStartTime(date)
         setEndTime(date)
@@ -97,7 +96,7 @@ const EventForm = (props) => {
             {eventData.error && <p>{eventData.error}</p>}
             <Button type='submit' className='btn-lg' size='small'>
                 <PublishIcon />
-            Publish Event
+                Publish Event
             </Button>
         </form>
     )
