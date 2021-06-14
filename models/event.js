@@ -36,9 +36,16 @@ const eventSchema = new mongoose.Schema({
         lowercase: true,
         required: true,
     },
-    locationCoordinates: {
-        type: [Number],
-        required: true
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
     },
     active: {
         type: Boolean,

@@ -17,7 +17,6 @@ const Geocoder = ({ handleChooseLocation, newLocation }) => {
         dispatch(startSearchNewLocation(searchLocation))
     })
     const suggestedLocations = useSelector((state) => state.suggestedLocations)
-    console.log(suggestedLocations)
     return (
         <div className='geocoder'>
             <input type='text' value={searchLocation} name='search' onChange={handleSearchLocation} onKeyUp={sendReq} />

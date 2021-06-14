@@ -6,6 +6,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import CloseIcon from '@material-ui/icons/Close';
 import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
@@ -22,6 +23,7 @@ const Events = ({ history }) => {
     const [showFilters, setShowFilters] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
+    const [clickedLocation, setClickedLocation] = useState(null);
 
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
@@ -36,7 +38,6 @@ const Events = ({ history }) => {
     const createEvent = () => {
         setChooseLocation(true)
     }
-
     //Handlers
     const handleShowFilters = () => {
         setShowFilters(!showFilters)
@@ -51,8 +52,6 @@ const Events = ({ history }) => {
             })
         }
     }
-
-    console.log(events)
     //choose new location logic
     const handleChooseLocation = (name, long, lat) => {
         setNewLocation({
@@ -70,7 +69,10 @@ const Events = ({ history }) => {
         setShowList(!showList)
         setShowFilters(false)
     }
-
+    //show events in the clicked location logic
+    const handleMarkerClick = (coordinates) => {
+        setClickedLocation(coordinates)
+    }
     return (
         <main id='events' className='events'>
             <div className='events-search'>
@@ -115,8 +117,35 @@ const Events = ({ history }) => {
                 <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
 
-            {events.length === 0 ? <CircularProgress /> : showList &&
+            {events.length === 0 ? <CircularProgress /> : (!showList && clickedLocation) ?
                 <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
+                    <Button onClick={() => handleMarkerClick(null)} size='small'>
+                        <CloseIcon />
+                    </Button>
+                    {events.map((event => {
+                        if (event.geometry.coordinates[0] === clickedLocation[0]) {
+                            return <Grid item xs={10} sm={8}>
+                                <EventInfoCard
+                                    id={event._id}
+                                    key={event._id}
+                                    name={event.name}
+                                    genre={event.genre}
+                                    location={event.location}
+                                    date={moment(event.startTime).format('MMMM Do YYYY')}
+                                    startTime={moment(event.startTime).format('h:mm:ss a')}
+                                    endTime={moment(event.endTime).format('h:mm:ss a')}
+                                    about={event.about}
+                                    tags={event.tags}
+                                    creator={event.creator}
+                                    createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                    active={event.active}
+                                />
+                            </Grid>
+                        }
+                    }))}
+                </div>
+                : showList &&
+                <div key={'123ddgg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
                     {events.map((event => {
                         return <Grid item xs={10} sm={8}>
                             <EventInfoCard
@@ -136,9 +165,14 @@ const Events = ({ history }) => {
                             />
                         </Grid>
                     }))}
-                </div>}
+                </div>
+            }
             <div className='events-map'>
-                <EventMap />
+                <EventMap
+                    events={events}
+                    handleMarkerClick={handleMarkerClick}
+                    newLocation={newLocation}
+                />
             </div>
         </main>
     )
