@@ -16,7 +16,7 @@ const EventForm = (props) => {
         startTime: props.event ? props.event.startTime : '',
         endTime: props.event ? props.event.endTime : '',
         locationName: props.event ? props.event.locationName : props.newLocation[0] || '',
-        locationCoordinates: props.event ? props.event.locationCoordinates : [props.newLocation[1], props.newLocation[2]],
+        geometry: props.event ? props.event.geometry : { type: 'Point', coordinates: [props.newLocation[1], props.newLocation[2]] },
         active: props.event ? props.event.active : false,
         error: ''
     })
@@ -29,9 +29,8 @@ const EventForm = (props) => {
     }
 
     //date-time picker
-    const [startTime, setStartTime] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date())
-
+    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
+    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
     const handleStartTimeChange = (date) => {
         setStartTime(date)
         setEndTime(date)
@@ -56,7 +55,7 @@ const EventForm = (props) => {
             setEventData({ error: 'Please provide user name' })
         } else if (!eventData.startTime || !eventData.endTime) {
             setEventData({ error: 'Please provide time' })
-        } else if (!eventData.locationCoordinates || !eventData.locationName) {
+        } else if (!eventData.geometry || !eventData.locationName) {
             setEventData({ error: 'Please provide location' })
         } else {
             props.handleSubmit(eventData)
@@ -97,7 +96,7 @@ const EventForm = (props) => {
             {eventData.error && <p>{eventData.error}</p>}
             <Button type='submit' className='btn-lg' size='small'>
                 <PublishIcon />
-            Publish Event
+                Publish Event
             </Button>
         </form>
     )
