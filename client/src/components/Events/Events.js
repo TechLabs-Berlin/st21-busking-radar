@@ -16,8 +16,6 @@ import selectEvents from './../../filters/events';
 
 //polling mechanism
 
-
-
 const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
     const [showFilters, setShowFilters] = useState(false)
