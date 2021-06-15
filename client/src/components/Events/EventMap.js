@@ -13,7 +13,6 @@ const EventMap = ({ events,
     const [lat, setLat] = useState(52.520008);
     const [zoom, setZoom] = useState(11);
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-    let size = 40;
     useEffect(() => {
         if (map.current) return;
         // map render only once
@@ -40,30 +39,27 @@ const EventMap = ({ events,
                     eventsNumber++
                 }
             }
-            // const customMarker = document.createElement('i')
-            // // const costumMarker = document.createElement('span')
-            // customMarker.className = 'fas fa-map-marker fa-4x';
-            // customMarker.addEventListener('click', () => {
-            //     handleMarkerClick(event.geometry.coordinates)
-            // })
-            // customMarker.className = 'fa-stack fa-2x';
-            // customMarker.innerHTML = '<i class="fas fa-map-marker fa-stack-2x event-pin"></i> <strong class="fa-stack-2x text-primary events-number"> 1</strong>'
-            let marker = new mapboxgl.Marker()
+            let customMarker = document.createElement('div');
+            customMarker.className = 'marker';
+            customMarker.addEventListener('click', () => {
+                handleMarkerClick(event.geometry.coordinates, event.locationName)
+            })
+            customMarker.innerHTML = `<span><b> ${eventsNumber} </b></span>`
+            let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
                 .addTo(map.current)
-            marker.getElement().addEventListener('click', () => {
-                handleMarkerClick(event.geometry.coordinates)
-            })
             return marker
         })
     })
     useEffect(() => {
         if (newLocation) {
-            const newMarker = new mapboxgl.Marker()
+            let newCostumMarker = document.createElement('div');
+            newCostumMarker.className = 'marker';
+            newCostumMarker.className = 'newMarker';
+            newCostumMarker.innerHTML = `<span></span>`
+            const newMarker = new mapboxgl.Marker(newCostumMarker)
                 .setLngLat([newLocation.long, newLocation.lat])
                 .addTo(map.current)
-            newMarker.getElement().style.backgroundColor = 'red'
-            newMarker.getElement().style.content = '2'
             return newMarker
         }
     }, newLocation)

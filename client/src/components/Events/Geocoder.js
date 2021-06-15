@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { startSearchNewLocation } from '../../actions/geocoder';
 
 
-const Geocoder = ({ handleChooseLocation, newLocation }) => {
+const Geocoder = ({ handleChooseLocation }) => {
     const [searchLocation, setSearchLocation] = useState('');
     const dispatch = useDispatch();
 

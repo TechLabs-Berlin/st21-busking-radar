@@ -23,7 +23,7 @@ const Events = ({ history }) => {
     const [showFilters, setShowFilters] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
-    const [clickedLocation, setClickedLocation] = useState(null);
+    const [clickedLocation, setClickedLocation] = useState([]);
 
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
@@ -37,6 +37,9 @@ const Events = ({ history }) => {
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
         setChooseLocation(true)
+        setShowFilters(false)
+        setShowList(false)
+        setClickedLocation([])
     }
     //Handlers
     const handleShowFilters = () => {
@@ -68,10 +71,17 @@ const Events = ({ history }) => {
     const handleShowList = () => {
         setShowList(!showList)
         setShowFilters(false)
+        setClickedLocation([])
     }
     //show events in the clicked location logic
-    const handleMarkerClick = (coordinates) => {
-        setClickedLocation(coordinates)
+    const handleMarkerClick = (coordinates, name) => {
+        if (clickedLocation.length > 1) {
+            setClickedLocation([])
+        } else {
+            setClickedLocation([coordinates[0], coordinates[1], name])
+        }
+        setShowFilters(false)
+        setShowList(false)
     }
     return (
         <main id='events' className='events'>
@@ -117,11 +127,12 @@ const Events = ({ history }) => {
                 <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
 
-            {events.length === 0 ? <CircularProgress /> : (!showList && clickedLocation) ?
+            {events.length === 0 ? <CircularProgress /> : (!showList && clickedLocation.length > 1) ?
                 <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    <Button onClick={() => handleMarkerClick(null)} size='small'>
+                    <Button onClick={() => handleMarkerClick()} size='small'>
                         <CloseIcon />
                     </Button>
+                    <h2>Events at {clickedLocation[2]}</h2>
                     {events.map((event => {
                         if (event.geometry.coordinates[0] === clickedLocation[0]) {
                             return <Grid item xs={10} sm={8}>
@@ -183,52 +194,3 @@ const Events = ({ history }) => {
 export default Events;
 
 
-
-// //all the code from the old map
-    // //Map logic, choose location by clicking
-
-    // const [currentLocationCoordinates, setCurrentLocationCoordinates] = useState(null);
-
-    // const [newLocation, setNewLocation] = useState(null)
-    // const [chooseLocation, setChooseLocation] = useState(false)
-    // const handleAddClick = (e) => {
-    //     const [long, lat] = e.lngLat;
-    //     setNewLocation({
-    //         locationCoordinates: [long, lat],
-    //         locationName: ''
-    //     })
-    // }
-    // //getting the geolocation of the place logic
-    // const handleOnResult = (result) => {
-    //     console.log(result)
-    //     setNewLocation({
-    //         locationCoordinates: [result.result.center[0], result.result.center[1]],
-    //         locationName: result.result.place_name
-    //     })
-    // }
-
-    // //choose location logic
-    // const handleChooseLocation = () => {
-    //     setChooseLocation(!chooseLocation)
-    //     setCurrentLocationCoordinates(null)
-    //     setShowList(false)
-    //     setShowFilters(false)
-    // }
-    // //Navigation to create event page and passing the chosen location
-    // const createEvent = () => {
-    //     if (newLocation) {
-    //         history.push({
-    //             pathname: `/events/create`,
-    //             search: `?locationName=${newLocation.locationName}&longitude=${newLocation.locationCoordinates[0]}&latitude=${newLocation.locationCoordinates[1]}`,
-    //         })
-    //     }
-    // }
-
-
-    // //show popup with event info logic
-    // //here we are setting id, if Id is set and it is the same as the marker's id,
-    // //the popup with event info is displayed
-    // const handleMarkerClick = (locationCoordinates) => {
-    //     if (!chooseLocation)
-    //         setCurrentLocationCoordinates(locationCoordinates)
-    //
