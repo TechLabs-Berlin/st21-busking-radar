@@ -28,6 +28,7 @@ const EventInfoCard = ({ creator,
         <div id='event-cd' className='event-cd'>
             <div className='event-cd-info'>
                 <h1 id='hd-event-cd' className='hd-lg'>{name}</h1>
+                {active === true && <p>Event is happenning now!</p>}
                 <p>genre:{genre}</p>
                 <p>location:{location}</p>
                 <p>Date: {date} </p>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { startGetAllEvents } from '../../actions/events';
+import { useQuery } from 'react-query';
+import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -14,6 +16,8 @@ import Geocoder from './Geocoder';
 import EventsFilters from './EventsFilters';
 import selectEvents from './../../filters/events';
 
+
+
 //polling mechanism
 const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
@@ -21,16 +25,47 @@ const Events = ({ history }) => {
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
+    const [intervalMs, setIntervalMs] = useState(1000)
+
 
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
+    const dispatch = useDispatch();
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
     //Fetching events!!!
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(startGetAllEvents())
-    }, [])
+    //auto fetching with react query
+    const now = moment();
+    const { status, data } = useQuery('events',
+        async () => {
+            const res = await axios.get('/events')
+            return res.data.map(event => {
+                if (moment(event.startTime).isSameOrBefore(now) &&
+                    moment(event.endTime).isSameOrAfter(now) &&
+                    event.active === false) {
+                    return dispatch(startUpdateEvent(event._id, { ...event, active: true }))
+                } else if (moment(event.endTime).isSameOrBefore(now) &&
+                    event.active === true) {
+                    return dispatch(startUpdateEvent(event._id, { ...event, active: false }))
+                } else {
+                    //setting the new interval so the react-query stopps autofetching 
+                    //and starts only when we need to update the active status of the next closest in time event
+                    let dates = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (moment(res.data[i].startTime).unix() >= now.unix()) {
+                            dates.push(moment(res.data[i].startTime).unix())
+                        }
+                    }
+                    let neededInterval = (dates.sort()[0] - now.unix()) * 1000
+                    setIntervalMs(neededInterval);
+                    dispatch(startGetAllEvents())
+                }
+            })
+        }
+        , {
+            refetchInterval: intervalMs
+        })
+
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
         setChooseLocation(true)
