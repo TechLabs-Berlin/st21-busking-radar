@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -25,7 +25,7 @@ const Events = ({ history }) => {
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
-    const [concerts, setConcerts] = useState([])
+    const [intervalMs, setIntervalMs] = useState(1000)
 
 
     //supporting hooks 
@@ -35,7 +35,8 @@ const Events = ({ history }) => {
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
     //Fetching events!!!
     //auto fetching with react query
-    const { status, data, error, isFetching } = useQuery('events',
+    const now = moment();
+    const { status, data } = useQuery('events',
         async () => {
             const res = await axios.get('/events')
             return res.data.map(event => {
@@ -46,19 +47,25 @@ const Events = ({ history }) => {
                 } else if (moment(event.endTime).isSameOrBefore(now) &&
                     event.active === true) {
                     return dispatch(startUpdateEvent(event._id, { ...event, active: false }))
+                } else {
+                    //setting the new interval so the react-query stopps autofetching 
+                    //and starts only when we need to update the active status of the next closest in time event
+                    let dates = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (moment(res.data[i].startTime).unix() >= now.unix()) {
+                            dates.push(moment(res.data[i].startTime).unix())
+                        }
+                    }
+                    let neededInterval = (dates.sort()[0] - now.unix()) * 1000
+                    setIntervalMs(neededInterval);
+                    dispatch(startGetAllEvents())
                 }
             })
         }
         , {
-            refetchInterval: 3000,
+            refetchInterval: intervalMs
         })
-    const now = moment();
-    // const mutation = useMutation(updateStatus => async ()=>{
 
-    // })
-    useEffect(() => {
-        dispatch(startGetAllEvents())
-    }, [])
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
         setChooseLocation(true)
