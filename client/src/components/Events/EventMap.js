@@ -1,20 +1,24 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import selectEvents from '../../filters/events';
 
 
-const EventMap = ({ events,
+const EventMap = ({
     handleMarkerClick,
-    newLocation
+    newLocation,
 }) => {
     const mapContainer = useRef(null);
     const map = useRef(null)
     const [lng, setLng] = useState(13.404954);
     const [lat, setLat] = useState(52.520008);
     const [zoom, setZoom] = useState(11);
+    const [change, setChange] = useState('')
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+    const events = useSelector((state) => selectEvents(state.events, state.filters))
     useEffect(() => {
-        if (map.current) return;
+        // if (map.current) return;
         // map render only once
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
@@ -22,7 +26,8 @@ const EventMap = ({ events,
             center: [lng, lat],
             zoom: 11
         });
-    }, [])
+        console.log('it works')
+    }, [events.length])
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
         map.current.on('move', () => {
@@ -50,7 +55,8 @@ const EventMap = ({ events,
                 .addTo(map.current)
             return marker
         })
-    })
+        console.log('it works')
+    }, [events.length])
     useEffect(() => {
         if (newLocation) {
             let newCostumMarker = document.createElement('div');

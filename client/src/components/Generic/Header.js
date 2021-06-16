@@ -7,7 +7,7 @@ const Header = () => {
     return (
         <div className='menu'>
             <header>
-                <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Registeration</NavLink>
+                <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Home</NavLink>
                 <NavLink activeClassName='is-active' className='nav-link' to='/events'>Events</NavLink>
             </header>
         </div>
