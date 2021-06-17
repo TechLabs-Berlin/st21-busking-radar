@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // const { findByIdAndRemove } = require('../models/event.js');
-const Event = require('../models/event.js')
+const Event = require('../models/event.js');
 
 //fetching events
 module.exports.getEvents = async (req, res) => {
