@@ -23,15 +23,39 @@ export const loadUser = () => (dispatch, getState) => {
 
     axios.get('/auth', tokenConfig(getState)).then((res) => {
         dispatch(userLoaded(res.data))
-    }).catch(err => {
-        dispatch(returnErrors(err.response.data, err.response.status))
+    }).catch(e => {
+        dispatch(returnErrors(e.response.data, e.response.status))
         dispatch({ type: 'AUTH_ERROR' })
     })
 
 
 }
 
+//register user 
 
+const registerSuccess = (userData) => {
+    return {
+        type: 'REGISTER_SUCCESS',
+        userData
+    }
+}
+
+export const register = (userData) => (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    //Request body
+    const body = JSON.stringify(userData)
+    axios.post('/user', body, config).then((res) => {
+        return dispatch(registerSuccess(res.data))
+    }).catch(e => {
+        dispatch(returnErrors(e.response.data, e.response.status, 'REGISTER_FAIL'))
+        dispatch({ type: 'REGISTER_FAIL' })
+    })
+
+}
 
 export const signInWithGoogle = (data) => {
     return {

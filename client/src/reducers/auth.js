@@ -33,9 +33,10 @@ const authReducer = (state = authDefaultState, action) => {
             return { ...state, userData: null, token: null };
         case 'LOGIN_SUCCESS':
         case 'REGISTER_SUCCESS':
+            localStorage.setItem('token', action.userData.token)
             return {
                 ...state,
-                ...action?.data,
+                ...action?.userData,
                 isAuthenticated: true,
                 isLoading: false
             };

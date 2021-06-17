@@ -7,7 +7,7 @@ import { signInWithGoogle } from '../../actions/auth';
 const Login = ({ history }) => {
     const dispatch = useDispatch();
     //navigation
-    const navToRegistration = ({ history }) => {
+    const navToRegistration = () => {
         history.push('/registration')
     }
     const googleSuccess = async (res) => {
