@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
@@ -16,10 +17,9 @@ const EventInfoCard = ({ creator,
     about,
     tags,
     location,
-    active,
-    history
+    active
 }) => {
-
+    const history = useHistory();
     const dispatch = useDispatch();
     // const deleteEvent = () => {
     //     dispatch(startDeleteEvent(id))
@@ -28,6 +28,7 @@ const EventInfoCard = ({ creator,
         <div id='event-cd' className='event-cd'>
             <div className='event-cd-info'>
                 <h1 id='hd-event-cd' className='hd-lg'>{name}</h1>
+                {active === true && <p>Event is happenning now!</p>}
                 <p>genre:{genre}</p>
                 <p>location:{location}</p>
                 <p>Date: {date} </p>
@@ -39,13 +40,13 @@ const EventInfoCard = ({ creator,
                 <p>created at: {createdAt}</p>
                 {active === true ? <p>Event is happenning now</p> : ''}
                 <div className='event-cd-btn'>
-                    <Button size='small' onClick={() => {
+                    <Button className='btn-sm' size='small' onClick={() => {
                         history.push(`/events/update/${id}`)
                     }}>
                         <UpdateIcon fontSize='small' />
                         Update
                     </Button>
-                    <Button size='small' onClick={() => { dispatch(startDeleteEvent(id)) }}>
+                    <Button className='btn-sm' size='small' onClick={() => { dispatch(startDeleteEvent(id)) }}>
                         <DeleteIcon fontSize='small' />
                         Delete
                     </Button>

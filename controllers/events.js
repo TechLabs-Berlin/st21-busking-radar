@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { findByIdAndRemove } = require('../models/event.js');
+// const { findByIdAndRemove } = require('../models/event.js');
 const Event = require('../models/event.js')
 
 //fetching events
@@ -52,3 +52,4 @@ module.exports.deleteEvent = async (req, res) => {
     }
     await Event.findByIdAndRemove(id)
 }
+

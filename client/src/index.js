@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/main.scss';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';

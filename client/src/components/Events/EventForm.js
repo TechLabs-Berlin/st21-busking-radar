@@ -3,8 +3,7 @@ import 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '@material-ui/core';
-import AddLocationIcon from '@material-ui/icons/AddLocation';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import PublishIcon from '@material-ui/icons/Publish';
 import moment from 'moment';
 
 const EventForm = (props) => {
@@ -16,8 +15,8 @@ const EventForm = (props) => {
         tags: props.event ? props.event.tags : '',
         startTime: props.event ? props.event.startTime : '',
         endTime: props.event ? props.event.endTime : '',
-        locationName: props.event ? props.event.locationName : '',
-        locationCoordinates: props.event ? props.event.locationCoordinates : '',
+        locationName: props.event ? props.event.locationName : props.newLocation[0] || '',
+        geometry: props.event ? props.event.geometry : { type: 'Point', coordinates: [props.newLocation[1], props.newLocation[2]] },
         active: props.event ? props.event.active : false,
         error: ''
     })
@@ -30,21 +29,22 @@ const EventForm = (props) => {
     }
 
     //date-time picker
-    const [startTime, setStartTime] = useState(new Date())
-    const [endTime, setEndTime] = useState(new Date())
-
+    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
+    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
     const handleStartTimeChange = (date) => {
         setStartTime(date)
+        setEndTime(date)
     }
     eventData.startTime = startTime
 
     const handleEndTimeChange = (date) => {
-        if (moment(endTime).unix() > moment(startTime).unix()) {
+        if (moment(date).unix() > moment(startTime).unix()) {
             setEndTime(date)
         } else {
-            setEventData({ error: 'Please choose correct end time' })
+            setEventData({
+                error: 'Please provide correct time'
+            })
         }
-        setEventData({ error: '' })
     }
 
     eventData.endTime = endTime
@@ -55,7 +55,7 @@ const EventForm = (props) => {
             setEventData({ error: 'Please provide user name' })
         } else if (!eventData.startTime || !eventData.endTime) {
             setEventData({ error: 'Please provide time' })
-        } else if (!eventData.location) {
+        } else if (!eventData.geometry || !eventData.locationName) {
             setEventData({ error: 'Please provide location' })
         } else {
             props.handleSubmit(eventData)
@@ -63,17 +63,8 @@ const EventForm = (props) => {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <p>Choose location:</p>
-            <div>
-
-                <select name='location' value={eventData.location || ''} onChange={handleChange}>
-                    <option value="mauer-park">Mauer Park</option>
-                    <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
-                    <option value="hackescher-markt">Hackescher Markt</option>
-                    <option value="tempelhofer-feld">Tempelhofer Feld</option>
-                    <option value="admiral-brucke">Admiral Brücke</option>
-                </select>
-            </div>
+            <p>Location:</p>
+            <input type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
             <p>Event name</p>
             <input type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
             <p>Genre</p>
@@ -103,9 +94,24 @@ const EventForm = (props) => {
                 minDate={new Date()}
             />
             {eventData.error && <p>{eventData.error}</p>}
-            <button className='btn btn-create'>Submit</button>
+            <Button type='submit' className='btn-lg' size='small'>
+                <PublishIcon />
+                Publish Event
+            </Button>
         </form>
     )
 }
 
 export default EventForm;
+
+
+// <div>
+
+// <select name='location' value={eventData.location || ''} onChange={handleChange}>
+//     <option value="mauer-park">Mauer Park</option>
+//     <option value="warschauer-str-ubahn">Warschauer Str. U-Bahn</option>
+//     <option value="hackescher-markt">Hackescher Markt</option>
+//     <option value="tempelhofer-feld">Tempelhofer Feld</option>
+//     <option value="admiral-brucke">Admiral Brücke</option>
+// </select>
+// </div>

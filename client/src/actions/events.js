@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios';
 
 
 //Get posts action. It sends http requests to server, where it hits route specified in the requests, which in turn
@@ -74,7 +74,7 @@ const deleteEvent = (id) => {
 export const startDeleteEvent = (id) => async (dispatch) => {
     try {
         //for some reason, if I await for axios.delete the action does not dispatch to store
-        axios.delete(`/events/${id}`)
+        await axios.delete(`/events/${id}`)
         dispatch(deleteEvent(id))
     } catch (e) {
         console.log('This did not work', e.message)
