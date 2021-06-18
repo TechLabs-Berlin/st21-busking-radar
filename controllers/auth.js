@@ -24,12 +24,20 @@ module.exports.authUser = async (req, res) => {
                         jwt.sign(
                             { id: user.id },
                             config.get('jwtSecret'),
-                            { expiresIn: 7200 },
+                            { expiresIn: 10000 },
                             (e, token) => {
                                 if (e) throw e
                                 res.json({
                                     token,
-                                    user
+                                    user: {
+                                        id: user.id,
+                                        name: user.name,
+                                        register_date: user.register_date,
+                                        events: user.events,
+                                        socialNetLinks: user.socialNetLinks,
+                                        email: user.email,
+                                        selectedFile: user.selectedFile
+                                    }
                                 })
                             }
                         )

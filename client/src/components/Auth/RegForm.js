@@ -24,6 +24,8 @@ const RegForm = (props) => {
         file: props.user ? props.user.file : '',
         error: ''
     })
+
+
     useEffect(() => {
         if (error.id === 'REGISTER_FAIL') {
             setUserData({ error: error.msg.msg })
@@ -34,8 +36,11 @@ const RegForm = (props) => {
 
     //changing clear errors
     useEffect(() => {
-        dispatch(clearErrors())
-    }, [userData.name])
+        //return function is similar to the component will unmount in the class components
+        return () => {
+            dispatch(clearErrors())
+        }
+    }, [])
     const handleChange = (e) => {
         setUserData({
             ...userData,
@@ -43,10 +48,11 @@ const RegForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!error.id) {
-            dispatch(register(userData))
+        dispatch(register(userData))
+        if (userData.name && userData.email && userData.password) {
+            dispatch(clearErrors())
             history.push('/events')
         }
     }
@@ -56,7 +62,7 @@ const RegForm = (props) => {
             <p>User name:</p>
             <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
             <p>Password</p>
-            <input type="text" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
             <p>Email</p>
             <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
             {isAuthenticated &&

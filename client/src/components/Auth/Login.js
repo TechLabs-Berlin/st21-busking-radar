@@ -3,6 +3,7 @@ import { Button } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { signInWithGoogle } from '../../actions/auth';
+import LoginForm from './LoginForm';
 
 const Login = ({ history }) => {
     const dispatch = useDispatch();
@@ -11,14 +12,14 @@ const Login = ({ history }) => {
         history.push('/registration')
     }
     const googleSuccess = async (res) => {
-        const result = res?.profileObj; //< ? <- this is needed in order to avoid the error, the function will through undefined instead
-        const token = res?.tokenId;
-        try {
-            dispatch(signInWithGoogle({ result, token }));
-            history.push('/events')
-        } catch (e) {
-            console.log(e, 'This did not work!')
-        }
+        // const result = res?.profileObj; //< ? <- this is needed in order to avoid the error, the function will through undefined instead
+        // const token = res?.tokenId;
+        // try {
+        //     dispatch(signInWithGoogle({ result, token }));
+        //     history.push('/events')
+        // } catch (e) {
+        //     console.log(e, 'This did not work!')
+        // }
     }
     const googleFailure = (e) => {
         console.log(e, 'Google Sign In failed. Try again later')
@@ -51,11 +52,7 @@ const Login = ({ history }) => {
                 onFailure={googleFailure}
                 cookiePolicy='single_host_origin'
             />
-            <form className="login" onSubmit={handleSubmit}>
-                <input type='text' placeholder='email' />
-                <input type='text' placeholder='pasword' />
-                <Button className='btn-lg'>Login in with email</Button>
-            </form>
+            <LoginForm />
             <div className='sign-up'>
                 <p>Not a member?</p>
                 <Button className='btn-lg' onClick={navToRegistration}>Sign Up</Button>

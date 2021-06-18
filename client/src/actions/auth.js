@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { returnErrors } from './error';
+
+
+
 //user loading
+
+
 
 const userLoading = () => {
     return {
@@ -8,10 +13,10 @@ const userLoading = () => {
     }
 }
 
-const userLoaded = (userData) => {
+const userLoaded = (payload) => {
     return {
         type: 'USER_LOADED',
-        userData
+        payload
     }
 }
 
@@ -20,8 +25,8 @@ export const loadUser = () => (dispatch, getState) => {
     //user loading
     dispatch(userLoading());
 
-
     axios.get('/auth', tokenConfig(getState)).then((res) => {
+        // const userData = JSON.parse(res.data)
         dispatch(userLoaded(res.data))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status))
@@ -40,14 +45,14 @@ const registerSuccess = (userData) => {
     }
 }
 
-export const register = (userData) => (dispatch) => {
+export const register = (payload) => (dispatch) => {
     const config = {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-type': 'application/json'
         }
     }
     //Request body
-    const body = JSON.stringify(userData)
+    const body = JSON.stringify(payload)
     axios.post('/user', body, config).then((res) => {
         return dispatch(registerSuccess(res.data))
     }).catch(e => {
@@ -57,6 +62,7 @@ export const register = (userData) => (dispatch) => {
 
 }
 
+
 export const signInWithGoogle = (data) => {
     return {
         type: 'AUTH_WITH_GOOGLE',
@@ -64,9 +70,38 @@ export const signInWithGoogle = (data) => {
     }
 }
 
+// login user
+
+const loginSuccess = (userData) => {
+    return {
+        type: 'LOGIN_SUCCESS',
+        userData
+    }
+}
+
+export const login = ({ email, password }) => (dispatch) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+    //Request body
+    const body = JSON.stringify({ email, password })
+    axios.post('/auth', body, config).then((res) => {
+        localStorage.setItem("token", res.data.token)
+        console.log(res.data)
+        return dispatch(loginSuccess(res.data))
+    }).catch(e => {
+        dispatch(returnErrors(e.response.data, e.response.status, 'LOGIN_FAIL'))
+        dispatch({ type: 'LOGIN_FAIL' })
+    })
+
+}
+
+
 export const logout = () => {
     return {
-        type: 'LOGOUT',
+        type: 'LOGOUT_SUCCESS',
     }
 }
 
@@ -86,3 +121,5 @@ export const tokenConfig = getState => {
     }
     return config;
 }
+
+

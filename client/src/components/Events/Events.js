@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +15,7 @@ import EventMap from './EventMap';
 import Geocoder from './Geocoder';
 import EventsFilters from './EventsFilters';
 import selectEvents from './../../filters/events';
+import { loadUser } from '../../actions/auth';
 
 
 
@@ -26,7 +27,6 @@ const Events = ({ history }) => {
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
     const [intervalMs, setIntervalMs] = useState(1000)
-
 
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 

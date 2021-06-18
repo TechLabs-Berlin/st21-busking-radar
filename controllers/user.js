@@ -21,7 +21,6 @@ module.exports.signUpUser = async (req, res) => {
                     if (e) throw e
                     newUser.password = hash;
                     newUser.save().then(user => {
-
                         jwt.sign(
                             { id: user.id },
                             config.get('jwtSecret'),
@@ -30,7 +29,15 @@ module.exports.signUpUser = async (req, res) => {
                                 if (e) throw e
                                 res.json({
                                     token,
-                                    user
+                                    user: {
+                                        id: user.id,
+                                        name: user.name,
+                                        register_date: user.register_date,
+                                        events: user.events,
+                                        socialNetLinks: user.socialNetLinks,
+                                        email: user.email,
+                                        selectedFile: user.selectedFile
+                                    }
                                 })
                             }
                         )

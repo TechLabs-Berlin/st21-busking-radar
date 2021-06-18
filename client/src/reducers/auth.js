@@ -1,7 +1,7 @@
 
 const authDefaultState = {
-    token: localStorage.getItem('token'),
-    userData: null,
+    user: JSON.parse(localStorage.getItem('user')),
+    token: localStorage.getItem("token"),
     isAuthenticated: false,
     isLoading: false,
 }
@@ -14,11 +14,13 @@ const authReducer = (state = authDefaultState, action) => {
                 isLoading: true
             };
         case 'USER_LOADED':
+            const user = JSON.stringify(action.payload)
+            localStorage.setItem("user", user)
             return {
                 ...state,
-                userData: action?.userData,
+                ...action.payload,
                 isAuthenticated: true,
-                isLoading: false
+                isLoading: false,
             };
         case 'AUTH_WITH_GOOGLE':
             localStorage.setItem('token', action?.data.token)
@@ -28,15 +30,13 @@ const authReducer = (state = authDefaultState, action) => {
                 isAuthenticated: true,
                 token: action.data.token
             };
-        case 'LOGOUT':
-            localStorage.removeItem('token');
-            return { ...state, userData: null, token: null };
         case 'LOGIN_SUCCESS':
         case 'REGISTER_SUCCESS':
-            localStorage.setItem('token', action.userData.token)
+            // // const token = JSON.stringify(action.userData.token)
+            // localStorage.setItem("token", action.userData.token)
             return {
                 ...state,
-                ...action?.userData,
+                ...action.userData,
                 isAuthenticated: true,
                 isLoading: false
             };
@@ -45,6 +45,7 @@ const authReducer = (state = authDefaultState, action) => {
         case 'LOGOUT_SUCCESS':
         case 'REGISTER_FAIL':
             localStorage.removeItem('token');
+            localStorage.removeItem('user')
             return {
                 ...state,
                 userData: null,
