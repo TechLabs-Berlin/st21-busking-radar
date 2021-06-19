@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth.js'); //<-- this middleware is needed in order to protect private routes
+// so if someone hits the create, delete or update event accidentaly, 
+//he won't be able to do that unless he is authenticated and has a token
 
 //importing controllers: controllers are basically the callback functions
 //which would be usually in the routes and http requests, but they are stored
@@ -11,10 +14,10 @@ const events = require('../controllers/events.js')
 
 router.get('/', events.getEvents)
 
-router.post('/', events.createEvent)
+router.post('/', auth, events.createEvent)
 
 router.patch('/update/:id', events.updateEvent)
 
-router.delete('/:id', events.deleteEvent)
+router.delete('/:id', auth, events.deleteEvent)
 
 module.exports = router;

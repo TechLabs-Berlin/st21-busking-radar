@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { setStartDate, setEndDate, setTextFilter } from './../../actions/filters';
 
 const EventsFilters = (props) => {
-    // const [dateRange, setDateRange] = useState([null, null]);
-    // const [startDate, endDate] = dateRange;
+
     const [startDate, chooseStartDate] = useState(new Date());
     const [endDate, chooseEndDate] = useState(null);
     const filters = useSelector((state) => state.filters)
