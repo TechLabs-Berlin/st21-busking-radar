@@ -16,7 +16,7 @@ router.get('/', events.getEvents)
 
 router.post('/', auth, events.createEvent)
 
-router.patch('/update/:id', auth, events.updateEvent)
+router.patch('/update/:id', events.updateEvent)
 
 router.delete('/:id', auth, events.deleteEvent)
 

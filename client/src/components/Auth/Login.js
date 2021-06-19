@@ -1,16 +1,15 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { GoogleLogin } from 'react-google-login';
-import { useDispatch } from 'react-redux';
-import { signInWithGoogle } from '../../actions/auth';
 import LoginForm from './LoginForm';
+import { useLocation } from 'react-router-dom';
 
 const Login = ({ history }) => {
-    const dispatch = useDispatch();
     //navigation
     const navToRegistration = () => {
         history.push('/registration')
     }
+
+    const { state } = useLocation();
     const googleSuccess = async (res) => {
         // const result = res?.profileObj; //< ? <- this is needed in order to avoid the error, the function will through undefined instead
         // const token = res?.tokenId;
@@ -32,26 +31,7 @@ const Login = ({ history }) => {
     return (
         <div>
             <h1 className="hd-lg">Busking Radar</h1>
-            <p className='text-sub'>to continue, login</p>
-            <p>Login with google: </p>
-            <GoogleLogin
-                clientId="537769059752-k1hm1tth7u9bqond5mvilie345c0b7fo.apps.googleusercontent.com"
-                render={(renderProps) => {
-                    return (
-                        <Button
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            size='small'
-                            variant='contained'
-                        >
-                            Google Sign In
-                        </Button>
-                    )
-                }}
-                onSuccess={googleSuccess}
-                onFailure={googleFailure}
-                cookiePolicy='single_host_origin'
-            />
+            {state ? <p className='text-sub'>Please login to create event</p> : <p className='text-sub'>to continue, login</p>}
             <LoginForm />
             <div className='sign-up'>
                 <p>Not a member?</p>

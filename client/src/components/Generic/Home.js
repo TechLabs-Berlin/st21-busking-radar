@@ -2,14 +2,21 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import HeadsetIcon from '@material-ui/icons/Headset';
+import { useHistory } from 'react-router-dom';
 
-const Home = ({ history }) => {
+const Home = ({ auth }) => {
+    const history = useHistory();
     //Navigation
     const navToEvents = () => {
         history.push('/events')
     }
     const navToLogin = () => {
-        history.push('/login')
+        if (!auth.isAuthenticated) {
+            history.push('/login')
+        } else {
+            history.push('/events')
+        }
+
     }
 
     return (

@@ -6,14 +6,16 @@ import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
 import { register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
+import { loadUser } from '../../actions/auth';
 
 
 
 const RegForm = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+    const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
+    const [registered, setRegistered] = useState(false)
     const [userData, setUserData] = useState({
         name: props.user ? props.user.name : '',
         password: props.user ? props.user.password : '', // I will have to change that once we have the user authetication and users
@@ -25,7 +27,6 @@ const RegForm = (props) => {
         error: ''
     })
 
-
     useEffect(() => {
         if (error.id === 'REGISTER_FAIL') {
             setUserData({ error: error.msg.msg })
@@ -34,6 +35,10 @@ const RegForm = (props) => {
         }
     }, [error])
 
+    useEffect(() => {
+        if (auth.isAuthenticated)
+            history.push('/registration/setupprofile')
+    }, [auth])
     //changing clear errors
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
@@ -48,24 +53,28 @@ const RegForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(register(userData))
-        if (userData.name && userData.email && userData.password) {
-            dispatch(clearErrors())
-            history.push('/events')
-        }
+        setRegistered(true)
+        // if (userData.name && userData.email && userData.password && !error.id) {
+        //     dispatch(clearErrors())
+        // }
     }
+
+
     return (
         <form onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            <p>User name:</p>
-            <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-            <p>Password</p>
-            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-            <p>Email</p>
-            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            {isAuthenticated &&
+            {!auth.isAuthenticated && <div className='user-reg-info' >
+                <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
+                <p>Password</p>
+                <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+                <p>Email</p>
+                <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
+            </div>
+            }
+            {auth.isAuthenticated &&
                 <div className='userInfo'>
                     <p>Genre</p>
                     <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
@@ -83,7 +92,7 @@ const RegForm = (props) => {
                     </div>
                 </div>
             }
-            <Button type='submit' className='btn-lg' size='small'>
+            <Button type='submit' className='btn-lg' size='small' >
                 <PublishIcon />
                 Submit
             </Button>
