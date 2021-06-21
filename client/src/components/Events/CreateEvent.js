@@ -9,7 +9,6 @@ const CreateEvent = ({ auth }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const { search } = useLocation();
-    console.log(auth)
     const { locationName, longitude, latitude } = queryString.parse(search)
     const newLocation = [locationName, longitude, latitude]
     return (

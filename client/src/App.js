@@ -34,7 +34,7 @@ const App = () => {
             <PrivateRoute exact path='/events/create' component={() => <CreateEvent auth={auth} />} />
             <PrivateRoute exact path='/events/update/:id' component={UpdateEvent} />
             <Route exact path='/registration' component={Registration} />
-            <PrivateRoute exact path='/registration/setupprofile' component={() => <SetUpProfile auth={auth} />} />
+            <PrivateRoute exact path='/user/:id' component={SetUpProfile} />
             <Route exact path='/login' component={Login} />
           </Switch>
         </div>

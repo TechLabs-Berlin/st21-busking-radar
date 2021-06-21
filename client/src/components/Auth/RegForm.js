@@ -21,7 +21,7 @@ const RegForm = (props) => {
         password: props.user ? props.user.password : '', // I will have to change that once we have the user authetication and users
         email: props.user ? props.user.email : '',
         genre: props.user ? props.user.genre : '',
-        tags: props.user ? props.user.about : '',
+        about: props.user ? props.user.about : '',
         links: props.user ? props.user.links : '',
         file: props.user ? props.user.file : '',
         error: ''
@@ -37,7 +37,7 @@ const RegForm = (props) => {
 
     useEffect(() => {
         if (auth.isAuthenticated)
-            history.push('/registration/setupprofile')
+            history.push(`/user/${auth.user.id}`)
     }, [auth])
     //changing clear errors
     useEffect(() => {

@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     genre: {
         type: String
     },
-    description: {
+    about: {
         type: String
     },
     socialNetLinks: {

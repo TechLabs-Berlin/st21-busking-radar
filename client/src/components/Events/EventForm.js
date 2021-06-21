@@ -18,7 +18,7 @@ const EventForm = (props) => {
         locationName: props.event ? props.event.locationName : props.newLocation[0] || '',
         geometry: props.event ? props.event.geometry : { type: 'Point', coordinates: [props.newLocation[1], props.newLocation[2]] },
         active: props.event ? props.event.active : false,
-        userId: props.event ? props.event.userId : props.user._id,
+        userId: props.event ? props.event.userId : props.user.id,
         error: ''
     })
     const handleChange = (e) => {
@@ -64,7 +64,6 @@ const EventForm = (props) => {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <h2>{props.user.name}</h2>
             <p>Location:</p>
             <input type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
             <p>Event name</p>

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import FileBase from 'react-file-base64';
 import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
-import { register } from '../../actions/auth';
+import { startUpdateUserInfo } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
 
@@ -17,7 +17,7 @@ const EditProfile = (props) => {
         name: props.user ? props.user.name : '',
         email: props.user ? props.user.email : '',
         genre: props.user ? props.user.genre : '',
-        tags: props.user ? props.user.about : '',
+        about: props.user ? props.user.about : '',
         links: props.user ? props.user.links : '',
         file: props.user ? props.user.file : '',
         error: ''
@@ -30,13 +30,11 @@ const EditProfile = (props) => {
         })
     }
 
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(register(userData))
-
-        // if (userData.name && userData.email && userData.password && !error.id) {
-        //     dispatch(clearErrors())
-        // }
+        dispatch(startUpdateUserInfo(userData, props.userId))
+        history.push('/events')
     }
 
 
@@ -45,8 +43,6 @@ const EditProfile = (props) => {
             <div className='profile-edit' >
                 <p>Name</p>
                 <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-                <p>Email</p>
-                <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
                 <p>Genre</p>
                 <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
                 <p>About</p>
