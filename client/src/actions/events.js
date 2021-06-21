@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import { tokenConfig } from './auth';
+import { returnErrors } from './error';
 
 //Get posts action. It sends http requests to server, where it hits route specified in the requests, which in turn
 //gets events from the database and sends it back to us. 
@@ -17,7 +18,7 @@ export const startGetAllEvents = () => async (dispatch) => {
         const { data } = await axios.get('/events')
         dispatch(getAllEvents(data))
     } catch (e) {
-        console.log('this did not work', e.message)
+        dispatch(returnErrors(e.message))
     }
 }
 
@@ -30,13 +31,13 @@ const createEvent = (eventData) => {
     }
 }
 
-export const startCreateEvent = (eventData) => async (dispatch) => {
+export const startCreateEvent = (eventData) => async (dispatch, getState) => {
     try {
-        const { data } = await axios.post('/events', eventData);
+        const { data } = await axios.post('/events', eventData, tokenConfig(getState));
         //here we are descructuring and dispatching to the local state the same data that was send to the server 
         dispatch(createEvent(data))
     } catch (e) {
-        console.log('This did not work', e.message)
+        dispatch(returnErrors(e.message))
     }
 }
 
@@ -53,12 +54,14 @@ const updateEvent = (id, updates) => {
 }
 
 export const startUpdateEvent = (id, updates) => async (dispatch) => {
+    //tokenConfig(getState) you should add the protected update later,
+    //after you make a separate unprotected route, which would auto fetch and update the status of the event
     try {
         const { data } = await axios.patch(`/events/update/${id}`, updates);
 
         dispatch(updateEvent(data))
     } catch (e) {
-        console.log('This did not work', e.message)
+        dispatch(returnErrors(e.message))
     }
 }
 
@@ -71,12 +74,12 @@ const deleteEvent = (id) => {
     }
 }
 
-export const startDeleteEvent = (id) => async (dispatch) => {
+export const startDeleteEvent = (id) => async (dispatch, getState) => {
     try {
         //for some reason, if I await for axios.delete the action does not dispatch to store
-        await axios.delete(`/events/${id}`)
+        await axios.delete(`/events/${id}`, tokenConfig(getState))
         dispatch(deleteEvent(id))
     } catch (e) {
-        console.log('This did not work', e.message)
+        dispatch(returnErrors(e.message))
     }
 }

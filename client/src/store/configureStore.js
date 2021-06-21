@@ -5,6 +5,8 @@ import thunk from 'redux-thunk';
 import eventsReducer from '../reducers/events';
 import filtersReducer from '../reducers/filters';
 import geocoderReducer from '../reducers/geocoder';
+import authReducer from '../reducers/auth';
+import errorReducer from '../reducers/error';
 
 
 
@@ -15,7 +17,9 @@ const configureStore = () => {
     const store = createStore(combineReducers({
         events: eventsReducer,
         filters: filtersReducer,
-        suggestedLocations: geocoderReducer
+        suggestedLocations: geocoderReducer,
+        auth: authReducer,
+        error: errorReducer
     }),
         compose(
             composeEnhancers(applyMiddleware(thunk)),

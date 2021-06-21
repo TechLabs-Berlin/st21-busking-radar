@@ -1,11 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import selectEvents from '../../filters/events';
 
 
-const EventMap = ({ events,
+const EventMap = ({
     handleMarkerClick,
-    newLocation
+    newLocation,
+    events
 }) => {
     const mapContainer = useRef(null);
     const map = useRef(null)
@@ -22,7 +25,7 @@ const EventMap = ({ events,
             center: [lng, lat],
             zoom: 11
         });
-    }, [])
+    }, [events.length])
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
         map.current.on('move', () => {
@@ -32,6 +35,7 @@ const EventMap = ({ events,
         });
     });
     useEffect(() => {
+        let eventsLong = [];
         events.map(event => {
             let eventsNumber = 0;
             for (let i = 0; i < events.length; i++) {
@@ -48,9 +52,20 @@ const EventMap = ({ events,
             let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
                 .addTo(map.current)
+            for (let i = 0; i < events.length; i++) {
+                eventsLong.push(event.geometry.coordinates[0])
+            }
             return marker
         })
-    })
+        //This is not the best code ever, but it works! I could maybe try to improve it later
+        map.current._markers.forEach(marker => {
+            for (let i = 0; i < eventsLong.length; i++) {
+                if (eventsLong.includes(marker._lngLat.lng) === false) {
+                    return marker.remove()
+                }
+            }
+        })
+    }, [events.length])
     useEffect(() => {
         if (newLocation) {
             let newCostumMarker = document.createElement('div');
