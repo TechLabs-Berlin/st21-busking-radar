@@ -9,7 +9,6 @@ import { clearErrors } from '../../actions/error';
 
 
 const LoginForm = (props) => {
-    const history = useHistory();
     const dispatch = useDispatch();
     const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
@@ -17,6 +16,7 @@ const LoginForm = (props) => {
         email: props.user ? props.user.email : '',
         error: ''
     })
+    const auth = useSelector(state => state.auth)
 
     //changing clear errors
     useEffect(() => {
@@ -32,8 +32,6 @@ const LoginForm = (props) => {
             setUserData({ error: '' })
         }
     }, [error])
-
-
     const handleChange = (e) => {
         setUserData({
             ...userData,
@@ -41,14 +39,21 @@ const LoginForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(login(userData))
-        if (userData.email && userData.password) {
-            dispatch(clearErrors())
-            history.push('/events')
-        }
+        // if (userData.email && userData.password && auth.isAuthenticated) {
+        //     dispatch(clearErrors())
+        // }
     }
+    useEffect(() => {
+        //I can't find the better solution now. If you have time later, you should think about it. 
+        //the conditional push up there does not work, due to the scope. When we push the button, the whoe handle submit happens within
+        //the scope of that function, which means the auth.isAuthenticated will be null, as the login has not happened yet. 
+        if (auth.isAuthenticated)
+            props.history.push(`/events`)
+    }, [auth])
+
     return (
         <form onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}

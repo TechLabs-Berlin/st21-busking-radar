@@ -16,7 +16,6 @@ const authReducer = (state = authDefaultState, action) => {
         case 'USER_LOADED':
             const user = JSON.stringify(action.payload)
             localStorage.setItem("user", user)
-            console.log(user)
             return {
                 ...state,
                 ...action.payload,
@@ -54,15 +53,6 @@ const authReducer = (state = authDefaultState, action) => {
                 isLoading: false,
                 token: null
             };
-        // case 'UPDATE_USER_INFO':
-        //     const newInfo = JSON.stringify({ ...state.user, ...action.updates })
-        //     console.log(newInfo)
-        //     localStorage.setItem("user", newInfo)
-        //     return {
-        //         ...state,
-        //         isAuthenticated: true,
-        //         isLoading: false
-        //     }
         default:
             return state
     }

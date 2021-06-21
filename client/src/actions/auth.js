@@ -55,7 +55,8 @@ export const register = (payload) => (dispatch) => {
     const body = JSON.stringify(payload)
     axios.post('/user', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
-        return dispatch(registerSuccess(res.data))
+        dispatch(registerSuccess(res.data))
+
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status, 'REGISTER_FAIL'))
         dispatch({ type: 'REGISTER_FAIL' })
@@ -90,7 +91,7 @@ export const login = ({ email, password }) => (dispatch) => {
     const body = JSON.stringify({ email, password })
     axios.post('/auth', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
-        return dispatch(loginSuccess(res.data))
+        return dispatch(loginSuccess(res.data.user))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status, 'LOGIN_FAIL'))
         dispatch({ type: 'LOGIN_FAIL' })

@@ -74,6 +74,6 @@ module.exports.updateUser = async (req, res) => {
             selectedFile: updatedUser.selectedFile
         })
     } catch (e) {
-        console.log(e, 'this did not work')
+        res.status(400).json({ msg: 'the user is not authorized' })
     }
 }

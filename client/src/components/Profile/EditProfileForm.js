@@ -9,7 +9,7 @@ import { clearErrors } from '../../actions/error';
 
 
 
-const EditProfile = (props) => {
+const EditProfileForm = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const error = useSelector((state) => state.error)
@@ -66,4 +66,4 @@ const EditProfile = (props) => {
     )
 }
 
-export default EditProfile
+export default EditProfileForm
