@@ -6,7 +6,6 @@ import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
 import { register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
-import { loadUser } from '../../actions/auth';
 
 
 
@@ -15,7 +14,6 @@ const RegForm = (props) => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
-    const [registered, setRegistered] = useState(false)
     const [userData, setUserData] = useState({
         name: props.user ? props.user.name : '',
         password: props.user ? props.user.password : '', // I will have to change that once we have the user authetication and users
@@ -56,9 +54,8 @@ const RegForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(register(userData))
-        setRegistered(true)
-        // if (userData.name && userData.email && userData.password && !error.id) {
-        //     dispatch(clearErrors())
+        // if (auth.isAuthenticated) {
+        //     history.push(`/user/${auth.id}`)
         // }
     }
 
