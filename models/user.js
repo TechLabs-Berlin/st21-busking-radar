@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     about: {
         type: String
     },
-    socialNetLinks: {
+    socialLinks: {
         type: [String]
     },
     selectedFile: {
