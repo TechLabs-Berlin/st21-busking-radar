@@ -20,7 +20,7 @@ module.exports.authUser = async (req, res) => {
                 bcrypt.compare(userData.password, user.password)
                     .then(isMatch => {
                         if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' })
-
+                        console.log(user.id)
                         jwt.sign(
                             { id: user.id },
                             config.get('jwtSecret'),
@@ -30,7 +30,7 @@ module.exports.authUser = async (req, res) => {
                                 res.json({
                                     token,
                                     user: {
-                                        id: user.id,
+                                        _id: user.id,
                                         name: user.name,
                                         register_date: user.register_date,
                                         events: user.events,

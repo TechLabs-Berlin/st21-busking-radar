@@ -14,12 +14,12 @@ const EditProfileForm = (props) => {
     const dispatch = useDispatch();
     const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
-        name: props.user ? props.user.name : '',
-        email: props.user ? props.user.email : '',
-        genre: props.user ? props.user.genre : '',
-        about: props.user ? props.user.about : '',
-        links: props.user ? props.user.links : '',
-        file: props.user ? props.user.file : '',
+        name: props.auth.user ? props.auth.user.name : '',
+        email: props.auth.user ? props.auth.user.email : '',
+        genre: props.auth.user ? props.auth.user.genre : '',
+        about: props.auth.user ? props.auth.user.about : '',
+        socialNetLinks: props.auth.user ? props.auth.user.socialNetLinks : ''.split(' '),
+        selectedFile: props.auth.user ? props.auth.user.selectedFile : '',
         error: ''
     })
     const handleChange = (e) => {
@@ -48,7 +48,7 @@ const EditProfileForm = (props) => {
                 <p>About</p>
                 <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
                 <p>Links</p>
-                <input type="text" placeholder="links" name="links" autoFocus value={userData.links || ''} onChange={handleChange} />
+                <input type="text" placeholder="links" name="socialNetLinks" autoFocus value={userData.socialNetLinks || ''} onChange={handleChange} />
                 <p>Upload Image</p>
                 <div className='file-input'>
                     <FileBase

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import FileBase from 'react-file-base64';
 import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
-import { register } from '../../actions/auth';
+import { loadUser, register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
 
@@ -15,13 +15,9 @@ const RegForm = (props) => {
     const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
-        name: props.user ? props.user.name : '',
-        password: props.user ? props.user.password : '', // I will have to change that once we have the user authetication and users
-        email: props.user ? props.user.email : '',
-        genre: props.user ? props.user.genre : '',
-        about: props.user ? props.user.about : '',
-        links: props.user ? props.user.links : '',
-        file: props.user ? props.user.file : '',
+        name: auth.user ? auth.user.name : '',
+        password: auth.user ? auth.user.password : '', // I will have to change that once we have the user authetication and users
+        email: auth.user ? auth.user.email : '',
         error: ''
     })
 
@@ -35,7 +31,7 @@ const RegForm = (props) => {
 
     useEffect(() => {
         if (auth.isAuthenticated)
-            history.push(`/user/${auth.user.id}`)
+            history.push(`/user/${auth.user._id}`)
     }, [auth])
     //changing clear errors
     useEffect(() => {
@@ -54,41 +50,17 @@ const RegForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(register(userData))
-        // if (auth.isAuthenticated) {
-        //     history.push(`/user/${auth.id}`)
-        // }
     }
 
 
     return (
         <form onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            {!auth.isAuthenticated && <div className='user-reg-info' >
-                <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-                <p>Password</p>
-                <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-                <p>Email</p>
-                <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            </div>
-            }
-            {auth.isAuthenticated &&
-                <div className='userInfo'>
-                    <p>Genre</p>
-                    <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
-                    <p>About</p>
-                    <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
-                    <p>Links</p>
-                    <input type="text" placeholder="links" name="links" autoFocus value={userData.links || ''} onChange={handleChange} />
-                    <p>Upload Image</p>
-                    <div className='file-input'>
-                        <FileBase
-                            type="file"
-                            multiple={false}
-                            onDone={({ base64 }) => setUserData({ ...userData, selectedFile: base64 })}
-                        />
-                    </div>
-                </div>
-            }
+            <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
+            <p>Password</p>
+            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <p>Email</p>
+            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
             <Button type='submit' className='btn-lg' size='small' >
                 <PublishIcon />
                 Submit

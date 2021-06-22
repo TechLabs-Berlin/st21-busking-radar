@@ -1,6 +1,6 @@
 
 const authDefaultState = {
-    user: JSON.parse(localStorage.getItem('user')),
+    user: null,
     token: localStorage.getItem("token"),
     isAuthenticated: false,
     isLoading: false,
@@ -14,11 +14,9 @@ const authReducer = (state = authDefaultState, action) => {
                 isLoading: true
             };
         case 'USER_LOADED':
-            const user = JSON.stringify(action.payload)
-            localStorage.setItem("user", user)
             return {
                 ...state,
-                ...action.payload,
+                user: action.payload,
                 isAuthenticated: true,
                 isLoading: false,
             };
@@ -32,8 +30,6 @@ const authReducer = (state = authDefaultState, action) => {
             };
         case 'LOGIN_SUCCESS':
         case 'REGISTER_SUCCESS':
-            // const token = JSON.stringify(action.userData.token)
-            // localStorage.setItem("token", token)
             return {
                 ...state,
                 ...action.userData,
@@ -45,7 +41,6 @@ const authReducer = (state = authDefaultState, action) => {
         case 'LOGOUT_SUCCESS':
         case 'REGISTER_FAIL':
             localStorage.removeItem('token');
-            localStorage.removeItem('user');
             return {
                 ...state,
                 userData: null,
