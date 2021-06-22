@@ -5,12 +5,14 @@ import { startUpdateEvent } from '../../actions/events';
 
 const UpdateEvent = ({ match, history }) => {
     const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth)
     const events = useSelector((state) => state.events)
     const selectedEvent = events.find(event => {
         return event._id === match.params.id
     })
     return (
         <EventForm
+            auth={auth}
             event={selectedEvent}
             handleSubmit={((event) => {
                 dispatch(startUpdateEvent(selectedEvent._id, event))

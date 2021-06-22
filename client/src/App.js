@@ -12,6 +12,7 @@ import Registration from './components/Auth/Registration';
 import { loadUser } from './actions/auth';
 import PrivateRoute from './routers/PrivateRoute';
 import SetUpProfile from './components/Profile/SetUpProfile';
+import MyProfile from './components/Profile/MyProfile';
 
 const queryClient = new QueryClient();
 
@@ -34,7 +35,8 @@ const App = () => {
             <PrivateRoute exact path='/events/create' component={() => <CreateEvent auth={auth} />} />
             <PrivateRoute exact path='/events/update/:id' component={UpdateEvent} />
             <Route exact path='/registration' component={Registration} />
-            <PrivateRoute exact path='/registration/setupprofile' component={() => <SetUpProfile auth={auth} />} />
+            <PrivateRoute exact path='/user/profile' component={MyProfile} />
+            <PrivateRoute exact path='/user/:id' component={SetUpProfile} />
             <Route exact path='/login' component={Login} />
           </Switch>
         </div>

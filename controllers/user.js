@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.js');
+const mongoose = require('mongoose')
 
 module.exports.signUpUser = async (req, res) => {
     try {
@@ -30,11 +31,13 @@ module.exports.signUpUser = async (req, res) => {
                                 res.json({
                                     token,
                                     user: {
-                                        id: user.id,
+                                        _id: user.id,
                                         name: user.name,
+                                        genre: user.genre,
+                                        about: user.about,
                                         register_date: user.register_date,
                                         events: user.events,
-                                        socialNetLinks: user.socialNetLinks,
+                                        socialLinks: user.socialLinks,
                                         email: user.email,
                                         selectedFile: user.selectedFile
                                     }
@@ -48,5 +51,21 @@ module.exports.signUpUser = async (req, res) => {
         })
     } catch (e) {
         console.log('This did not work!', e.message)
+    }
+}
+
+module.exports.updateUser = async (req, res) => {
+    try {
+        const { id: _id } = req.params
+        console.log(req.params)
+        const updates = req.body
+        console.log(req.body)
+        if (!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(401).send('No user with that id');
+        }
+        await User.findByIdAndUpdate(_id, updates, { new: true })
+
+    } catch (e) {
+        res.status(400).json({ msg: 'the user is not authorized' })
     }
 }

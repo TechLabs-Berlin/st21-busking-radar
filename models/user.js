@@ -25,14 +25,14 @@ const userSchema = new mongoose.Schema({
     genre: {
         type: String
     },
-    description: {
+    about: {
         type: String
     },
-    socialNetLinks: {
+    socialLinks: {
         type: [String]
     },
     selectedFile: {
-        type: [String]
+        type: String
     }
 })
 
