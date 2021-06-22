@@ -122,7 +122,7 @@ const Events = ({ history }) => {
                 {chooseLocation === true && !newLocation
                     ?
                     <p>
-                        Please choose the event location from the list or by typing an adress
+                        Please choose the event location from the list or by typing an address
                         <Geocoder handleChooseLocation={handleChooseLocation}
                             newLocation={newLocation}
                         />
