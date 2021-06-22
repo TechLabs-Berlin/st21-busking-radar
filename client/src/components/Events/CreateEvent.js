@@ -16,7 +16,7 @@ const CreateEvent = ({ auth }) => {
             <main id='create-event' className='create-event'>
                 <h1 id='hd-create-event' className='hd-lg'>Create Event</h1>
                 <EventForm
-                    user={auth.user}
+                    auth={auth}
                     newLocation={newLocation}
                     handleSubmit={(eventData) => {
                         dispatch(startCreateEvent(eventData));

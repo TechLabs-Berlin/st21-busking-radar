@@ -9,7 +9,7 @@ import moment from 'moment';
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
         name: props.event ? props.event.name : '',
-        creator: props.event ? props.event.creator : props.user.name, // I will have to change that once we have the user authetication and users
+        creator: props.event ? props.event.creator : props.auth.name, // I will have to change that once we have the user authetication and users
         genre: props.event ? props.event.genre : '',
         about: props.event ? props.event.about : '',
         tags: props.event ? props.event.tags : '',
@@ -18,7 +18,7 @@ const EventForm = (props) => {
         locationName: props.event ? props.event.locationName : props.newLocation[0] || '',
         geometry: props.event ? props.event.geometry : { type: 'Point', coordinates: [props.newLocation[1], props.newLocation[2]] },
         active: props.event ? props.event.active : false,
-        userId: props.event ? props.event.userId : props.user.id,
+        userId: props.event ? props.event.userId : props.auth._id,
         error: ''
     })
     const handleChange = (e) => {

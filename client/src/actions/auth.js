@@ -27,6 +27,7 @@ export const loadUser = () => (dispatch, getState) => {
 
     axios.get('/auth', tokenConfig(getState)).then((res) => {
         // const userData = JSON.parse(res.data)
+        console.log(res.data)
         dispatch(userLoaded(res.data))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status))
@@ -91,7 +92,7 @@ export const login = ({ email, password }) => (dispatch) => {
     const body = JSON.stringify({ email, password })
     axios.post('/auth', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
-        return dispatch(loginSuccess(res.data.user))
+        return dispatch(loginSuccess(res.data))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status, 'LOGIN_FAIL'))
         dispatch({ type: 'LOGIN_FAIL' })
@@ -124,12 +125,12 @@ export const tokenConfig = getState => {
 }
 
 
-const updateUserInfo = (updates) => {
-    return {
-        type: 'UPDATE_USER_INFO',
-        updates
-    }
-}
+// const updateUserInfo = (updates) => {
+//     return {
+//         type: 'UPDATE_USER_INFO',
+//         updates
+//     }
+// }
 
 export const startUpdateUserInfo = (updates, id) => async (dispatch, getState) => {
     try {

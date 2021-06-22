@@ -31,7 +31,7 @@ module.exports.signUpUser = async (req, res) => {
                                 res.json({
                                     token,
                                     user: {
-                                        id: user.id,
+                                        _id: user.id,
                                         name: user.name,
                                         genre: user.genre,
                                         about: user.about,
@@ -61,9 +61,12 @@ module.exports.updateUser = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(_id)) {
             return res.send('No event with that id');
         }
+        console.log(_id)
+        console.log(updates)
         const updatedUser = await User.findByIdAndUpdate(_id, updates, { new: true })
+        console.log(updatedUser)
         res.json({
-            id: updatedUser.id,
+            _id: updatedUser.id,
             name: updatedUser.name,
             genre: updatedUser.genre,
             about: updatedUser.about,

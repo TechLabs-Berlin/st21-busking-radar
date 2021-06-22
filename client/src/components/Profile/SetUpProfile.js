@@ -14,7 +14,7 @@ const SetUpProfile = ({ history, match }) => {
             <h2 className='hd-md' >Your Profile</h2>
             <p className='text-sub'>Please finish setting up your profile to help fans to discover your music</p>
             <Button onClick={navigateToEvents}>Do it later and continue to events</Button>
-            <EditProfileForm user={auth.user}
+            <EditProfileForm auth={auth}
                 userId={match.params.id}
             />
         </div>

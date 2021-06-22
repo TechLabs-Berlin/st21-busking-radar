@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: [String]
     },
     selectedFile: {
-        type: [String]
+        type: String
     }
 })
 

@@ -10,10 +10,9 @@ const UpdateEvent = ({ match, history }) => {
     const selectedEvent = events.find(event => {
         return event._id === match.params.id
     })
-    console.log(match)
     return (
         <EventForm
-            user={auth.user}
+            auth={auth}
             event={selectedEvent}
             handleSubmit={((event) => {
                 dispatch(startUpdateEvent(selectedEvent._id, event))
