@@ -27,7 +27,6 @@ export const loadUser = () => (dispatch, getState) => {
 
     axios.get('/auth', tokenConfig(getState)).then((res) => {
         // const userData = JSON.parse(res.data)
-        console.log(res.data)
         dispatch(userLoaded(res.data))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status))
@@ -92,6 +91,7 @@ export const login = ({ email, password }) => (dispatch) => {
     const body = JSON.stringify({ email, password })
     axios.post('/auth', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
+        console.log(res.data)
         return dispatch(loginSuccess(res.data))
     }).catch(e => {
         dispatch(returnErrors(e.response.data, e.response.status, 'LOGIN_FAIL'))
@@ -135,8 +135,8 @@ export const tokenConfig = getState => {
 export const startUpdateUserInfo = (updates, id) => async (dispatch, getState) => {
     try {
         const body = JSON.stringify(updates)
-        const updatedUser = await axios.patch(`/user/update/${id}`, body, tokenConfig(getState))
-        dispatch(userLoaded(updatedUser.data))
+        axios.patch(`/user/update/${id}`, body, tokenConfig(getState))
+        dispatch(userLoaded(updates))
     } catch (e) {
         console.log(e, 'this did not work')
     }

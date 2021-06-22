@@ -18,7 +18,7 @@ const EditProfileForm = (props) => {
         email: props.auth.user ? props.auth.user.email : '',
         genre: props.auth.user ? props.auth.user.genre : '',
         about: props.auth.user ? props.auth.user.about : '',
-        socialNetLinks: props.auth.user ? props.auth.user.socialNetLinks : ''.split(' '),
+        socialLinks: props.auth.user ? props.auth.user.socialLinks : '',
         selectedFile: props.auth.user ? props.auth.user.selectedFile : '',
         error: ''
     })
@@ -31,6 +31,7 @@ const EditProfileForm = (props) => {
     }
     const uploadImage = (event) => {
         const [imageFile] = event.target.files;
+        const { type: mimeType } = imageFile;
         const fileReader = new FileReader();
         fileReader.readAsDataURL(imageFile);
 
@@ -49,9 +50,12 @@ const EditProfileForm = (props) => {
                 const ht = (230 * image.naturalHeight) / image.naturalWidth
                 context.drawImage(image, 0, -Math.abs(ht - 230) / 2, 230, ht);
             }
-            const resizedImageAsBase64 = canvas.toDataURL();
+            const resizedImageAsBase64 = canvas.toDataURL(mimeType, 0.5);
+            // const blobImage = canvas.toBlob((blob)=>{
 
-
+            // })
+            // console.log(blobImage)
+            console.log(resizedImageAsBase64)
             setUserData({ ...userData, selectedFile: resizedImageAsBase64 })
         };
 
@@ -60,7 +64,7 @@ const EditProfileForm = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(startUpdateUserInfo(userData, props.userId))
+        dispatch(startUpdateUserInfo(userData, props.auth.user._id))
         history.push('/events')
     }
 
@@ -69,14 +73,18 @@ const EditProfileForm = (props) => {
         <form onSubmit={handleSubmit}>
             <div className='profile-edit' >
                 <img src={userData.selectedFile} />
-                <p>Name</p>
+                <label>Name</label>
                 <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-                <p>Genre</p>
+                <label>Genre</label>
                 <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
-                <p>About</p>
+                <label>About</label>
                 <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
-                <p>Links</p>
-                <input type="text" placeholder="links" name="socialNetLinks" autoFocus value={userData.socialNetLinks || ''} onChange={handleChange} />
+                <div>
+                    <label>Social links</label>
+                    <select name="social-links" id=""></select>
+                    <input type="text" placeholder="links" name="socialNetLinks" autoFocus value={userData.socialNetLinks || ''} onChange={handleChange} />
+                </div>
+
                 <p>Upload Image</p>
                 <div className='file-input'>
                     <input type="file" accept="image/jpeg"

@@ -37,7 +37,7 @@ module.exports.signUpUser = async (req, res) => {
                                         about: user.about,
                                         register_date: user.register_date,
                                         events: user.events,
-                                        socialNetLinks: user.socialNetLinks,
+                                        socialLinks: user.socialLinks,
                                         email: user.email,
                                         selectedFile: user.selectedFile
                                     }
@@ -57,25 +57,14 @@ module.exports.signUpUser = async (req, res) => {
 module.exports.updateUser = async (req, res) => {
     try {
         const { id: _id } = req.params
+        console.log(req.params)
         const updates = req.body
+        console.log(req.body)
         if (!mongoose.Types.ObjectId.isValid(_id)) {
-            return res.send('No event with that id');
+            return res.status(401).send('No user with that id');
         }
-        console.log(_id)
-        console.log(updates)
-        const updatedUser = await User.findByIdAndUpdate(_id, updates, { new: true })
-        console.log(updatedUser)
-        res.json({
-            _id: updatedUser.id,
-            name: updatedUser.name,
-            genre: updatedUser.genre,
-            about: updatedUser.about,
-            register_date: updatedUser.register_date,
-            events: updatedUser.events,
-            socialNetLinks: updatedUser.socialNetLinks,
-            email: updatedUser.email,
-            selectedFile: updatedUser.selectedFile
-        })
+        await User.findByIdAndUpdate(_id, updates, { new: true })
+
     } catch (e) {
         res.status(400).json({ msg: 'the user is not authorized' })
     }
