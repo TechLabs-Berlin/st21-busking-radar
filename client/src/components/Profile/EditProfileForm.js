@@ -31,30 +31,27 @@ const EditProfileForm = (props) => {
     }
     const uploadImage = (event) => {
         const [imageFile] = event.target.files;
-        const { type: profileType } = imageFile;
         const fileReader = new FileReader();
         fileReader.readAsDataURL(imageFile);
 
         fileReader.onload = async (fileReaderEvent) => {
             const imageAsBase64 = fileReaderEvent.target.result;
-            const image = document.createElement("img");
+            const image = new Image();
             image.src = imageAsBase64;
-
-            const imageResizeWidth = 200;
-            // if (image.width <= imageResizeWidth) {
-            //     return;
-            // }
-
             const canvas = await document.createElement('canvas');
-            canvas.width = imageResizeWidth;
-            canvas.height = ~~(image.height * (imageResizeWidth / image.width));
-            const context = canvas.getContext('2d', { alpha: false });
-            if (!context) {
-                return;
+            canvas.width = '210'
+            canvas.height = '230'
+            const context = canvas.getContext('2d');
+            if (image.naturalWidth > image.naturalHeight) {
+                const wd = (230 * image.naturalWidth) / image.naturalHeight
+                context.drawImage(image, -Math.abs(wd - 230) / 2, 0, wd, 230);
+            } else {
+                const ht = (230 * image.naturalHeight) / image.naturalWidth
+                context.drawImage(image, 0, -Math.abs(ht - 230) / 2, 230, ht);
             }
-            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+            const resizedImageAsBase64 = canvas.toDataURL();
 
-            const resizedImageAsBase64 = canvas.toDataURL(profileType);
+
             setUserData({ ...userData, selectedFile: resizedImageAsBase64 })
         };
 
