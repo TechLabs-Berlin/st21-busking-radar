@@ -29,6 +29,36 @@ const EditProfileForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
+    const uploadImage = (event) => {
+        const [imageFile] = event.target.files;
+        const { type: profileType } = imageFile;
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(imageFile);
+
+        fileReader.onload = async (fileReaderEvent) => {
+            const imageAsBase64 = fileReaderEvent.target.result;
+            const image = document.createElement("img");
+            image.src = imageAsBase64;
+
+            const imageResizeWidth = 200;
+            // if (image.width <= imageResizeWidth) {
+            //     return;
+            // }
+
+            const canvas = await document.createElement('canvas');
+            canvas.width = imageResizeWidth;
+            canvas.height = ~~(image.height * (imageResizeWidth / image.width));
+            const context = canvas.getContext('2d', { alpha: false });
+            if (!context) {
+                return;
+            }
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            const resizedImageAsBase64 = canvas.toDataURL(profileType);
+            setUserData({ ...userData, selectedFile: resizedImageAsBase64 })
+        };
+
+    };
 
 
     const handleSubmit = (e) => {
@@ -41,6 +71,7 @@ const EditProfileForm = (props) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className='profile-edit' >
+                <img src={userData.selectedFile} />
                 <p>Name</p>
                 <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
                 <p>Genre</p>
@@ -51,11 +82,8 @@ const EditProfileForm = (props) => {
                 <input type="text" placeholder="links" name="socialNetLinks" autoFocus value={userData.socialNetLinks || ''} onChange={handleChange} />
                 <p>Upload Image</p>
                 <div className='file-input'>
-                    <FileBase
-                        type="file"
-                        multiple={false}
-                        onDone={({ base64 }) => setUserData({ ...userData, selectedFile: base64 })}
-                    />
+                    <input type="file" accept="image/jpeg"
+                        onChange={uploadImage} />
                 </div>
             </div>
             <Button type='submit' className='btn-lg' size='small' >
