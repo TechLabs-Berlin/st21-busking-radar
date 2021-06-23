@@ -29,9 +29,9 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     socialLinks: {
-        type: [String]
+        type: [Object]
     },
-    selectedFile: {
+    profilePic: {
         type: String
     }
 })

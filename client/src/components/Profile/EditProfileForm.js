@@ -18,10 +18,20 @@ const EditProfileForm = (props) => {
         email: props.auth.user ? props.auth.user.email : '',
         genre: props.auth.user ? props.auth.user.genre : '',
         about: props.auth.user ? props.auth.user.about : '',
-        socialLinks: props.auth.user ? props.auth.user.socialLinks : '',
-        selectedFile: props.auth.user ? props.auth.user.selectedFile : '',
+        socialLinks: props.auth.user ? props.auth.user.socialLinks : [],
+        profilePic: props.auth.user ? props.auth.user.profilePic : '',
         error: ''
     })
+    const [socLink, setSocLink] = useState({
+        name: 'facebook',
+        link: ''
+    })
+    const handleSocLinkChange = (e) => {
+        setSocLink({
+            ...socLink,
+            [e.target.name]: e.target.value,
+        })
+    }
     const handleChange = (e) => {
         setUserData({
             ...userData,
@@ -29,6 +39,8 @@ const EditProfileForm = (props) => {
             [e.target.name]: e.target.value,
         })
     }
+
+
     const uploadImage = (event) => {
         const [imageFile] = event.target.files;
         const { type: mimeType } = imageFile;
@@ -54,9 +66,8 @@ const EditProfileForm = (props) => {
             // const blobImage = canvas.toBlob((blob)=>{
 
             // })
-            // console.log(blobImage)
-            console.log(resizedImageAsBase64)
-            setUserData({ ...userData, selectedFile: resizedImageAsBase64 })
+            // console.log(blobImage) //later you should try change and save the image as blob image
+            setUserData({ ...userData, profilePic: resizedImageAsBase64 })
         };
 
     };
@@ -68,23 +79,35 @@ const EditProfileForm = (props) => {
         history.push('/events')
     }
 
+    const saveSocLink = (e) => {
+        e.preventDefault()
+        const filteredArr = userData.socialLinks.filter(link => link.name !== socLink.name)
+        setUserData({
+            ...userData,
+            socialLinks: [...filteredArr, socLink]
+        })
+    }
 
     return (
         <form onSubmit={handleSubmit}>
             <div className='profile-edit' >
-                <img src={userData.selectedFile} />
+                <img src={userData.profilePic} />
                 <label>Name</label>
                 <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
                 <label>Genre</label>
                 <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
                 <label>About</label>
                 <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
-                <div>
+                <form className='soc-links-form'  >
                     <label>Social links</label>
-                    <select name="social-links" id=""></select>
-                    <input type="text" placeholder="links" name="socialNetLinks" autoFocus value={userData.socialNetLinks || ''} onChange={handleChange} />
-                </div>
-
+                    <select name="name" value={socLink.name} id="soc-links" className='soc-links-select' onChange={handleSocLinkChange} >
+                        <option value="facebook" className="soc-links-option">Facebook</option>
+                        <option value="spotify" className="soc-links-option">Spotify</option>
+                        <option value="youtube" className="soc-links-option">Youtube</option>
+                    </select>
+                    <input className='soc-links-input' type="text" placeholder="social link" name="link" autoFocus value={socLink.link || ''} onChange={handleSocLinkChange} />
+                    <Button onClick={saveSocLink} >Save</Button>
+                </form>
                 <p>Upload Image</p>
                 <div className='file-input'>
                     <input type="file" accept="image/jpeg"

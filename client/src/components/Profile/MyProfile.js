@@ -6,7 +6,7 @@ const MyProfile = () => {
     console.log(auth)
     return (
         <div className='profile-page'>
-            <img src={auth.user.selectedFile} />
+            <img src={auth.user.profilePick} />
         </div>
     )
 }
