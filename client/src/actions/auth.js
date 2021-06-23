@@ -134,7 +134,7 @@ export const tokenConfig = getState => {
 export const startUpdateUserInfo = (updates, id) => async (dispatch, getState) => {
     try {
         const body = JSON.stringify(updates)
-        await axios.patch(`/user/update/${id}`, body, tokenConfig(getState))
+        axios.patch(`/user/update/${id}`, body, tokenConfig(getState))
         dispatch(userLoaded(updates))
     } catch (e) {
         console.log(e, 'this did not work')

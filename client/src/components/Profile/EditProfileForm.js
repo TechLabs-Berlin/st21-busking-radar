@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
 import { startUpdateUserInfo } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
+import { set } from 'date-fns/esm';
 
 
 
@@ -71,7 +72,9 @@ const EditProfileForm = (props) => {
         };
 
     };
-
+    const navigateToProfile = () => {
+        history.push('/profile')
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -79,12 +82,16 @@ const EditProfileForm = (props) => {
         history.push('/events')
     }
 
-    const saveSocLink = (e) => {
+    const saveSocLink = async (e) => {
         e.preventDefault()
-        const filteredArr = userData.socialLinks.filter(link => link.name !== socLink.name)
+        const filteredArr = await userData.socialLinks.filter(link => link.name !== socLink.name)
         setUserData({
             ...userData,
             socialLinks: [...filteredArr, socLink]
+        })
+        setSocLink({
+            ...socLink,
+            link: ''
         })
     }
 
@@ -92,6 +99,11 @@ const EditProfileForm = (props) => {
         <form onSubmit={handleSubmit}>
             <div className='profile-edit' >
                 <img src={userData.profilePic} />
+                <div className='file-input'>
+                    <label>Upload Image</label>
+                    <input type="file" accept="image/jpeg"
+                        onChange={uploadImage} />
+                </div>
                 <label>Name</label>
                 <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
                 <label>Genre</label>
@@ -100,24 +112,20 @@ const EditProfileForm = (props) => {
                 <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
                 <form className='soc-links-form'  >
                     <label>Social links</label>
+                    {userData.socialLinks.map(link => <p>{link.name}: {link.link}</p>)}
                     <select name="name" value={socLink.name} id="soc-links" className='soc-links-select' onChange={handleSocLinkChange} >
                         <option value="facebook" className="soc-links-option">Facebook</option>
                         <option value="spotify" className="soc-links-option">Spotify</option>
                         <option value="youtube" className="soc-links-option">Youtube</option>
                     </select>
                     <input className='soc-links-input' type="text" placeholder="social link" name="link" autoFocus value={socLink.link || ''} onChange={handleSocLinkChange} />
-                    <Button onClick={saveSocLink} >Save</Button>
+                    <Button onClick={saveSocLink} >Save link</Button>
                 </form>
-                <p>Upload Image</p>
-                <div className='file-input'>
-                    <input type="file" accept="image/jpeg"
-                        onChange={uploadImage} />
-                </div>
             </div>
             <Button type='submit' className='btn-lg' size='small' >
-                <PublishIcon />
-                Submit
+                Save Changes
             </Button>
+            <Button onClick={navigateToProfile}>Cancel</Button>
         </form>
     )
 }

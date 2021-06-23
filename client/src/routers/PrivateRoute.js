@@ -8,7 +8,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest} component={(props) => {
             return isAuthenticated === true ? <Component {...props} /> : (<Redirect to={{
-                pathname: '/login',
+                pathname: '/',
                 //I could use it for saving redirecting user to the same location
                 //where the user tried to do the action being unauthenticated 
                 //for example busker clicked the create event without being login,
