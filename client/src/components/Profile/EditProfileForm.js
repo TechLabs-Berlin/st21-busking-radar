@@ -79,7 +79,7 @@ const EditProfileForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(startUpdateUserInfo(userData, props.auth.user._id))
-        history.push('/events')
+        history.push('/profile')
     }
 
     const saveSocLink = async (e) => {

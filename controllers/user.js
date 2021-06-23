@@ -66,3 +66,25 @@ module.exports.updateUser = async (req, res) => {
         res.status(400).json({ msg: 'the user is not authorized' })
     }
 }
+
+module.exports.getUsers = async (req, res) => {
+    try {
+        //it has to be asynchronous function, because getting events 
+        //from the database takes some time
+        const users = await User.find({});
+        const filteredUsers = users.map(user => ({
+            _id: user.id,
+            name: user.name,
+            genre: user.genre,
+            about: user.about,
+            register_date: user.register_date,
+            events: user.events,
+            socialLinks: user.socialLinks,
+            profilePic: user.profilePic
+        }))
+        console.log(filteredUsers)
+        res.send(filteredUsers);
+    } catch (e) {
+        res.status(400).json({ msg: 'could not get users' })
+    }
+}

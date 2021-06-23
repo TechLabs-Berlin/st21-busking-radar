@@ -7,6 +7,7 @@ import filtersReducer from '../reducers/filters';
 import geocoderReducer from '../reducers/geocoder';
 import authReducer from '../reducers/auth';
 import errorReducer from '../reducers/error';
+import usersReducer from '../reducers/users';
 
 
 
@@ -19,7 +20,8 @@ const configureStore = () => {
         filters: filtersReducer,
         suggestedLocations: geocoderReducer,
         auth: authReducer,
-        error: errorReducer
+        error: errorReducer,
+        users: usersReducer
     }),
         compose(
             composeEnhancers(applyMiddleware(thunk)),
