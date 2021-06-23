@@ -66,6 +66,7 @@ const mockEvents = [
     }
 ]
 
+
 Event.insertMany(mockEvents)
     .then(data => {
         console.log(data)

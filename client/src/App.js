@@ -12,6 +12,7 @@ import { loadUser } from './actions/auth';
 import PrivateRoute from './routers/PrivateRoute';
 import SetUpProfile from './components/Profile/SetUpProfile';
 import MyProfile from './components/Profile/MyProfile';
+import PageNotFound from './components/Generic/404-page';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
             <Route exact path='/registration' component={Registration} />
             <PrivateRoute exact path='/profile' component={MyProfile} />
             <PrivateRoute exact path='/profile/:id' component={SetUpProfile} />
+            <Route component={PageNotFound} />
           </Switch>
         </div>
       </BrowserRouter>
