@@ -18,6 +18,7 @@ const Header = () => {
                 <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Home</NavLink>
                 <NavLink activeClassName='is-active' className='nav-link' to='/events'>Events</NavLink>
                 <NavLink activeClassName='is-active' className='nav-link' to='/profile'>My Profile</NavLink>
+                <NavLink activeClassName='is-active' className='nav-link' to='/buskers'>Buskers</NavLink>
                 {auth.isAuthenticated ? <div className='nav-user'><p>Welcome, {auth.user.name} </p> <Logout /></div> :
                     <Button onClick={navToLogin}>
                         Sign In
