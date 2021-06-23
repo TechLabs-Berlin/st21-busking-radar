@@ -17,7 +17,10 @@ const EventInfoCard = ({ creator,
     about,
     tags,
     location,
-    active
+    userId,
+    active,
+    authUserId,
+    isAuthenticated
 }) => {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -37,9 +40,8 @@ const EventInfoCard = ({ creator,
                 <p>about: {about}</p>
                 <p>tags: {tags}</p>
                 <p>created by: {creator}</p>
-                <p>created at: {createdAt}</p>
                 {active === true ? <p>Event is happenning now</p> : ''}
-                <div className='event-cd-btn'>
+                {userId === authUserId && isAuthenticated ? < div className='event-cd-btn'>
                     <Button className='btn-sm' size='small' onClick={() => {
                         history.push(`/events/update/${id}`)
                     }}>
@@ -50,7 +52,7 @@ const EventInfoCard = ({ creator,
                         <DeleteIcon fontSize='small' />
                         Delete
                     </Button>
-                </div>
+                </div> : ''}
             </div>
         </div>
     )

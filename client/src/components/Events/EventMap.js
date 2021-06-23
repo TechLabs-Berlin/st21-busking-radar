@@ -33,7 +33,7 @@ const EventMap = ({
             setLat(map.current.getCenter().lat.toFixed(4));
             setZoom(map.current.getZoom().toFixed(2));
         });
-    });
+    }, []);
     useEffect(() => {
         let eventsLong = [];
         events.map(event => {
