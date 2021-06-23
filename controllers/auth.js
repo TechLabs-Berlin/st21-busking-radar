@@ -36,7 +36,7 @@ module.exports.authUser = async (req, res) => {
                                     events: user.events,
                                     socialLinks: user.socialLinks,
                                     email: user.email,
-                                    selectedFile: user.selectedFile
+                                    profilePic: user.profilePic
                                 }
                             })
                         }
