@@ -18,11 +18,13 @@ const eventRoutes = require('./routes/events.js');
 const geocodingRoutes = require('./routes/geocoding.js');
 const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
+// const profileRoutes = require('./routes/profile.js')
 //this says that every route in the routes/events is gonna start with /events
 //all the routes are now is localhost:8080/events
 app.use('/events', eventRoutes);
 app.use('/user', userRoutes);
-app.use('/auth', authRoutes)
+app.use('/auth', authRoutes);
+// app.use('/profile', profileRoutes);
 
 
 app.use('/geocoding', geocodingRoutes);

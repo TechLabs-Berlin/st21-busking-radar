@@ -1,33 +1,32 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import HeadsetIcon from '@material-ui/icons/Headset';
 import { useHistory } from 'react-router-dom';
+import LoginForm from '../Auth/LoginForm';
 
 const Home = ({ auth }) => {
     const history = useHistory();
-    //Navigation
+    const { state } = useLocation();
     const navToEvents = () => {
         history.push('/events')
     }
-    const navToLogin = () => {
-        if (!auth.isAuthenticated) {
-            history.push('/login')
-        } else {
-            history.push('/events')
-        }
-
+    const navToRegistration = () => {
+        history.push('/registration')
     }
-
     return (
         <div className='landing'>
-            <h1 className='hd-lg title-landing'>Busking Radar</h1>
+            <div className='logo-containter'>logo image</div>
             <p className='text-sub'>Made for Buskers and Fans with Love by Techlabs Busking Radar Team!</p>
-            <h2>Who are you?</h2>
-            <div className="buttons">
-                <Button className='btn-lg' onClick={navToLogin}><MusicNoteIcon />Busker</Button>
-                <Button className='btn-lg' onClick={navToEvents}><HeadsetIcon />Fan</Button>
+            {state ? <h2 className='text-sub'>Please sign in to create event</h2> : <h2>Sign In</h2>}
+            <LoginForm
+                history={history}
+            />
+            <div className='sign-up'>
+                <p>Not a member?</p>
+                <Button className='btn-lg' onClick={navToRegistration}>Sign Up</Button>
             </div>
+            <p>or</p>
+            <Button onClick={navToEvents}> Enter as a guest </Button>
         </div>
     )
 }

@@ -7,7 +7,6 @@ import Events from './components/Events/Events';
 import CreateEvent from './components/Events/CreateEvent';
 import UpdateEvent from './components/Events/UpdateEvent';
 import Home from './components/Generic/Home';
-import Login from './components/Auth/Login';
 import Registration from './components/Auth/Registration';
 import { loadUser } from './actions/auth';
 import PrivateRoute from './routers/PrivateRoute';
@@ -35,9 +34,8 @@ const App = () => {
             <PrivateRoute exact path='/events/create' component={() => <CreateEvent auth={auth} />} />
             <PrivateRoute exact path='/events/update/:id' component={UpdateEvent} />
             <Route exact path='/registration' component={Registration} />
-            <PrivateRoute exact path='/user/profile' component={MyProfile} />
-            <PrivateRoute exact path='/user/:id' component={SetUpProfile} />
-            <Route exact path='/login' component={Login} />
+            <PrivateRoute exact path='/profile' component={MyProfile} />
+            <PrivateRoute exact path='/profile/:id' component={SetUpProfile} />
           </Switch>
         </div>
       </BrowserRouter>

@@ -3,10 +3,10 @@ const router = express.Router();
 const auth = require('../middleware/auth.js')
 
 
-const authen = require('../controllers/auth.js');
+const profile = require('../controllers/profile.js');
 
-// router.get('/', auth, authen.getUserData);
+router.get('/', auth, profile.getS3Url);
 
-router.patch('/', auth, authen.authUser);
+// router.patch('/', );
 
 module.exports = router;

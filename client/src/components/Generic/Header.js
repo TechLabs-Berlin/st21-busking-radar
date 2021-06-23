@@ -10,14 +10,14 @@ const Header = () => {
     const history = useHistory();
     const auth = useSelector((state) => state.auth)
     const navToLogin = () => {
-        history.push('/login')
+        history.push('/')
     }
     return (
         <div className='menu'>
             <header>
                 <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Home</NavLink>
                 <NavLink activeClassName='is-active' className='nav-link' to='/events'>Events</NavLink>
-                <NavLink activeClassName='is-active' className='nav-link' to='user/profille'>My Profile</NavLink>
+                <NavLink activeClassName='is-active' className='nav-link' to='/profile'>My Profile</NavLink>
                 {auth.isAuthenticated ? <div className='nav-user'><p>Welcome, {auth.user.name} </p> <Logout /></div> :
                     <Button onClick={navToLogin}>
                         Sign In
