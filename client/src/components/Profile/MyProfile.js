@@ -14,7 +14,6 @@ const MyProfile = ({ history }) => {
     const auth = useSelector(state => state.auth)
     const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id))
     const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
-    console.log(filteredEvents)
     return (
         <div className='prof-page'>
             <Button onClick={() => {

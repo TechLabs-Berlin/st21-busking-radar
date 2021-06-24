@@ -1,8 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import selectEvents from '../../filters/events';
 
 
 const EventMap = ({
@@ -15,6 +13,7 @@ const EventMap = ({
     const [lng, setLng] = useState(13.404954);
     const [lat, setLat] = useState(52.520008);
     const [zoom, setZoom] = useState(11);
+    const prevNewLocation = useRef(null)
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
     useEffect(() => {
         if (map.current) return;
@@ -34,8 +33,9 @@ const EventMap = ({
             setZoom(map.current.getZoom().toFixed(2));
         });
     }, []);
+
     useEffect(() => {
-        let eventsLong = [];
+        let eventsLong = []
         events.map(event => {
             let eventsNumber = 0;
             for (let i = 0; i < events.length; i++) {
@@ -58,7 +58,8 @@ const EventMap = ({
             return marker
         })
         //This is not the best code ever, but it works! I could maybe try to improve it later
-        map.current._markers.forEach(marker => {
+        //it removes the markers if the events are filtered by dates. It loops too much and makes everything work slowly
+        map.current._markers.map(marker => {
             for (let i = 0; i < eventsLong.length; i++) {
                 if (eventsLong.includes(marker._lngLat.lng) === false) {
                     return marker.remove()
@@ -68,6 +69,7 @@ const EventMap = ({
     }, [events.length])
     useEffect(() => {
         if (newLocation) {
+            prevNewLocation.current = newLocation
             let newCostumMarker = document.createElement('div');
             newCostumMarker.className = 'marker';
             newCostumMarker.className = 'newMarker';
@@ -76,8 +78,15 @@ const EventMap = ({
                 .setLngLat([newLocation.long, newLocation.lat])
                 .addTo(map.current)
             return newMarker
+        } else if (prevNewLocation.current) {
+            //this deletes the chosen new location if the choice is aborted
+            map.current._markers.map(marker => {
+                if (marker._lngLat.lng === prevNewLocation.current.long) {
+                    return marker.remove()
+                }
+            })
         }
-    }, newLocation)
+    }, [newLocation])
     return (
         <div id='events-map' className='events-map'>
             <div id='map-container' ref={mapContainer} className='map-container' />
