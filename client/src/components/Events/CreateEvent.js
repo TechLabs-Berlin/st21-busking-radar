@@ -20,9 +20,9 @@ const CreateEvent = ({ auth }) => {
                     newLocation={newLocation}
                     handleSubmit={(eventData) => {
                         dispatch(startCreateEvent(eventData));
-                        history.push('/events')
                     }
-                    } />
+                    }
+                    history={history} />
             </main>
         </div>
     )

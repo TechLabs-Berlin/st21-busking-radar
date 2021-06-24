@@ -37,7 +37,7 @@ export const startCreateEvent = (eventData) => async (dispatch, getState) => {
         //here we are descructuring and dispatching to the local state the same data that was send to the server 
         dispatch(createEvent(data))
     } catch (e) {
-        dispatch(returnErrors(e.message))
+        dispatch(returnErrors(e.response.data, e.response.status, 'SIMILAR_EVENT_EXISTS'))
     }
 }
 

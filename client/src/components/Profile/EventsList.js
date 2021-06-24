@@ -11,14 +11,14 @@ const EventsList = ({ sortedEvents, auth }) => {
                     key={event._id}
                     creator={event.creator}
                     date={moment(event.startTime).format('MMMM Do YYYY')}
-                    id={event.id}
+                    id={event._id}
                     name={event.name}
                     genre={event.genre}
                     startTime={moment(event.startTime).format('h:mm:ss a')}
                     endTime={moment(event.endTime).format('h:mm:ss a')}
                     about={event.about}
                     tags={event.tags}
-                    location={event.location}
+                    location={event.locationName}
                     active={event.active}
                     authUserId={auth.user._id}
                     userId={event.userId}

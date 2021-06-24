@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
 import moment from 'moment';
+import { clearErrors } from '../../actions/error';
 
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
@@ -19,8 +21,12 @@ const EventForm = (props) => {
         geometry: props.event ? props.event.geometry : { type: 'Point', coordinates: [props.newLocation[1], props.newLocation[2]] },
         active: props.event ? props.event.active : false,
         userId: props.event ? props.event.userId : props.auth.user._id,
+        confirmation: false,
         error: ''
     })
+    const [dataSubmitted, setDataSubmitted] = useState(false)
+    const dispatch = useDispatch();
+    const error = useSelector((state) => state.error)
     const handleChange = (e) => {
         setEventData({
             ...eventData,
@@ -33,6 +39,8 @@ const EventForm = (props) => {
     const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
     const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
     const handleStartTimeChange = (date) => {
+        dispatch(clearErrors())
+        setEventData({ ...eventData, error: '' })
         setStartTime(date)
         setEndTime(date)
     }
@@ -50,16 +58,34 @@ const EventForm = (props) => {
 
     eventData.endTime = endTime
 
+    useEffect(() => {
+        if (error.id === 'SIMILAR_EVENT_EXISTS') {
+            setEventData({ ...eventData, error: error.msg.msg, confirmation: true })
+        }
+    }, [error])
+    useEffect(() => {
+        //return function is similar to the component will unmount in the class components
+        return () => {
+            dispatch(clearErrors())
+        }
+    }, [])
+    useEffect(() => {
+        if (!error.msg.msg) {
+            props.history.push('/events')
+        }
+    }, [])
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!eventData.name) {
-            setEventData({ error: 'Please provide user name' })
+            setEventData({ ...eventData, error: 'Please provide event name' })
         } else if (!eventData.startTime || !eventData.endTime) {
-            setEventData({ error: 'Please provide time' })
+            setEventData({ ...eventData, error: 'Please provide time' })
         } else if (!eventData.geometry || !eventData.locationName) {
-            setEventData({ error: 'Please provide location' })
+            setEventData({ ...eventData, error: 'Please provide location' })
         } else {
             props.handleSubmit(eventData)
+            setDataSubmitted(true)
         }
     }
     return (
@@ -97,7 +123,7 @@ const EventForm = (props) => {
             {eventData.error && <p>{eventData.error}</p>}
             <Button type='submit' className='btn-lg' size='small'>
                 <PublishIcon />
-                Publish Event
+                {!eventData.error ? 'Publish Event' : 'Create Event Anyway'}
             </Button>
         </form>
     )

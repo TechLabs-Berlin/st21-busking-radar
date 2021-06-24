@@ -173,7 +173,7 @@ const Events = ({ history }) => {
                                     key={event._id}
                                     name={event.name}
                                     genre={event.genre}
-                                    location={event.location}
+                                    location={event.locationName}
                                     date={moment(event.startTime).format('MMMM Do YYYY')}
                                     startTime={moment(event.startTime).format('h:mm:ss a')}
                                     endTime={moment(event.endTime).format('h:mm:ss a')}
@@ -195,7 +195,7 @@ const Events = ({ history }) => {
                                 key={event._id}
                                 name={event.name}
                                 genre={event.genre}
-                                location={event.location}
+                                location={event.locationName}
                                 date={moment(event.startTime).format('MMMM Do YYYY')}
                                 startTime={moment(event.startTime).format('h:mm:ss a')}
                                 endTime={moment(event.endTime).format('h:mm:ss a')}

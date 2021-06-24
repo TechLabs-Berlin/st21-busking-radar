@@ -82,7 +82,6 @@ module.exports.getUsers = async (req, res) => {
             socialLinks: user.socialLinks,
             profilePic: user.profilePic
         }))
-        console.log(filteredUsers)
         res.send(filteredUsers);
     } catch (e) {
         res.status(400).json({ msg: 'could not get users' })
