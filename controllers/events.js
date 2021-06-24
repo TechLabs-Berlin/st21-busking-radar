@@ -1,3 +1,4 @@
+const moment = require('moment')
 const mongoose = require('mongoose');
 // const { findByIdAndRemove } = require('../models/event.js');
 const Event = require('../models/event.js');
@@ -17,18 +18,51 @@ module.exports.getEvents = async (req, res) => {
 //creating event
 module.exports.createEvent = async (req, res) => {
     //req.body <-getting the event data from the front end create event form
-    const event = req.body
+    //<-checking if there is an event exists which with the same time and location
+    const event = await req.body
+    const events = await Event.find({})
+    const similarEvent = events.filter(eventToFind => {
+        if (eventToFind.geometry.coordinates[0] == event.geometry.coordinates[0]) {
+            if (moment(event.startTime).unix() <= moment(eventToFind.startTime).unix() && moment(eventToFind.startTime).unix() <= moment(event.endTime)) {
+                return eventToFind
+            } else if (moment(eventToFind.endTime) < moment(event.startTime).unix() && moment(eventToFind.endTime).unix() <= moment(event.endTime)) {
+                console.log(eventToFind)
+                return eventToFind
+            }
+        }
+    })[0]
+    console.log(similarEvent)
+    if (similarEvent && event.confirmation === false) {
+        return res.status(400).json({ msg: `Another event is booked at that time between ${moment(similarEvent.startTime).format('h:mm:ss a')} ${moment(similarEvent.endTime).format('h:mm:ss a')} in this location` })
+    } else {
+        const newEvent = new Event(event)
+        newEvent.save()
+    }
+
+
+
+    // if (checkEvents === true) throw e
+    // } catch (e) {
+    //     res.json(400).json({ msg: "event at this location and time already exists, please choose other location or time" })
+    // }
     //newEvent <-creating a new event by passing the values from the event
     //it will create the new event, because it is the object with
     //the same values, as needed for the creation of the event in the 
     //mongoDB schema
-    const newEvent = new Event(event)
-    try {
-        await newEvent.save()
-    } catch (e) {
-        console.log('This did not work', e.message)
-    }
+    // const newEvent = new Event(event)
+    // try {
+    //     newEvent.save()
+    // } catch (e) {
+    //     console.log('This did not work', e.message)
+    // }
+    // console.log(newEvent)
 }
+
+// if (moment(event.startTime).isSameOrAfter(moment(eventToFind.startTime))
+// || moment(event.endTime).isSameOrAfter(moment(eventToFind.startTime))
+// || moment(event.endTime).isSameOrBefore(moment(eventToFind.endTime))) {
+// return eventToFind
+// }
 
 //updating event
 

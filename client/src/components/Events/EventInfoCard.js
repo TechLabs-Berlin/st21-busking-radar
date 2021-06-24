@@ -9,7 +9,6 @@ import { startDeleteEvent } from '../../actions/events';
 const EventInfoCard = ({ creator,
     date,
     id,
-    createdAt,
     name,
     genre,
     startTime,
