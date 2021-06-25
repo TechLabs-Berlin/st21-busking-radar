@@ -6,4 +6,13 @@
     padding: 0;
 }
 
-
+body{
+    .cr-event-modal-container{
+        background-color: white;
+        width: 20em;
+        height: 20em;
+        position: relative;
+        top: 20vh;
+        left: 40vw;
+    }
+}

@@ -48,11 +48,11 @@ const LoginForm = (props) => {
     }
     useEffect(() => {
         //I can't find the better solution now. If you have time later, you should think about it. 
-        //the conditional push up there does not work, due to the scope. When we push the button, the whoe handle submit happens within
+        //the conditional push up there does not work, due to the scope. When we push the button, the whole handle submit happens within
         //the scope of that function, which means the auth.isAuthenticated will be null, as the login has not happened yet. 
         if (auth.isAuthenticated)
             props.history.push(`/events`)
-    }, [auth])
+    }, [login])
 
     return (
         <form onSubmit={handleSubmit}>
