@@ -1,9 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import EventForm from './EventForm';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 
-const CreateEvent = ({ auth }) => {
+const CreateEvent = () => {
+    const auth = useSelector(state => state.auth)
     const history = useHistory();
     const { search } = useLocation();
     const { locationName, longitude, latitude } = queryString.parse(search)
