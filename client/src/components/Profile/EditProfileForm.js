@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import FileBase from 'react-file-base64';
 import { Button } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
 import { startUpdateUserInfo } from '../../actions/auth';
-import { clearErrors } from '../../actions/error';
-import { set } from 'date-fns/esm';
 
 
 

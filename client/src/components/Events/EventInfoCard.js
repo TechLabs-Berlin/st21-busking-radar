@@ -23,9 +23,6 @@ const EventInfoCard = ({ creator,
 }) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    // const deleteEvent = () => {
-    //     dispatch(startDeleteEvent(id))
-    // }
     return (
         <div id='event-cd' className='event-cd'>
             <div className='event-cd-info'>

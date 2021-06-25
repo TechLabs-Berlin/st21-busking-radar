@@ -1,13 +1,10 @@
 import React from 'react';
 import EventForm from './EventForm';
-import { useDispatch } from 'react-redux';
-import { startCreateEvent } from '../../actions/events';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 
 const CreateEvent = ({ auth }) => {
     const history = useHistory();
-    const dispatch = useDispatch();
     const { search } = useLocation();
     const { locationName, longitude, latitude } = queryString.parse(search)
     const newLocation = [locationName, longitude, latitude]
@@ -18,10 +15,6 @@ const CreateEvent = ({ auth }) => {
                 <EventForm
                     auth={auth}
                     newLocation={newLocation}
-                    handleSubmit={(eventData) => {
-                        dispatch(startCreateEvent(eventData));
-                    }
-                    }
                     history={history} />
             </main>
         </div>

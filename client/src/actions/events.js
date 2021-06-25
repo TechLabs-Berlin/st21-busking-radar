@@ -77,7 +77,7 @@ const deleteEvent = (id) => {
 export const startDeleteEvent = (id) => async (dispatch, getState) => {
     try {
         //for some reason, if I await for axios.delete the action does not dispatch to store
-        await axios.delete(`/events/${id}`, tokenConfig(getState))
+        axios.delete(`/events/${id}`, tokenConfig(getState))
         dispatch(deleteEvent(id))
     } catch (e) {
         dispatch(returnErrors(e.message))
