@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import LoginForm from '../Auth/LoginForm';
-import { clearErrors } from '../../actions/error';
 
 const Home = () => {
     const auth = useSelector(state => state.auth)
@@ -16,7 +15,6 @@ const Home = () => {
     const navToRegistration = () => {
         history.push('/registration')
     }
-
     return (
         <div className='landing'>
             <div className='logo-containter'>logo image</div>

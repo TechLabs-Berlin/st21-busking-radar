@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -16,6 +17,7 @@ const MyProfile = ({ history }) => {
     const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     return (
         <div className='prof-page'>
+            {!auth.user.about && !auth.user.genre ? <p>Please fill in your profile info</p> : ''}
             <Button onClick={() => {
                 history.push(`/profile/${auth.user._id}`)
             }}><EditIcon />Edit Profile</Button>
