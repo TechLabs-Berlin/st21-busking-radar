@@ -44,10 +44,19 @@ const EventMap = ({
                 }
             }
             let customMarker = document.createElement('div');
+            customMarker.id = `${event._id}`
             customMarker.className = 'marker';
             customMarker.addEventListener('click', () => {
                 handleMarkerClick(event.geometry.coordinates, event.locationName)
+
+                map.current.flyTo({
+                    center: event.geometry.coordinates,
+                    zoom: 13.5
+                });
+
             })
+
+
             customMarker.innerHTML = `<span><b> ${eventsNumber} </b></span>`
             let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
@@ -77,6 +86,10 @@ const EventMap = ({
             const newMarker = new mapboxgl.Marker(newCostumMarker)
                 .setLngLat([newLocation.long, newLocation.lat])
                 .addTo(map.current)
+            map.current.flyTo({
+                center: [newLocation.long, newLocation.lat],
+                zoom: 13.5
+            });
             return newMarker
         } else if (prevNewLocation.current) {
             //this deletes the chosen new location if the choice is aborted

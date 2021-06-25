@@ -17,7 +17,7 @@ const LoginForm = (props) => {
         loggedIn: false
     })
 
-    const errorRef = useRef();
+
 
     //changing clear errors
     useEffect(() => {
@@ -26,12 +26,10 @@ const LoginForm = (props) => {
         return () => {
             dispatch(clearErrors())
         }
-
     }, [])
     useEffect(() => {
         if (error.id === 'LOGIN_FAIL') {
             setUserData({ error: error.msg.msg })
-            errorRef.current = 'error'
         } else {
             setUserData({ error: '' })
         }
