@@ -3,15 +3,15 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
-const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about }) => {
+const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about, history, id }) => {
 
     return (
-        <div className='busker-info-card'>
+        <div className='busker-info-card' onClick={() => { history.push(`/busker/${id}`) }}>
             <div className='prof-pic-container'>
                 <img className='prof-pic' src={profilePic} />
             </div>
             <h1>{name}</h1>
-            <div className='soc-links-container'>
+            <div className='soc-links-container' >
                 {socialLinks.map(link => {
                     if (link.name === 'facebook') {
                         return <a href={link.link}><FacebookIcon /> </a>
