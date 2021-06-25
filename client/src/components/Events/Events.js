@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,7 +9,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CloseIcon from '@material-ui/icons/Close';
-import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
 import Geocoder from './Geocoder';
@@ -159,7 +159,7 @@ const Events = ({ history }) => {
                 <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
             </div>
 
-            {events.length === 0 ? <CircularProgress /> : (!showList && clickedLocation.length > 1) ?
+            {events.length === 0 ? <h2>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
                 <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
                     <Button onClick={() => handleMarkerClick()} size='small'>
                         <CloseIcon />

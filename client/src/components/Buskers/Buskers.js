@@ -1,17 +1,31 @@
 import React, { useEffect } from 'react';
+import { Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { startGetUsers } from '../../actions/users';
+import { startGetAllEvents } from '../../actions/events';
+import BuskerInfoCard from './BuskerInfoCard';
+import BuskerPage from './BuskerPage';
 
-const Buskers = () => {
+const Buskers = ({ history }) => {
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(startGetUsers());
+        dispatch(startGetAllEvents())
     }, [])
 
     const users = useSelector(state => state.users)
-    console.log(users)
     return (
-        <div>
+        <div className='buskers-list'>
+            {users.map(user => {
+                return <BuskerInfoCard
+                    name={user.name}
+                    socialLinks={user.socialLinks}
+                    genre={user.genre}
+                    about={user.about}
+                    profilePic={user.profilePic}
+                    history={history}
+                    id={user._id}
+                />
+            })}
+            <Route exact path='/busker/:id' component={BuskerPage} />
         </div>
     )
 }

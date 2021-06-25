@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import FileBase from 'react-file-base64';
 import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
-import { loadUser, register } from '../../actions/auth';
+import { register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
 
 
-const RegForm = (props) => {
-    const history = useHistory();
+const RegForm = ({ handleModal }) => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
@@ -31,7 +28,10 @@ const RegForm = (props) => {
 
     useEffect(() => {
         if (auth.isAuthenticated)
-            history.push(`/user/${auth.user._id}`)
+            handleModal({
+                open: true,
+                userName: userData.name
+            })
     }, [auth])
     //changing clear errors
     useEffect(() => {
