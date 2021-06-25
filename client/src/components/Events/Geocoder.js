@@ -18,7 +18,7 @@ const Geocoder = ({ handleChooseLocation }) => {
     })
     const suggestedLocations = useSelector((state) => state.suggestedLocations)
     return (
-        <div className='geocoder'>
+        <div className='geocoder' key='e456geocoder'>
             <input type='text' value={searchLocation} name='search' onChange={handleSearchLocation} onKeyUp={sendReq} />
             <ul>
                 {searchLocation !== '' && suggestedLocations.map(place => {
