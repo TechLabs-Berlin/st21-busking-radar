@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import PublishIcon from '@material-ui/icons/Publish';
 import { login } from '../../actions/auth';
@@ -12,22 +11,27 @@ const LoginForm = (props) => {
     const dispatch = useDispatch();
     const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
-        password: props.user ? props.user.password : '', // I will have to change that once we have the user authetication and users
-        email: props.user ? props.user.email : '',
-        error: ''
+        password: '', // I will have to change that once we have the user authetication and users
+        email: '',
+        error: '',
+        loggedIn: false
     })
-    const auth = useSelector(state => state.auth)
+
+    const errorRef = useRef();
 
     //changing clear errors
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
+
         return () => {
             dispatch(clearErrors())
         }
+
     }, [])
     useEffect(() => {
         if (error.id === 'LOGIN_FAIL') {
             setUserData({ error: error.msg.msg })
+            errorRef.current = 'error'
         } else {
             setUserData({ error: '' })
         }
@@ -42,17 +46,15 @@ const LoginForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(login(userData))
-        // if (userData.email && userData.password && auth.isAuthenticated) {
-        //     dispatch(clearErrors())
-        // }
+        setUserData({ ...userData, loggedIn: true })
     }
     useEffect(() => {
         //I can't find the better solution now. If you have time later, you should think about it. 
         //the conditional push up there does not work, due to the scope. When we push the button, the whole handle submit happens within
         //the scope of that function, which means the auth.isAuthenticated will be null, as the login has not happened yet. 
-        if (auth.isAuthenticated)
+        if (props.auth.isAuthenticated && userData.loggedIn)
             props.history.push(`/events`)
-    }, [login])
+    }, [props.auth])
 
     return (
         <form onSubmit={handleSubmit}>

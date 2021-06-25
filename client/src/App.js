@@ -18,7 +18,6 @@ import Buskers from './components/Buskers/Buskers'
 const queryClient = new QueryClient();
 
 const App = () => {
-  const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loadUser())
@@ -31,9 +30,9 @@ const App = () => {
         <div className='App'>
           <Header />
           <Switch>
-            <Route exact path='/' component={() => <Home auth={auth} />} />
+            <Route exact path='/' component={Home} />
             <Route exact path='/events' component={Events} />
-            <PrivateRoute exact path='/events/create' component={() => <CreateEvent auth={auth} />} />
+            <PrivateRoute exact path='/events/create' component={CreateEvent} />
             <PrivateRoute exact path='/events/update/:id' component={UpdateEvent} />
             <Route exact path='/registration' component={Registration} />
             <PrivateRoute exact path='/profile' component={MyProfile} />

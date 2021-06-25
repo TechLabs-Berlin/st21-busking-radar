@@ -1,10 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import LoginForm from '../Auth/LoginForm';
+import { clearErrors } from '../../actions/error';
 
-const Home = ({ auth }) => {
+const Home = () => {
+    const auth = useSelector(state => state.auth)
     const history = useHistory();
     const { state } = useLocation();
     const navToEvents = () => {
@@ -13,6 +16,7 @@ const Home = ({ auth }) => {
     const navToRegistration = () => {
         history.push('/registration')
     }
+
     return (
         <div className='landing'>
             <div className='logo-containter'>logo image</div>
@@ -20,6 +24,7 @@ const Home = ({ auth }) => {
             {state ? <h2 className='text-sub'>Please sign in to create event</h2> : <h2>Sign In</h2>}
             <LoginForm
                 history={history}
+                auth={auth}
             />
             <div className='sign-up'>
                 <p>Not a member?</p>
