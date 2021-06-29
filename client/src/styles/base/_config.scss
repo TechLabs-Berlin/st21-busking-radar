@@ -1,0 +1,12 @@
+$bg-color: #E5E5E5;
+$bg-img-home: url('../../images/background-home.png');
+$img-logo: url('../../images/Component\ 1.svg');
+$bg-img-prof: url('../../images/background-profile.jfif');
+$primary-color: #FFFF;
+$secondary-color: rgba(164, 74, 63, 0.87);
+
+//animation mixins
+
+@mixin easeOutIn {
+    transition: all 0.7s ease-in-out;
+}
