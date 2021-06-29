@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import Logout from '../Auth/Logout';
 
@@ -24,14 +23,18 @@ const Header = () => {
                 <div className='btn-line'></div>
             </div>
             <header id='menu-nav' className={`menu-nav ${showMenu && 'show'}`} >
-                <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true}>Home</NavLink>
-                <NavLink activeClassName='is-active' className='nav-link' to='/events'>Events</NavLink>
-                {auth.isAuthenticated && <NavLink activeClassName='is-active' className='nav-link' to='/profile'>My Profile</NavLink>}
-                <NavLink activeClassName='is-active' className='nav-link' to='/buskers'>Buskers</NavLink>
-                {auth.isAuthenticated ? <div className='nav-user'><p>Welcome, {auth.user.name} </p> <Logout /></div> :
-                    <Button onClick={navToLogin}>
+                {auth.isAuthenticated && <p className='text-sub'>Welcome, {auth.user.name} </p>}
+                <NavLink activeClassName='is-active' className='nav-link' to='/' exact={true} onClick={toggleMenu}>Home</NavLink>
+                <NavLink activeClassName='is-active' className='nav-link' to='/events' onClick={toggleMenu}>Events</NavLink>
+                {auth.isAuthenticated && <NavLink activeClassName='is-active' className='nav-link' to='/profile' onClick={toggleMenu}>My Profile</NavLink>}
+                <NavLink activeClassName='is-active' className='nav-link' to='/buskers' onClick={toggleMenu}>Buskers</NavLink>
+                {auth.isAuthenticated ? <Logout /> :
+                    <button className='btn-lg' onClick={() => {
+                        navToLogin()
+                        toggleMenu()
+                    }}>
                         Sign In
-                    </Button>}
+                    </button>}
             </header>
         </div >
     )
