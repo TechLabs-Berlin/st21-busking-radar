@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
 import { register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
 
 
-const RegForm = ({ handleModal }) => {
+const RegForm = ({ handleModal, history }) => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
@@ -51,20 +49,23 @@ const RegForm = ({ handleModal }) => {
         e.preventDefault()
         dispatch(register(userData))
     }
-
+    const navToHome = () => {
+        history.push('/')
+    }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form' onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-            <p>Password</p>
-            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-            <p>Email</p>
-            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            <Button type='submit' className='btn-lg' size='small' >
-                <PublishIcon />
+            <input className='input' type="text" placeholder="Name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
+            <input className='input' type="password" placeholder="Password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <input className='input' type="text" placeholder="Email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
+            <div className='sign-in'>
+                <p>Already a member?</p>
+                <button className='btn-sm' onClick={navToHome}>Sign In</button>
+            </div>
+            <button type='submit' className='btn-lg' size='small' >
                 Submit
-            </Button>
+            </button>
         </form>
     )
 }
