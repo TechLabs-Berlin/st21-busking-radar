@@ -5,7 +5,6 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import EventInfoCard from '../Events/EventInfoCard';
-import EventsList from '../Profile/EventsList';
 import selectEvents from '../../filters/events';
 
 const BuskerPage = ({ match }) => {
