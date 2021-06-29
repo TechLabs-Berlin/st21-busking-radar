@@ -19,11 +19,11 @@ module.exports.getEvents = async (req, res) => {
 module.exports.createEvent = async (req, res) => {
     //req.body <-getting the event data from the front end create event form
     //<-checking if there is an event exists which with the same time and location
-    const event = await req.body
+    const event = req.body
     const events = await Event.find({})
     const similarEvent = events.filter(eventToFind => {
         if (eventToFind.geometry.coordinates[0] == event.geometry.coordinates[0]) {
-            if (moment(event.startTime).unix() <= moment(eventToFind.startTime).unix() && moment(eventToFind.startTime).unix() <= moment(event.endTime)) {
+            if (moment(event.startTime).unix() >= moment(eventToFind.startTime).unix() && moment(eventToFind.startTime).unix() <= moment(event.endTime)) {
                 return eventToFind
             } else if (moment(eventToFind.endTime) < moment(event.startTime).unix() && moment(eventToFind.endTime).unix() <= moment(event.endTime)) {
                 console.log(eventToFind)

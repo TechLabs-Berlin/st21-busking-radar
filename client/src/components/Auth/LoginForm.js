@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
 import { login } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
@@ -55,16 +53,13 @@ const LoginForm = (props) => {
     }, [props.auth])
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form login' onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            <p>Email</p>
-            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            <p>Password</p>
-            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-            <Button type='submit' className='btn-lg' size='small'>
-                <PublishIcon />
-                Login
-            </Button>
+            <input className='input login-input' type="text" placeholder="Email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
+            <input className='input login-input' type="password" placeholder="Password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <button type='submit' className='btn-lg btn-sign-in' size='small'>
+                Sign In
+            </button>
         </form>
     )
 }

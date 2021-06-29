@@ -1,0 +1,65 @@
+
+main{
+    &.landing{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: 1em;
+        height: 90vh;
+        .logo{
+            background: $img-logo;
+            background-size: cover;
+            width: 12em;
+            height: 6em;
+            top: 2em;
+            z-index: 2;
+        }
+        .bg-home{
+        background: $bg-img-home;
+        background-attachment: fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 100%;
+        min-width: 1024px;
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -3;
+        background-position: right 0em bottom;
+        .blur{
+            background: darken($color: rgba($bg-color, 0.4), $amount: 50); 
+            backdrop-filter: blur(3px); // This be the blur
+            height: 100vh;
+	        width: 100%;
+        }
+    }
+
+    .hd-md-home{
+        margin: 1em 0;
+    }
+
+    .sign-up{
+        display: flex;
+        flex-direction: row;
+        width: 70%;
+        margin-top: 1em;
+        top: 1em;
+        font-size: 1.2em;
+        .btn-sm{
+            margin-left: 1em;
+            font-weight: 800;
+        }
+    }
+    .guest{
+        text-align: center;
+        width: 70%;
+    }
+    }
+
+}
