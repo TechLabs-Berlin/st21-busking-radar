@@ -1,8 +1,11 @@
-@import './pages/eventspage';
 @import './base/config';
 @import './base/base';
+@import './pages/eventspage';
 @import './components/eventmap';
 @import './pages/home';
 @import './base/config';
 @import './components/header';
 @import './pages/registration';
+@import './components/eventsfilters';
+@import './components/geocoder';
+

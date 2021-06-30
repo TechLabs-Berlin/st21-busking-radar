@@ -25,7 +25,7 @@ const EventsFilters = (props) => {
     }, [endDate])
 
     return (
-        <div className='filters'>
+        <div className={`filters ${!props.showFilters ? 'hide' : ''}`}>
             <p>Search by genre or artist name</p>
             <input type='text' value={filters.text} onChange={handleTextInputChange} />
             <p>Filter by dates</p>

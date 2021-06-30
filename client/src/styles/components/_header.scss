@@ -13,12 +13,13 @@
             width: 28px;
             height: 3px;
             margin: 0 0 5px 0;
-            background: $primary-color;
+            background: $secondary-color;
             @include easeOutIn;
         }
         &.close{
             transform: rotate(180deg);
             .btn-line{ 
+                background: $primary-color;
                 //line 1 rotate
                 &:nth-child(1){
                     transform: rotate(45deg) translate(5px, 5px);
