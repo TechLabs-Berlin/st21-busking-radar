@@ -20,14 +20,6 @@ body{
         margin-top: 1em;
         width: 100%;
         height: 90vh;
-        .logo{
-            background: $img-logo;
-            background-size: cover;
-            width: 12em;
-            height: 6em;
-            top: 2em;
-            z-index: 2;
-        }
         .bg-home{
         background: $bg-img-home;
         background-attachment: fixed;
@@ -54,7 +46,14 @@ body{
     }
     }
 }
-
+.logo{
+    background: $img-logo;
+    background-size: cover;
+    width: 12em;
+    height: 6em;
+    top: 2em;
+    z-index: 2;
+}
 .text-sub{
     width: 80%;
     text-align: center;
@@ -68,19 +67,20 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    .input{
-        border-radius: 18.5px;
-        padding-left: 1em;
-        border: 0;
-        font-size: 1em;
-        width: 100%;
-        height: 2.3em;
+    
+}
+.input{
+    border-radius: 18.5px;
+    padding-left: 1em;
+    border: 0;
+    font-size: 1em;
+    width: 100%;
+    height: 2.3em;
+    color: $secondary-color;
+    &::placeholder{
         color: $secondary-color;
-        &::placeholder{
-            color: $secondary-color;
-            text-align: left;
-            font-size: 1em;
-        }
+        text-align: left;
+        font-size: 1em;
     }
 }
 .btn-lg{

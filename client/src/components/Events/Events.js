@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
 import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import CloseIcon from '@material-ui/icons/Close';
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
 import Geocoder from './Geocoder';
@@ -117,53 +114,48 @@ const Events = ({ history }) => {
     }
     return (
         <main id='events' className='events'>
-            <div className='events-search'>
-                <h1 id='hd-events' className='hd-lg' >Events</h1>
-                {chooseLocation === true && !newLocation
+            <div className='logo logo-events'></div>
+            <Geocoder
+                handleChooseLocation={handleChooseLocation}
+                newLocation={newLocation}
+                handleAbortChoice={handleAbortChoice}
+            />
+            {chooseLocation === true && !newLocation
+                ?
+                <p className='text-sub text-choose'>
+                    Please choose the event location by typing an address
+                </p>
+                :
+                (chooseLocation === true && newLocation)
                     ?
-                    <p>
-                        Please choose the event location from the list or by typing an address
-                        <Geocoder handleChooseLocation={handleChooseLocation}
-                            newLocation={newLocation}
-                        />
-                    </p>
+                    <div className='choice-container'>
+                        <p className='text-sub text-choose'>Chosen location: <span>{newLocation.name} </span> </p>
+                        <button className='btn-lg' size='small' onClick={handleConfirmChoice}>
+                            Confirm choice
+                        </button>
+                        <button className='btn-lg' onClick={handleAbortChoice}>
+                            Cancel
+                        </button>
+                    </div>
                     :
-                    (chooseLocation === true && newLocation)
-                        ?
-                        <div className=''>
-                            <p>Chosen event location: {newLocation.name}</p>
-                            <Button className='btn-lg' size='small' onClick={handleConfirmChoice}>Confirm and proceed
-                                <ArrowForwardIosIcon />
-                            </Button>
-                            <Button onClick={handleAbortChoice}>
-                                Choose another location
-                                <ArrowBackIosIcon />
-                            </Button>
-                        </div>
-                        :
-                        <div className='events-btn'>
-                            <Button className='btn-lg' size='small' onClick={createEvent}>
-                                <AddBoxIcon />
-                                Create Event
-                            </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowList}>
-                                <KeyboardArrowDownIcon />
-                                Show All Events
-                            </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowFilters}>
-                                <KeyboardArrowDownIcon />
-                                Show filters
-                            </Button>
-                        </div>
-                }
-                <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
-            </div>
-
+                    <div className='events-btn'>
+                        <button className='btn-lg' size='small' onClick={createEvent}>
+                            Create Event
+                        </button>
+                        <button className='btn-lg' size='small' onClick={handleShowFilters}>
+                            Filters
+                        </button>
+                    </div>
+            }
+            <EventsFilters showFilters={showFilters} />
+            <button className='btn-lg btn-see' size='small' onClick={handleShowList}>
+                See All Events
+            </button>
             {events.length === 0 ? <h2>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
                 <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    <Button onClick={() => handleMarkerClick()} size='small'>
+                    <button onClick={() => handleMarkerClick()} size='small'>
                         <CloseIcon />
-                    </Button>
+                    </button>
                     <h2>Events at {clickedLocation[2]}</h2>
                     {events.map((event => {
                         if (event.geometry.coordinates[0] === clickedLocation[0]) {
