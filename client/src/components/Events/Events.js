@@ -4,9 +4,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
 import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import CloseIcon from '@material-ui/icons/Close';
-import { Grid } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
 import Geocoder from './Geocoder';
@@ -16,10 +14,10 @@ import selectEvents from './../../filters/events';
 
 
 
+
 //polling mechanism
 const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
-    const [showFilters, setShowFilters] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
@@ -66,15 +64,10 @@ const Events = ({ history }) => {
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
         setChooseLocation(true)
-        setShowFilters(false)
         setShowList(false)
         setClickedLocation([])
     }
     //Handlers
-    const handleShowFilters = () => {
-        setShowFilters(!showFilters)
-        setShowList(false)
-    }
     //confirm the choice of the new location logic
     const handleConfirmChoice = () => {
         if (newLocation) {
@@ -99,7 +92,6 @@ const Events = ({ history }) => {
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
-        setShowFilters(false)
         setClickedLocation([])
     }
     //show events in the clicked location logic
@@ -109,9 +101,10 @@ const Events = ({ history }) => {
         } else {
             setClickedLocation([coordinates[0], coordinates[1], name])
         }
-        setShowFilters(false)
         setShowList(false)
     }
+    //initiallizing events filters
+
     return (
         <main id='events' className='events'>
             <div className='logo logo-events'></div>
@@ -129,7 +122,7 @@ const Events = ({ history }) => {
                 (chooseLocation === true && newLocation)
                     ?
                     <div className='choice-container'>
-                        <p className='text-sub text-choose'>Chosen location: <span>{newLocation.name} </span> </p>
+                        <p className='text-sub text-choose'>Chosen location: <span>"{newLocation.name}"</span> </p>
                         <button className='btn-lg' size='small' onClick={handleConfirmChoice}>
                             Confirm choice
                         </button>
@@ -142,47 +135,20 @@ const Events = ({ history }) => {
                         <button className='btn-lg' size='small' onClick={createEvent}>
                             Create Event
                         </button>
-                        <button className='btn-lg' size='small' onClick={handleShowFilters}>
-                            Filters
-                        </button>
                     </div>
             }
-            <EventsFilters showFilters={showFilters} />
             <button className='btn-lg btn-see' size='small' onClick={handleShowList}>
                 See All Events
             </button>
-            {events.length === 0 ? <h2>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
-                <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    <button onClick={() => handleMarkerClick()} size='small'>
-                        <CloseIcon />
+            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
+                <div key={'123dfg'} className='events-ls' >
+                    <button className='btn-close' onClick={() => handleMarkerClick()} size='small'>
+                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "white" }} />
                     </button>
-                    <h2>Events at {clickedLocation[2]}</h2>
+                    <h2 className='hd-md'>Events at {clickedLocation[2]}</h2>
                     {events.map((event => {
                         if (event.geometry.coordinates[0] === clickedLocation[0]) {
-                            return <Grid item xs={10} sm={8}>
-                                <EventInfoCard
-                                    id={event._id}
-                                    key={event._id}
-                                    name={event.name}
-                                    genre={event.genre}
-                                    location={event.locationName}
-                                    date={moment(event.startTime).format('MMMM Do YYYY')}
-                                    startTime={moment(event.startTime).format('h:mm:ss a')}
-                                    endTime={moment(event.endTime).format('h:mm:ss a')}
-                                    about={event.about}
-                                    tags={event.tags}
-                                    creator={event.creator}
-                                    active={event.active}
-                                />
-                            </Grid>
-                        }
-                    }))}
-                </div>
-                : showList &&
-                <div key={'123ddgg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    {events.map((event => {
-                        return <Grid item xs={10} sm={8}>
-                            <EventInfoCard
+                            return <EventInfoCard
                                 id={event._id}
                                 key={event._id}
                                 name={event.name}
@@ -194,10 +160,34 @@ const Events = ({ history }) => {
                                 about={event.about}
                                 tags={event.tags}
                                 creator={event.creator}
-                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
                                 active={event.active}
                             />
-                        </Grid>
+                        }
+                    }))}
+                </div>
+                : showList &&
+                <div key={'123ddgg'} className='events-ls' >
+                    <button className='btn-close' onClick={handleShowList} >
+                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "white" }} />
+                    </button>
+                    <h2 className='hd-md'>Events</h2>
+                    <EventsFilters />
+                    {events.map((event => {
+                        return <EventInfoCard
+                            id={event._id}
+                            key={event._id}
+                            name={event.name}
+                            genre={event.genre}
+                            location={event.locationName}
+                            date={moment(event.startTime).format('MMMM Do YYYY')}
+                            startTime={moment(event.startTime).format('h:mm:ss a')}
+                            endTime={moment(event.endTime).format('h:mm:ss a')}
+                            about={event.about}
+                            tags={event.tags}
+                            creator={event.creator}
+                            createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                            active={event.active}
+                        />
                     }))}
                 </div>
             }

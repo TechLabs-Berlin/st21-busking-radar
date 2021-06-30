@@ -1,10 +1,13 @@
 
 .menu{
     margin-top: 0;
+    z-index: 3;
+    .text-sub{
+        color: $primary-color;
+    }
     .menu-btn{
-        z-index: 200;
+        z-index: 7;
         position:fixed;
-        z-index: 150;
         right: 1.1em;
         top: 1.1em;
         cursor: pointer;
@@ -48,7 +51,7 @@
         height: 100vh;
         width: 100vw;
         font-size: 3em;
-        z-index: 100;
+        z-index: 5;
         margin: 0;
         padding: 0;
         background: darken($color: $secondary-color, $amount: 5);

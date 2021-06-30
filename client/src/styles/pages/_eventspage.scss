@@ -13,6 +13,28 @@ main{
             z-index: 2;
             background: gray;
             width: 100%;
+            .events-ls{
+                .hd-md{
+                    text-align: center;
+                    margin-top: 2em;
+                }
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                position: absolute;
+                top: 0;
+                margin: 0;
+                z-index: 10;
+                background: $primary-color;
+                color: $secondary-color;
+                width: 100%;
+                height: 100vh;
+                overflow-y: scroll;
+                ::-webkit-scrollbar {
+                            width: 0px; 
+                            background: transparent; 
+                            };
+            }
             .choice-container{
                 width: 94%;
                 margin-top: 0.5em;
@@ -27,10 +49,12 @@ main{
                 background: $primary-color;
                 color: $secondary-color;
                 margin: 0.5em 0 0 3%;
+                font-weight: 600;
                 width: 94%;
                 border-radius: 1em;
                 span{
-                    font-weight: 700;
+                    font-weight: 800;
+                    text-decoration: underline;
                 }
             }
             .logo-events{
@@ -42,9 +66,8 @@ main{
                 display: flex;
                 flex-direction: row;
                 position: relative;
-                top: 1em;
-                width: 80%;
-                padding: 0.5em;
+                top: 0.7em;
+                width: 50%;
                 .btn-lg{
                     margin: 0 0.3em;
                     z-index: 1;
@@ -53,31 +76,29 @@ main{
             .btn-see{
                 position: absolute;
                 bottom: 0;
-                left: 0; 
+                right: 0; 
                 border-radius: 0;
             }
 
     }
 }
 
-          
-        
 
-.events-ls{
-    width: 100%;
-    margin-top: 8em;
-    height: auto;
-    display: flex;
-    overflow-y: scroll;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 4vh;
-    z-index: 100;
-    background-color: rgba(250,250,250, 0.6);
-    ::-webkit-scrollbar {
-        width: 0px; 
-        background: transparent; 
-        };
+      
 
-    }
+// .events-ls{
+//     width: 100%;
+//     margin-top: 8em;
+//     height: auto;
+//     display: flex;
+//     overflow-y: scroll;
+//     flex-direction: column;
+//     position: absolute;
+//     top: 4vh;
+//     background-color: rgba(250,250,250, 0.6);
+//     ::-webkit-scrollbar {
+//         width: 0px; 
+//         background: transparent; 
+//         };
+
+//     }

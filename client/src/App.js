@@ -16,7 +16,7 @@ import MyProfile from './components/Profile/MyProfile';
 import PageNotFound from './components/Generic/404-page';
 import Buskers from './components/Buskers/Buskers';
 import BuskerPage from './components/Buskers/BuskerPage';
-
+import EventsFilters from './components/Events/EventsFilters';
 const queryClient = new QueryClient();
 
 const App = () => {
