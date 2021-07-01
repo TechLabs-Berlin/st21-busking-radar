@@ -4,7 +4,7 @@ import moment from 'moment';
 const filtersReducerDefaultState = {
     text: '',
     startDate: moment(),
-    endDate: moment().endOf('week')
+    endDate: moment().endOf('year')
 }
 
 const filtersReducer = (state = filtersReducerDefaultState, action) => {
