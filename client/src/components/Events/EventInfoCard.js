@@ -66,7 +66,6 @@ const EventInfoCard = ({ creator,
             <p className='event-date'>{date}</p>
             <p className='event-time'>{startTime} - {endTime}</p>
             <p className='event-about'>{about}</p>
-            <p className='event-tags'>{tags}</p>
             <p className='event-genre'>{genre}</p>
             <p className='event-location'><RoomIcon style={{ color: "rgba(164, 74, 63, 0.87)", width: "1rem", height: "1rem" }} />{location}</p>
             <div className='event-image'></div>

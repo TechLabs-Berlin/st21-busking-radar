@@ -11,14 +11,18 @@ const UpdateEvent = ({ match, history }) => {
         return event._id === match.params.id
     })
     return (
-        <EventForm
-            auth={auth}
-            event={selectedEvent}
-            handleSubmit={((event) => {
-                dispatch(startUpdateEvent(selectedEvent._id, event))
-                history.push('/events')
-            })}
-        />
+        <div className='create-event'>
+            <h1>Update</h1>
+            <EventForm
+                auth={auth}
+                event={selectedEvent}
+                history={history}
+                handleSubmit={((event) => {
+                    dispatch(startUpdateEvent(selectedEvent._id, event))
+                    history.push('/events')
+                })}
+            />
+        </div>
     )
 }
 
