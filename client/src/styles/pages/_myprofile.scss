@@ -1,0 +1,52 @@
+.prof-bg{
+    background: $bg-img-prof;
+    position: absolute;
+    background-position: center;
+    background-size: cover;
+    z-index: 0;
+    width: 100%;
+    height: 20vh;
+    top: 0;
+    left: 0;
+}
+main{
+    &.prof-page{
+        color: $secondary-color;
+        background: $bg-color;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        justify-content: flex-start;
+        align-items: center;
+        .prof-pic{
+            border-radius: 50%;
+            width: 8em;
+            height: 8em;
+            position: relative;
+            margin-top: 1em;
+            z-index: 3;
+        }
+        .prof-info{
+            align-self: flex-start;
+            position: relative;
+            left: 1em;
+        }
+        .btn-md{
+            position: absolute;
+            left: 0.5em;
+            top: 0.5em;
+            background-color: $secondary-color;
+            color: $primary-color;
+        }
+        .btn-events{
+            position: relative;
+            left: 1em;
+            align-self: flex-start;
+            height: 1.5em;
+        }
+        .icon-color{
+            color: $secondary-color;     
+        }
+    }
+}
