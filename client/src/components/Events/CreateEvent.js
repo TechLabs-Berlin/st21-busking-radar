@@ -12,7 +12,6 @@ const CreateEvent = () => {
     const newLocation = [locationName, longitude, latitude]
     return (
         <main id='create-event' className='create-event'>
-            <div className='bg-home'><div className='blur'></div></div>
             <h1 id='hd-lg' className='hd-lg'>Create Event</h1>
             <EventForm
                 auth={auth}

@@ -136,13 +136,15 @@ const EventForm = (props) => {
     return (
         <div className='create-event-form-container'>
             {eventData.error && <p className='error'>{eventData.error}</p>}
+            <button className='btn-sm btn-back' onClick={() => {
+                props.history.goBack()
+            }}><i class="fas fa-2x fa-chevron-left icon-color"></i></button>
             <form className='event-form' onSubmit={handleSubmit}>
                 <label>Location:</label>
                 <input className='input' type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
                 <input className='input' type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
                 <input className='input' type="text" placeholder="genre" name="genre" autoFocus value={eventData.genre || ''} onChange={handleChange} />
-                <textarea className='input textarea' type="text" placeholder="about event" cols='4' maxLength='80' rows='4' name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
-                <input className='input' type="text" placeholder="tags" name="tags" autoFocus value={eventData.tags || ''} onChange={handleChange} />
+                <textarea className='input textarea' type="text" placeholder="description (max 80 characters)" cols='4' maxLength='80' rows='4' name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
                 <label>Event begins:</label>
                 <DatePicker
                     selected={startTime}
