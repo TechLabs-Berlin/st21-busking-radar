@@ -21,7 +21,6 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const dispatch = useDispatch()
-  const users = useSelector(state => state.users)
   useEffect(() => {
     dispatch(loadUser())
   }, [])

@@ -5,8 +5,7 @@ import EventInfoCard from '../Events/EventInfoCard';
 
 const EventsList = ({ sortedEvents, auth }) => {
     return (
-        <div className='profile-events-list'>
-            <h2>My Events</h2>
+        <div className='prof-events-ls'>
             {sortedEvents.length === 0 && <p>You don't have any events</p>}
             {sortedEvents.map(event =>
                 <EventInfoCard
@@ -16,8 +15,8 @@ const EventsList = ({ sortedEvents, auth }) => {
                     id={event._id}
                     name={event.name}
                     genre={event.genre}
-                    startTime={moment(event.startTime).format('h:mm:ss a')}
-                    endTime={moment(event.endTime).format('h:mm:ss a')}
+                    startTime={moment(event.startTime).format('H:mm')}
+                    endTime={moment(event.endTime).format('H:mm')}
                     about={event.about}
                     tags={event.tags}
                     location={event.locationName}
