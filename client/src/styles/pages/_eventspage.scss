@@ -17,23 +17,28 @@ main{
                 .hd-md{
                     text-align: center;
                     margin-top: 2em;
+                    color: $secondary-color;
                 }
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                position: absolute;
+                position: fixed;
+                overflow: hidden;
                 top: 0;
                 margin: 0;
                 z-index: 10;
-                background: $primary-color;
+                background: rgba($bg-color, 0.9);
                 color: $secondary-color;
                 width: 100%;
                 height: 100vh;
-                overflow-y: scroll;
-                ::-webkit-scrollbar {
-                            width: 0px; 
-                            background: transparent; 
-                            };
+                .events-cards{
+                    position: relative;
+                    overflow-y: scroll;
+                    ::-webkit-scrollbar {
+                                width: 0px; 
+                                background: transparent; 
+                                };
+                }
             }
             .choice-container{
                 width: 94%;
@@ -82,7 +87,6 @@ main{
 
     }
 }
-
 
       
 

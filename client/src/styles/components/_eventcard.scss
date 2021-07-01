@@ -1,12 +1,14 @@
 .event-cd{
+    background: $primary-color;
+    line-height: 1.3em;
     display: grid;
-    background: $default-image;
     width: 100%;
-    height: 15em;
+    height: 18em;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
     margin: 1em 0;
+    padding: 0.5em 0.2em;
     border-radius: 0px 20px 20px 0px;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 20% 15% 35% 10% 20%;
     grid-template-columns: 40% 1fr 1fr;
     grid-template-areas: "name creator image"
                          "date time image"
@@ -42,5 +44,10 @@
     }
     .event-image{
         grid-area: image;
+        background: $default-image;
+        width: 8em;
+        height: 8em;
+        background-size: cover;
+        background-position-y: 25%;
     }
 }

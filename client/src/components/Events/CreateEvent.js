@@ -11,15 +11,15 @@ const CreateEvent = () => {
     const { locationName, longitude, latitude } = queryString.parse(search)
     const newLocation = [locationName, longitude, latitude]
     return (
-        <div>
-            <main id='create-event' className='create-event'>
-                <h1 id='hd-create-event' className='hd-lg'>Create Event</h1>
-                <EventForm
-                    auth={auth}
-                    newLocation={newLocation}
-                    history={history} />
-            </main>
-        </div>
+        <main id='create-event' className='create-event'>
+            <div className='bg-home'><div className='blur'></div></div>
+            <h1 id='hd-lg' className='hd-lg'>Create Event</h1>
+            <EventForm
+                auth={auth}
+                newLocation={newLocation}
+                history={history} />
+        </main>
+
     )
 }
 
