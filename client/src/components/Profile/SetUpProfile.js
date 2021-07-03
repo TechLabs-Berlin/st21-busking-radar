@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux';
 const SetUpProfile = ({ match }) => {
     const auth = useSelector(state => state.auth)
     return (
-        <div className='profile-setup'>
-            <h2 className='hd-md' >{auth.user.name}</h2>
+        <main className='prof-setup'>
+            <h2 className='hd-md' >Edit Profile</h2>
             <EditProfileForm auth={auth}
                 userId={match.params.id}
             />
-        </div>
+        </main>
     )
 }
 
