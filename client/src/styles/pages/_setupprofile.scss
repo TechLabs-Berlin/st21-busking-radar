@@ -1,0 +1,13 @@
+main{
+    &.prof-setup{
+       color: $secondary-color;
+       margin: 0;
+       justify-content: flex-start;
+       height: 100vh;
+       .hd-md{
+           color: $secondary-color;
+           position: absolute;
+           top: 1em;
+       }
+    }
+}
