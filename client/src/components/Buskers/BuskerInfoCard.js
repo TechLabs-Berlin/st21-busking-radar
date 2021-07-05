@@ -4,9 +4,13 @@ import YouTubeIcon from '@material-ui/icons/YouTube';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
 const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about, history, id }) => {
-
     return (
-        <div className='busker-info-card' onClick={() => { history.push(`/busker/${id}`) }}>
+        <div className='busker-info-card' onClick={() => {
+            history.push({
+                pathname: `/busker/${id}`,
+                search: `?name=${name}&socialLinks=${JSON.stringify(socialLinks)}&genre=${genre}&about=${about}`
+            })
+        }} >
             <div className='prof-pic-container'>
                 <img className='prof-pic' src={profilePic} />
             </div>

@@ -1,26 +1,43 @@
-import React from 'react';
-import moment from 'moment'
-import { useSelector } from 'react-redux';
+import React, { useLayoutEffect } from 'react';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { useSelector, useDispatch } from 'react-redux';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import EventInfoCard from '../Events/EventInfoCard';
 import selectEvents from '../../filters/events';
+import { startGetUsers } from '../../actions/users';
+import { startGetAllEvents } from '../../actions/events';
 
-const BuskerPage = ({ match }) => {
-
+const BuskerPage = ({ match, history }) => {
+    const dispatch = useDispatch();
+    const { search } = useLocation();
+    const { name, genre, socialLinks, about } = queryString.parse(search)
     const sortedEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id))
     const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     const users = useSelector(state => state.users)
     const user = users.filter(user => user._id === match.params.id)[0]
+    const links = JSON.parse(socialLinks)
+    useLayoutEffect(() => {
+        //this runs before the rendering
+        dispatch(startGetUsers())
+        dispatch(startGetAllEvents())
+    }, [])
     return (
-        <div className='prof-page'>
+        <main className='prof-page'>
+            <button className='btn-back' onClick={() => {
+                history.goBack()
+            }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
+            </button>
+            <div className='prof-bg'></div>
             <div className='prof-pic-container'>
-                <img className='prof-pic' src={user.profilePic} />
+                {user && <img className='prof-pic' src={user.profilePic} />}
             </div>
-            <h1>{user.name}</h1>
+            <h1>{name}</h1>
             <div className='soc-links-container'>
-                {user.socialLinks.map(link => {
+                {links.map(link => {
                     if (link.name === 'facebook') {
                         return <a href={link.link}><FacebookIcon /> </a>
                     } else if (link.name === 'youtube') {
@@ -31,8 +48,8 @@ const BuskerPage = ({ match }) => {
                 })}
             </div>
             <div className='prof-info'>
-                <p className='prof-info-genre'>{user.genre}</p>
-                <p className='prof-info-about'>{user.about}</p>
+                <p className='prof-info-genre'>{genre}</p>
+                <p className='prof-info-about'>{about}</p>
             </div>
             <div className='prof-info-events'>
                 {filteredEvents.map(event => {
@@ -43,8 +60,8 @@ const BuskerPage = ({ match }) => {
                         genre={event.genre}
                         location={event.locationName}
                         date={moment(event.startTime).format('MMMM Do YYYY')}
-                        startTime={moment(event.startTime).format('h:mm:ss a')}
-                        endTime={moment(event.endTime).format('h:mm:ss a')}
+                        startTime={moment(event.startTime).format('H:mm')}
+                        endTime={moment(event.endTime).format('H:mm')}
                         about={event.about}
                         tags={event.tags}
                         creator={event.creator}
@@ -52,7 +69,7 @@ const BuskerPage = ({ match }) => {
                     />
                 })}
             </div>
-        </div>
+        </main>
     )
 }
 
