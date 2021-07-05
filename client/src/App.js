@@ -15,6 +15,10 @@ import MyProfile from './components/Profile/MyProfile';
 import PageNotFound from './components/Generic/404-page';
 import Buskers from './components/Buskers/Buskers';
 import BuskerPage from './components/Buskers/BuskerPage';
+import Settings from './components/Generic/Settings';
+import Privacy from './components/Generic/Privacy';
+import About from './components/Generic/About';
+import FAQ from './components/Generic/FAQ';
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -26,7 +30,7 @@ const App = () => {
   //as it takes  some time to load the user and change authetication status 
   useEffect(() => {
     dispatch(loadUser())
-  }, [])
+  })
 
   //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
   //test for it. Is it possible? Check it out later for sure!!!)
@@ -44,6 +48,10 @@ const App = () => {
             <PrivateRoute exact path='/profile/:id' component={SetUpProfile} />
             <Route exact path='/buskers' component={Buskers} />
             <Route exact path='/busker/:id' component={BuskerPage} />
+            <Route exact path='/settings' component={Settings} />
+            <Route exact path='/privacy' component={Privacy} />
+            <Route exact path='/about' component={About} />
+            <Route exact path='/faq' component={FAQ} />
             <Route path='/' component={Home} />
             <Route component={PageNotFound} />
           </Switch>

@@ -25,12 +25,12 @@ module.exports.createEvent = async (req, res) => {
         if (eventToFind.geometry.coordinates[0] == event.geometry.coordinates[0]) {
             if (moment(event.startTime).unix() < moment(eventToFind.startTime).unix() && moment(eventToFind.startTime).unix() <= moment(event.endTime)) {
                 return eventToFind
-            } else if (moment(eventToFind.endTime) < moment(event.startTime).unix() && moment(eventToFind.endTime).unix() <= moment(event.endTime)) {
-                console.log(eventToFind)
+            } else if (moment(eventToFind.endTime).unix() > moment(event.startTime).unix() && moment(eventToFind.endTime).unix() <= moment(event.endTime)) {
                 return eventToFind
             }
         }
     })[0]
+    console.log(similarEvent)
     if (similarEvent && event.confirmation === false) {
         return res.status(400).json({ msg: `Another event is booked at that time between ${moment(similarEvent.startTime).format('h:mm:ss a')} ${moment(similarEvent.endTime).format('h:mm:ss a')} in this location` })
     } else {
