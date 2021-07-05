@@ -58,7 +58,7 @@ const MyProfile = ({ history }) => {
         <main className='prof-page'>
             <div className='prof-bg'></div>
             {!auth.user.about && !auth.user.genre ? <p>Please fill in your profile info</p> : ''}
-            <button className='btn-md' onClick={() => {
+            <button className='btn-md btn-edit' onClick={() => {
                 history.push(`/profile/${auth.user._id}`)
             }}>Edit Profile</button>
             <div className='prof-pic-container'>

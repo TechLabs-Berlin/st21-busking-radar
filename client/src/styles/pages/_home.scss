@@ -26,6 +26,18 @@ main{
         text-align: center;
         width: 70%;
     }
-    
+    &.landing-signed{
+        flex-direction: column;
+        height: 50vh;
+        .text-sub{
+            color: $primary-color;
+        }
+        .hd-lg{
+            text-align: center;
+        }
+        .btn-lg{
+            width: 8em;
+        }
+    }
 
 }

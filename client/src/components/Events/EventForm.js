@@ -82,7 +82,6 @@ const EventForm = (props) => {
             props.history.push('/events')
             setOpenModal(!openModal)
         } else if (eventData.error) {
-            console.log(eventData)
             dispatch(startCreateEvent({ ...eventData, confirmation: true }))
             props.history.push('/events')
             setOpenModal(!openModal)
@@ -181,6 +180,7 @@ const EventForm = (props) => {
                 aria-describedby="simple-modal-description"
             >
                 <div style={modalStyle} className={`${classes.paper} modal-container`} >
+                    {eventData.error && <h2 className='hd-modal'>Ooops!</h2>}
                     <p id="simple-modal-title" className='text-sub'>{eventData.error ? eventData.error : 'Event was created'}</p>
                     <button className='btn-lg' onClick={handleModal}>{eventData.error ? 'Submit anyway' : 'submit'}</button>
                     {eventData.error && <button className='btn-lg' onClick={() => { setOpenModal(!openModal) }}>Go Back</button>}

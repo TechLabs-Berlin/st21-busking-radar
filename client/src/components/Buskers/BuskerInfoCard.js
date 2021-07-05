@@ -1,7 +1,4 @@
 import React from 'react';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import YouTubeIcon from '@material-ui/icons/YouTube';
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
 const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about, history, id }) => {
     return (
@@ -16,11 +13,11 @@ const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about, history, 
                 <div className='soc-links-container' >
                     {socialLinks.map(link => {
                         if (link.name === 'facebook') {
-                            return <a href={link.link}><FacebookIcon /> </a>
+                            return <a href={link.link}><i class="fab fa-2x fa-facebook-square icon-color"></i>  </a>
                         } else if (link.name === 'youtube') {
-                            return <a href={link.link}><YouTubeIcon /></a>
+                            return <a href={link.link}><i class="fab fa-2x fa-youtube icon-color"></i></a>
                         } else {
-                            return <a href={link.link}><MusicNoteIcon /></a>
+                            return <a href={link.link}><i class="fab fa-2x fa-spotify icon-color"></i></a>
                         }
                     })}
                 </div>

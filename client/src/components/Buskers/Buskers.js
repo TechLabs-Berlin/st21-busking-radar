@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
 import { startGetUsers } from '../../actions/users';
@@ -9,7 +9,7 @@ const Buskers = ({ history }) => {
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
-    useEffect(() => {
+    useLayoutEffect(() => {
         dispatch(startGetUsers());
     }, [])
     const users = useSelector(state => state.users)

@@ -38,11 +38,17 @@ main{
         }
         .btn-md{
             position: absolute;
-            left: 0.5em;
+            left: 1.1em;
             top: 0.5em;
             background-color: $secondary-color;
             color: $primary-color;
         }
+        .btn-edit{
+            top: 5.5em;
+            width: 5em;
+            height: 2em;
+            font-size: 0.9em;
+        };
         .btn-events{
             position: relative;
             left: 1em;

@@ -125,8 +125,10 @@ body{
 }
 .btn-back{
     position: absolute;
-    top: 1em;
-    left: 1em;
+    top: 0.4em;
+    right: 1em;
+    width: 3em;
+    height: 3em;
 }
 p{
     font-size: inherit;
@@ -136,13 +138,16 @@ p{
     background: $bg-color;
     text-align: center;
 }
+.hd-modal{
+    color: $secondary-color;
+}
 .hd-md{
     color: $primary-color;
 }
 .btn-close{
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     z-index: 10;
     border: none;
     margin: 0.7em;
@@ -150,7 +155,14 @@ p{
         cursor: pointer;
     }
 }
+.btn-settings{
+    border: none;
+    position: fixed;
+    top: 1.4em;
+    right: 1.1em;
+    background:rgba(255,255,255, 0)
+}
 
-.MuiIcon-colorPrimary{
+.icon-color{
     color: $secondary-color;
 }

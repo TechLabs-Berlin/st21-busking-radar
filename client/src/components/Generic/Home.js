@@ -14,26 +14,38 @@ const Home = () => {
     const navToRegistration = () => {
         history.push('/registration')
     }
-    return (
-        <main className='landing'>
-            <div className='logo'></div>
-            <div className='bg-home'><div className='blur'></div></div>
-            <p className='text-sub'>Made for Buskers and Fans with Love by Techlabs Busking Radar Team!</p>
-            {state ? <h2 className='hd-md hd-md-home'>Please sign in to create event</h2> : <h2 className='hd-md hd-md-home'>Sign In</h2>}
-            <LoginForm
-                history={history}
-                auth={auth}
-            />
-            <div className='sign-up'>
-                <p>Not a member?</p>
-                <button className='btn-sm' onClick={navToRegistration}>Sign Up</button>
-            </div>
-            <div className='guest'>
-                <p className='text-p'>or</p>
-                <button className='btn-lg' onClick={navToEvents}> Enter as a guest </button>
-            </div>
-        </main>
-    )
+    if (auth.isAuthenticated === false) {
+        return (
+            <main className='landing'>
+                <div className='logo'></div>
+                <div className='bg-home'><div className='blur'></div></div>
+                <p className='text-sub'>Made for Buskers and Fans with Love by Techlabs Busking Radar Team!</p>
+                {state ? <h2 className='hd-md hd-md-home'>Please sign in to create event</h2> : <h2 className='hd-md hd-md-home'>Sign In</h2>}
+                <LoginForm
+                    history={history}
+                    auth={auth}
+                />
+                <div className='sign-up'>
+                    <p>Not a member?</p>
+                    <button className='btn-sm' onClick={navToRegistration}>Sign Up</button>
+                </div>
+                <div className='guest'>
+                    <p className='text-p'>or</p>
+                    <button className='btn-lg' onClick={navToEvents}> Enter as a guest </button>
+                </div>
+            </main>
+        )
+    } else {
+        return (
+            <main className='landing-signed'>
+                <div className='logo'></div>
+                <div className='bg-home'><div className='blur'></div></div>
+                <p className='text-sub'>Made for Buskers and Fans with Love by Techlabs Busking Radar Team!</p>
+                <h1 className='hd-lg'>Hey there {auth.user.name}!</h1>
+                <button onClick={navToEvents} className='btn-lg'>Start using app</button>
+            </main>
+        )
+    }
 }
 
 export default Home
