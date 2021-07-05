@@ -19,6 +19,7 @@ main{
         height: 100vh;
         justify-content: flex-start;
         align-items: center;
+        overflow: hidden;
         // margin: 0;
         .prof-pic{
             border-radius: 50%;
@@ -27,6 +28,8 @@ main{
             position: relative;
             margin-top: 1em;
             z-index: 3;
+            background: $default-image;
+            background-size: cover;
         }
         .prof-info{
             align-self: flex-start;

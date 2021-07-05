@@ -1,0 +1,25 @@
+.busker-info-card{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 7em;
+    margin: 1em 0;
+    background: $primary-color;
+    border-radius: 0px 20px 20px 0px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+    color: $secondary-color;
+    .text-info{
+        width: 70%;
+        margin-left: 0.5em;
+    }
+    .prof-pic{
+        width: 7em;
+        height: 7em;
+        position: relative;
+        z-index: 0;
+        background: $default-image;
+        background-size: cover;
+        border-radius: 0px 20px 20px 0px;
+        border: none;
+    }
+}

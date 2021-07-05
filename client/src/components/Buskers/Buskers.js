@@ -14,19 +14,23 @@ const Buskers = ({ history }) => {
     }, [])
     const users = useSelector(state => state.users)
     return (
-        <div className='buskers-list'>
-            {users.map(user => {
-                return <BuskerInfoCard
-                    name={user.name}
-                    socialLinks={user.socialLinks}
-                    genre={user.genre}
-                    about={user.about}
-                    profilePic={user.profilePic}
-                    history={history}
-                    id={user._id}
-                />
-            })}
-        </div>
+        <main className='buskers-page'>
+            <div className='logo logo-buskers'></div>
+            <h1 className='hd-lg'>Berlin Buskers</h1>
+            <div className='buskers-list'>
+                {users.map(user => {
+                    return <BuskerInfoCard
+                        name={user.name}
+                        socialLinks={user.socialLinks}
+                        genre={user.genre}
+                        about={user.about}
+                        profilePic={user.profilePic}
+                        history={history}
+                        id={user._id}
+                    />
+                })}
+            </div>
+        </main>
     )
 }
 

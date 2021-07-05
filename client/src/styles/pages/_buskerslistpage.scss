@@ -1,0 +1,19 @@
+main{
+    &.buskers-page{
+        height: 100vh;
+        .hd-lg{
+            color: $secondary-color;
+        }
+        .logo-buskers{
+            width: 8em;
+            height: 4em;
+            margin-top: 1em;
+        }
+        .buskers-list{
+            position: relative;
+            overflow-y: scroll;
+            width: 100%;
+            height: calc(100% - 100px);
+        }
+    }
+}
