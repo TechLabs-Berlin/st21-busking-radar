@@ -1,0 +1,16 @@
+
+.prof-info-events{
+    position: relative;
+    overflow-y: scroll;
+    width: 100%;
+    height: calc(100% - 120px);
+    z-index: 4;
+}
+.btn-back{
+    position: absolute;
+    top: 1.1em;
+    right: 1.1em;
+    z-index: 1;
+    border: none;
+    background-color: rgba(250, 250, 250, 0);
+}

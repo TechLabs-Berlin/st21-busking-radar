@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
+    position: absolute;
     top: 1em;
+    width: 100%;
     align-items: center;
     height: 100vh;
    .prof-edit{
@@ -27,9 +28,6 @@
             margin-left: 2.5em;
         }
     }
-    .social-links-form{
-        
-    }
     p{
         background-color: $primary-color;
         text-align: center;
@@ -46,6 +44,15 @@
     padding: 0.2em;
     display: inline;
 }
+.btn-back{
+    border: none;
+    background-color: $bg-color;
+    margin-top: -1em;
+}
+.icon-color{
+    color: $secondary-color;
+}
+
     .btn-container{
         margin-top: 1em;
         width: 80%;

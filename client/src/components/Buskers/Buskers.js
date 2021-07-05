@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { startGetAllEvents } from '../../actions/events';
+import { startGetUsers } from '../../actions/users';
 import BuskerInfoCard from './BuskerInfoCard';
-import BuskerPage from './BuskerPage';
 
 const Buskers = ({ history }) => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(startGetAllEvents())
     }, [])
-
+    useEffect(() => {
+        dispatch(startGetUsers());
+    }, [])
     const users = useSelector(state => state.users)
     return (
         <div className='buskers-list'>
@@ -25,9 +26,9 @@ const Buskers = ({ history }) => {
                     id={user._id}
                 />
             })}
-            <Route exact path='/busker/:id' component={BuskerPage} />
         </div>
     )
 }
 
 export default Buskers;
+

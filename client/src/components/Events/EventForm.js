@@ -138,7 +138,8 @@ const EventForm = (props) => {
             {eventData.error && <p className='error'>{eventData.error}</p>}
             <button className='btn-sm btn-back' onClick={() => {
                 props.history.goBack()
-            }}><i class="fas fa-2x fa-chevron-left icon-color"></i></button>
+            }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
+            </button>
             <form className='event-form' onSubmit={handleSubmit}>
                 <label>Location:</label>
                 <input className='input' type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
