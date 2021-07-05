@@ -26,7 +26,7 @@ const BuskerPage = ({ match, history }) => {
         dispatch(startGetAllEvents())
     }, [])
     return (
-        <main className='prof-page'>
+        <main className='prof-page' id='busker-page'>
             <button className='btn-back' onClick={() => {
                 history.goBack()
             }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
@@ -47,11 +47,11 @@ const BuskerPage = ({ match, history }) => {
                     }
                 })}
             </div>
-            <div className='prof-info'>
+            {genre == 'undefined' && about == 'undefined' ? <p>No info</p> : <div className='prof-info'>
                 <p className='prof-info-genre'>{genre}</p>
                 <p className='prof-info-about'>{about}</p>
-            </div>
-            <div className='prof-info-events'>
+            </div>}
+            {filteredEvents.length === 0 ? <p>No events</p> : <div className='prof-info-events'>
                 {filteredEvents.map(event => {
                     return <EventInfoCard
                         id={event._id}
@@ -68,7 +68,7 @@ const BuskerPage = ({ match, history }) => {
                         active={event.active}
                     />
                 })}
-            </div>
+            </div>}
         </main>
     )
 }
