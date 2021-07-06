@@ -19,6 +19,7 @@ import Settings from './components/Generic/Settings';
 import Privacy from './components/Generic/Privacy';
 import About from './components/Generic/About';
 import FAQ from './components/Generic/FAQ';
+import Footer from './components/Generic/Footer';
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
             <Route path='/' component={Home} />
             <Route component={PageNotFound} />
           </Switch>
+          <Footer />
         </div>
       </BrowserRouter>
     </QueryClientProvider>

@@ -92,10 +92,7 @@ const EditProfileForm = (props) => {
 
     return (
         <form className='prof-edit-form' onSubmit={handleSubmit}>
-            <button className='btn-back' onClick={() => {
-                history.goBack()
-            }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
-            </button>
+
             <div className='prof-edit' >
                 <div className='prof-pic-container'>
                     <img className='prof-pic' src={userData.profilePic} />

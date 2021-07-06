@@ -24,7 +24,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: '90%',
+        width: '60%',
         height: '50vh',
         fontSize: '1.2em',
         backgroundColor: theme.palette.background.paper,
@@ -154,7 +154,7 @@ const EventForm = (props) => {
                     timeFormat="HH:mm"
                     dateFormat="MMMM d, yyyy HH:mm aa"
                     minDate={new Date()}
-                    popperPlacement='auto-left'
+                    popperPlacement='bottom-right'
                 />
                 <label>Event ends:</label>
                 <DatePicker
@@ -165,7 +165,7 @@ const EventForm = (props) => {
                     timeFormat="HH:mm"
                     dateFormat="MMMM d, yyyy HH:mm aa"
                     minDate={new Date()}
-                    popperPlacement='auto-left'
+                    popperPlacement='bottom-right'
                 />
                 <button type='submit' className='btn-lg' size='small' >
                     Submit

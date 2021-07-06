@@ -5,6 +5,32 @@
 }
 
 body{
+    .btn-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 10;
+        border: none;
+        margin: 0.7em;
+        background: $bg-color;
+        z-index: 10;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .btn-back{
+        position: absolute;
+        top: 0.5em;
+        right: 1em;
+        width: 3em;
+        height: 3em;
+        z-index: 4;
+        background: $bg-color;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    
     font-family: 'Catamaran', sans-serif;
     background: #E5E5E5;
     font-size: 14px;
@@ -74,7 +100,7 @@ body{
     border: 0;
     font-size: 1em;
     width: 100%;
-    height: 2.3em;
+    height: 2.3rem;
     color: $secondary-color;
     &::placeholder{
         color: $secondary-color;
@@ -97,7 +123,11 @@ body{
     background-color: $secondary-color;
     border-radius: 18.5px;
     width: 100%;
-    height: 2.5em;
+    height: 2.5rem;
+    &:hover{
+        cursor: pointer;
+        color: $hover-color;
+    }
 }
 .btn-md{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -114,6 +144,10 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    &:hover{
+        cursor: pointer;
+        color: $hover-color;
+    }
 }
 .btn-sm{
     display: inline;
@@ -122,14 +156,12 @@ body{
     border: none;
     box-shadow: none;
     font-size: inherit;
+    &:hover{
+        cursor: pointer;
+        color: $hover-color;
+    }
 }
-.btn-back{
-    position: absolute;
-    top: 0.4em;
-    right: 1em;
-    width: 3em;
-    height: 3em;
-}
+
 p{
     font-size: inherit;
 }
@@ -144,25 +176,25 @@ p{
 .hd-md{
     color: $primary-color;
 }
-.btn-close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    border: none;
-    margin: 0.7em;
-    &:hover{
-        cursor: pointer;
-    }
-}
 .btn-settings{
     border: none;
     position: fixed;
     top: 1.4em;
     right: 1.1em;
-    background:rgba(255,255,255, 0)
+    z-index: 1;
+    background:rgba(255,255,255, 0);
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .icon-color{
     color: $secondary-color;
 }
+.footer{
+    display: none;
+}
+.hide{
+    display: none;
+}
+
