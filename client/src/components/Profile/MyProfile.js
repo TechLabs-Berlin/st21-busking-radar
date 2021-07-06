@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import moment from 'moment';
 import axios from 'axios';
@@ -64,7 +64,7 @@ const MyProfile = ({ history }) => {
             <div className='prof-pic-container'>
                 <img className='prof-pic' src={auth.user.profilePic} />
             </div>
-            <h1>{auth.user.name}</h1>
+            <h1 className='hd-lg'>{auth.user.name}</h1>
             <div className='soc-links-container'>
                 {auth.user.socialLinks.map(link => {
                     if (link.name === 'facebook') {

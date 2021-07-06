@@ -30,7 +30,6 @@ module.exports.createEvent = async (req, res) => {
             }
         }
     })[0]
-    console.log(similarEvent)
     if (similarEvent && event.confirmation === false) {
         return res.status(400).json({ msg: `Another event is booked at that time between ${moment(similarEvent.startTime).format('h:mm:ss a')} ${moment(similarEvent.endTime).format('h:mm:ss a')} in this location` })
     } else {

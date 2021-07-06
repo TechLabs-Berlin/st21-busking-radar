@@ -24,15 +24,15 @@ const BuskerPage = ({ match, history }) => {
     }, [])
     return (
         <main className='prof-page' id='busker-page'>
-            <button className='btn-back' onClick={() => {
+            <button className='btn-back btn-back-buskers-page' onClick={() => {
                 history.goBack()
             }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
             </button>
-            <div className='prof-bg'></div>
+            <div className='prof-bg bg-buskers-page'></div>
             <div className='prof-pic-container'>
                 {user && <img className='prof-pic' src={user.profilePic} />}
             </div>
-            <h1>{name}</h1>
+            <h1 className='hd-lg'>{name}</h1>
             <div className='soc-links-container'>
                 {links.map(link => {
                     if (link.name === 'facebook') {

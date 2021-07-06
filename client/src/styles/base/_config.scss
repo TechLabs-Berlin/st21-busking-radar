@@ -6,8 +6,32 @@ $default-image: url('../../images/logo-busking\ radar22\ 3.png');
 $primary-color: #FFFF;
 $secondary-color: rgba(164, 74, 63, 0.87);
 $error-color: rgb(196, 13, 13);
+$hover-color: rgb(212, 212, 14);
+$bg-image-lg: url('../../images/background-large.png');
+
 //animation mixins
 
 @mixin easeOutIn {
     transition: all 0.7s ease-in-out;
 }
+
+
+//responsive
+
+@mixin mediaMd {
+    @media screen and (min-width: 767px){
+     @content
+     }
+ };
+
+ @mixin mediaLg {
+    @media screen and (min-width: 768px) {
+     @content
+     }
+ };
+
+ @mixin mediaXl {
+    @media screen and (min-width: 1171px){
+     @content
+     }
+ };

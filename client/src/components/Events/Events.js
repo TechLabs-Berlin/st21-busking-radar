@@ -137,12 +137,12 @@ const Events = ({ history }) => {
                         </button>
                     </div>
             }
-            <button className='btn-lg btn-see' size='small' onClick={handleShowList}>
+            <button className={`${chooseLocation && 'hide'} btn-lg btn-see`} size='small' onClick={handleShowList}>
                 See All Events
             </button>
             {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
                 <div key={'123dfg'} className='events-ls' >
-                    <button className='btn-close' onClick={() => handleMarkerClick()} size='small'>
+                    <button className='btn-close' onClick={handleMarkerClick} >
                         <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
                     </button>
                     <h2 className='hd-md hd-ls'>Events at {clickedLocation[2]}</h2>

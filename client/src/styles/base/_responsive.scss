@@ -1,0 +1,370 @@
+@include mediaMd{
+    .react-datepicker__input-container{
+        input{
+            width: 60vw;
+            height: 3rem;
+        }
+    }
+//base 
+body{
+    font-size: 18px;
+    // .btn-settings{
+        
+    // }
+    .btn-back{
+        top: 7vh;
+        width: 4rem;
+        height: 4rem;
+        .icon-color{
+            font-size: 3rem;
+        }
+    }
+    .btn-close{
+        top: 7vh;
+        right: 3vw;
+    }
+}
+
+//menu/header
+div.menu{
+    .menu-btn{
+        display: none;
+    }
+    .btn-settings{
+        display: none;
+    }
+    .menu-nav{
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate3d(0, 0, 0);
+        font-size: 1.2em;
+        width: 100%;
+        height: 5vh;
+        flex-direction: row;
+        justify-content: space-around;
+        background: rgba($secondary-color, 1);
+        .text-sub{
+            width: 5rem;
+            font-size: 0.5em;
+        }
+        .nav-link{
+            width: 7rem;
+            margin: 0;
+            &:hover{
+                cursor: pointer;
+                color: $hover-color;
+            }
+        }
+        .btn-lg{
+            width: 5rem;
+        }
+    }
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    .nav-link{
+        text-decoration: none;
+        color: $primary-color;
+        margin: 0 1em;
+        &:hover{
+            cursor: pointer;
+            color: $hover-color;
+        }
+    }
+}
+
+
+main{
+    //homepage
+    &.landing{
+        margin-top: 10vh;
+        height: 65vh;
+        .form{
+            width: 55%;
+        }
+        .sign-up{
+            width: 55%;
+        }
+        .guest{
+            width: 55%;
+        }
+    }
+    
+    //events
+    &#events{
+        .events-ls{
+           .hd-md{
+               margin-top: 8vh;
+           }
+           .btn-close{
+            top: 7vh;
+            right: 3vw;
+        }
+        }
+        .logo{
+            margin-top: 6vh;
+        }
+        .geocoder{
+            width: 25rem;
+            .ls-result{
+                font-size: 1.2em;
+                font-weight: 700;
+            }
+            .icon{
+                right: 20vw;
+            }
+        }
+        .input{
+            height: 3rem;
+        }
+        .events-btn{
+            width: 18rem;
+            margin-top: 1rem;
+        }
+        .choice-container{
+            width: 50%;
+        }
+    }
+    //create event
+
+    &#create-event{
+        .hd-lg{
+            margin-top: 5vh;
+        }
+        .create-event-form-container{
+            width: 65%;
+            .input{
+                height: 3rem;
+            }
+            .textarea{
+                height: 8rem;
+            }
+            .btn-lg{
+                width: 10rem;
+            }
+        }
+    }
+    
+    //profile page
+    &.prof-page{
+        font-size: 1.1em;
+        .prof-pic-container{
+            .prof-pic{
+                width: 14rem;
+                height: 14rem;
+            }
+        }
+    }
+    &.prof-setup{
+        justify-content: center;
+        font-size: 1.1em;
+        .hd-md{
+            position: absolute;
+            top: 8vh;
+            z-index: 5;
+        }
+        .btn-back{
+            background: rgba($secondary-color, 0);
+        }
+        .prof-edit-form{
+            width: 60%;
+            height: 90vh;
+            border-radius: 1em;
+            .prof-edit{
+                // box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+                // border: solid;
+                // border-color: $primary-color;
+                // border-width: 0.1em;
+                // padding: 0.5em;
+ 
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                width: 50%;
+                height: 60vh;
+                .file-input{
+                    size: 10;
+                }
+                .input{
+                    height: 2.5rem;
+                }
+                .textarea{
+                    height: 8rem;
+                }
+            }
+            .btn-container{
+                // box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+                // border: solid;
+                // border-color: $primary-color;
+                // border-width: 0.1em;
+                width: 50%;
+                align-items: center;
+                height: 2.5em;
+                .btn-lg{
+                    height: 2em;
+                }
+            }
+        }
+    }
+}
+}
+
+@include mediaLg {
+   
+   body{
+    height: 100vh;
+    &::after{
+    content: '';
+    background: $bg-image-lg;
+    background-attachment: fixed;
+    // -webkit-background-size: cover;
+    // -moz-background-size: cover;
+    // -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -3;
+    background-position: center;
+    }
+   }
+    
+    main{
+        //homepage
+        &.landing{
+            .form{
+                width: 30%;
+            }
+            .sign-up{
+                width: 30%;
+            }
+            .guest{
+                width: 30%;
+            }
+        }
+
+        //events page
+        &#events{
+            .geocoder{
+                width: 40%;
+                .icon{
+                    right: 25%;
+                }
+                .input{
+                    height: 2.5rem;
+                }
+            }
+            .btn-see{
+                position: absolute;
+                height: 2rem;
+                width: 9rem;
+                top: 31%;
+                right: 32%;
+                border-radius: 18.5px;
+            }
+            .events-btn{
+                position: absolute;
+                height: 2rem;
+                top: 31%;
+                left: 32%;
+                width: 9rem;
+                margin: 0;
+                .btn-lg{
+                    height: 2rem;
+                }
+            }
+            .events-ls{
+                font-size: 0.9em;
+                width: 60%;
+                .event-cd{
+                    height: 14em;
+                }
+            }
+        }
+
+        &#create-event{
+            width: 50%;
+            position: relative;
+            left: 25%;
+            background: $bg-color;
+            height: 100vh;
+            font-size: 0.7em;
+            .hd-lg{
+                margin-top: 2vh;
+            }
+            .create-event-form-container{
+                width: 100%;
+                height: 80vh;
+                .input{
+                    height: 3rem;
+                    margin: 0.2em 0;
+                }
+                .textarea{
+                    height: 8rem;
+                }
+                .btn-lg{
+                    width: 10rem;
+                }
+            }
+        }
+
+        //buskers page
+        &.buskers-page{
+            background: $bg-color;
+            width: 60%;
+            position: relative;
+            left: 25%;
+            .logo{
+                margin-top: 1rem;
+            }
+            .buskers-list{
+                width: 100%;
+            }
+        }
+
+              //profile-page
+      &.prof-page{
+        background: $bg-color;
+        border: solid;
+        border-color: $primary-color;
+        width: 50%;
+        align-self: center;
+        position: absolute;
+        left: 25%;
+        font-size: 0.6em;
+        .prof-pic-container{
+            .prof-pic{
+                width: 9rem;
+                height: 9rem;
+            }
+        }
+    }  
+
+    &.prof-setup{
+        font-size: 0.7em;
+        .prof-edit-form{
+            background: $bg-color;
+            height: 90vh;
+            
+        }
+    }
+    }
+    .react-datepicker__input-container{
+        input{
+            width: 100%;
+            height: 2rem;
+        }
+    }
+ 
+    }
