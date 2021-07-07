@@ -9,7 +9,7 @@ const publicPath = path.join(__dirname, 'client', 'build')
 
 
 
-app.set('PORT', PORT);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -29,7 +29,9 @@ const corsOptions = {
     }
 }
 app.use(cors(corsOptions))
+const PORT = process.env.PORT || 8080;
 
+app.set('PORT', PORT);
 //importing routes
 const eventRoutes = require('./routes/events.js');
 const geocodingRoutes = require('./routes/geocoding.js');
@@ -47,14 +49,14 @@ app.use('/auth', authRoutes);
 app.use('/geocoding', geocodingRoutes);
 
 
-if (process.env.NODE_ENV === 'production') {
-    // Serve any static files
-    app.use(express.static(path.join(publicPath)));
-    // Handle React routing, return all requests to React app
-    app.get('/*', function (req, res) {
-        res.sendFile(path.join(publicPath, 'index.html'));
-    });
-}
+// if (process.env.NODE_ENV === 'production') {
+//     // Serve any static files
+//     app.use(express.static(path.join(publicPath)));
+//     // Handle React routing, return all requests to React app
+//     app.get('/*', function (req, res) {
+//         res.sendFile(path.join(publicPath, 'index.html'));
+//     });
+// }
 
 //connecting to mongoose => connection url must be secured later!!! after mongodb+srv should be the username and password written
 //in order to be able to connect ask me for the password and username, but please always delete them before pushing to github
@@ -67,7 +69,11 @@ mongoose.connect(CONNECTION_URL, {
     console.log('This did not work', e.message)
 })
 mongoose.set('useFindAndModify', false)
-const PORT = process.env.PORT || 8080;
+
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(publicPath, 'index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`Server is up! Port: ${PORT}!`)
 })
