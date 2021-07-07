@@ -15,20 +15,20 @@ app.use(express.json());
 app.use(cors());
 
 // ** MIDDLEWARE ** // 
-const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
-const corsOptions = {
-    origin: function (origin, callback) {
-        console.log("** Origin of request " + origin)
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            console.log("Origin acceptable")
-            callback(null, true)
-        } else {
-            console.log("Origin rejected")
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
-}
-app.use(cors(corsOptions))
+// const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         console.log("** Origin of request " + origin)
+//         if (whitelist.indexOf(origin) !== -1 || !origin) {
+//             console.log("Origin acceptable")
+//             callback(null, true)
+//         } else {
+//             console.log("Origin rejected")
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     }
+// }
+// app.use(cors(corsOptions))
 const PORT = process.env.PORT || 8080;
 
 app.set('PORT', PORT);
@@ -40,15 +40,11 @@ const authRoutes = require('./routes/auth.js')
 // const profileRoutes = require('./routes/profile.js')
 //this says that every route in the routes/events is gonna start with /events
 //all the routes are now is localhost:8080/events
+
 app.use('/events', eventRoutes);
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
-// app.use('/profile', profileRoutes);
-
-
 app.use('/geocoding', geocodingRoutes);
-
-
 // if (process.env.NODE_ENV === 'production') {
 //     // Serve any static files
 //     app.use(express.static(path.join(publicPath)));
@@ -69,10 +65,14 @@ mongoose.connect(CONNECTION_URL, {
     console.log('This did not work', e.message)
 })
 mongoose.set('useFindAndModify', false)
-
+app.use(express.static(path.join(publicPath)));
 app.get('/*', function (req, res) {
     res.sendFile(path.join(publicPath, 'index.html'));
 });
+
+// app.use('/profile', profileRoutes);
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is up! Port: ${PORT}!`)
