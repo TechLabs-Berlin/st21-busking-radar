@@ -32,7 +32,7 @@ PROJECT STRUCTURE
 files: package.json, server.js, README.md, seeds.js and popPlaces.js
 folders: client, routes, models, middleware,controllers, config
 
--/Busking Radar/client (Front End side folder inialized with CRA): 
+- /Busking Radar/client (Front End side folder inialized with CRA): 
 -Busking Radar/client/src:
 files: App.js, index.js, .env
 folders: _tests_, actions, components, filters, images, reducers, store, routers, styles
