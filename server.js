@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(cors());
 
-// ** MIDDLEWARE ** //
+// ** MIDDLEWARE ** // 
 const whitelist = ['http://localhost:3000', 'http://localhost:8080',]
 const corsOptions = {
     origin: function (origin, callback) {
