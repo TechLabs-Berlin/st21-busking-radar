@@ -8,10 +8,10 @@ const Buskers = ({ history }) => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(startGetAllEvents())
-    }, [])
+    }, [dispatch])
     useLayoutEffect(() => {
         dispatch(startGetUsers());
-    }, [])
+    }, [dispatch])
     const users = useSelector(state => state.users)
     return (
         <main className='buskers-page'>

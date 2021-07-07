@@ -68,13 +68,13 @@ const EventForm = (props) => {
         if (error.id === 'SIMILAR_EVENT_EXISTS') {
             setEventData({ ...eventData, error: error.msg.msg })
         }
-    }, [error])
+    }, [error, eventData])
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
 
     //handlers
     const handleModal = () => {
@@ -97,8 +97,8 @@ const EventForm = (props) => {
     }
 
     //date-time picker
-    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
-    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
+    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date())
+    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date())
     const handleStartTimeChange = (date) => {
         dispatch(clearErrors())
         setEventData({ ...eventData, error: '' })

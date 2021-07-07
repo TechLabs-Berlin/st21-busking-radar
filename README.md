@@ -1,24 +1,43 @@
 # st21-busking-radar
-Team
-Project Lead and WD Basan Kuberlinov
-WD Ken Dolman
-WD Celestine Onwuka
-UX Claudia 
-UX Andrew Moussa
-DS Padcha
-DS Sefine K.
+
+Busking Radar is the final group project which was created in order to complete the Berlin TechLabs Bootcamp. The team disciplines included UX/UI design, Web Development, and Data Science. All disciplines were put into practice to develop Busking Radar. Using interactive map for displaying street performances the Busking Radar makes outdoor live entertainment easily discoverable for any user and helps buskers draw a larger audience to their performances.
+
+TEAM
+- Andrew Moussa UX
+- Basan Kuberlinov Project Lead and WD
+- Celestine Onwuka WD
+- Claudia UX 
+- Ken Dolman WD
+- Padcha DS 
+- Sefine K. DS
+- Mentor: Bernardo Sunderhus
+
+TECH STACK
+
+Front End: CRA, React, Redux, Thunk, Axios, Node-Sass, Moment.js and react-dates(managing dates), React-Router-Dom 5, React-Query Material UI
+
+Backend: Node.js, Express, Cors, MongoDB Atlas, Mongoose
+
+PROJECT STATUS
+The project is still in production. MVP restrictions include:
+
+Event can only be filtered by dates or searched by genre or event name.
+Event type list is restricted to Music.
+Data Set with the list of popular locations for busking are included in the database but are not implemented yet.
+The aim is to include more types of street performances, as well as more filters for events and the filters for user's events (past, current, future). Moreover, in the post MVP Non-Busker users can create an account and follow Buskers, the Buskers will receive notifications to confirm that the event will take place, non-Buskers will receive about the current events near them. 
 
 
-Mentor
-Bernardo Sunderhus
+PROJECT STRUCTURE
+- /Busking Radar (main folder and the server side folder):
+files: package.json, server.js, README.md, seeds.js and popPlaces.js
+folders: client, routes, models, middleware,controllers, config
 
-Tech Stack
+-/Busking Radar/client (Front End side folder inialized with CRA): 
+-Busking Radar/client/src:
+files: App.js, index.js, .env
+folders: _tests_, actions, components, filters, images, reducers, store, routers, styles
 
-Front End: CRA(Create React App) with Functional Components and Hooks, Redux (state Managment), Thunk(middleware), axios(sending http requests), Node-Sass(styling), Moment.js and react-dates(managing dates), react-router-dom 5 with history(for client side routing), Material UI
-
-Backend: Node.js with Express, Cors (controlling access), MongoDB Atlas, Mongoose
-
-1. Project Plan:
+PROJECT PLAN:
 
 Two types of users, registered buskers and unregistered:
 
@@ -114,109 +133,3 @@ Info about city regulations and the most popular places for buskers in Berlin.
 Links to Busker organizations in Berlin
 
 
-
-2. Work Plan and Deadlines
-- Together
-
-Week 0/due 17 May
-- Collect as much data about the topic as possible.
-- Develop an elaborate plan and tasks.
-- Establish a good team communication.
-- Maybe: Finding Boiler plates for MERN stack?!
-
-
-- WD
-
-Week 1/Due 25 May
-- Together: 
-Decide on the project structure (folders structure)
-- BackEnd: 
-Initialize Express App;
-Create a server;
-Start working on a database (Mongo DB);
-Start working on authetication features;
-- Front End:
-Initialize CRA(Create React App) for client side of application;
-The component with registration and sign in forms;
-
-Basan - CRUD functionality for Events, Project Plan
-
-Week 2/Due 1 June
-Celestine, Ken - user authentication. 
-Basan - CRUD functionality for Events, Project Plan
-
-Week 3/Due 8 June
-- Start to work with the UX prototype
-Celestine, Ken - user authentication. 
-Basan - Interactive Map, Project Plan
-
-Week 4/Due 15 Jun
-
-Basan - Polling Mechanism
-
-Week 5/Due 22 June
-
-- Styling;
-
-Week 6/Due 29 June
-- Styling and testing;
-
-- DS
-Week 0
-- Padcha: MockUp data with users finished
-
-Week 1/Due 25 May
-
-Padcha, Sefine: List of the popular locations with Geolocations data
-
-Week 2/Due 1 June
-
-Padcha, Sefine: List of the popular locations with Geolocations data
-
-Week 3/Due 8 June
-
-Padcha, Sefine: List of the popular locations with Geolocations data
-
-Week 4/Due 15 June
-
-Week 5/Due 22 June
-
-Week 6/Due 29 June
-
-- UX
-
-Week 0
-- Ken: 
-the contacts of the musicians for survey collected
-- UX team: 
-had a meeting and outlined the most feasible and important features of the app
-
-Week 1/Due 25 May
-
-Claudia, Andrew - Survey
-
-Week 2/Due 1 June
-
-Claudia, Andrew - Survey
-
-Week 3/Due 8 June
-
-Claudia, Andrew - Survey and Wireframe
-
-Week 4/Due 15 June
-
-Claudia, Andrew - Wireframe and Prototype
-
-Week 5/Due 22 June
-
-Week 6/Due 29 June
-
-
-
-
-3 Project structure (folders)
-- /Busking Radar (main folder and the server side folder):
-- files: package.json, index.js
-- folders: client
-
-- /Busking Radar/Client (Front End Side folder, inialized with CRA):

@@ -24,7 +24,7 @@ const Geocoder = ({ handleChooseLocation, handleAbortChoice }) => {
                 {searchLocation !== '' && suggestedLocations.map(place => {
                     return <li className='item-result' onClick={async () => {
                         await handleAbortChoice()
-                        handleChooseLocation(place.place_name, place.geometry.coordinates[0], place.geometry.coordinates[1])
+                        handleChooseLocation(place.place_name, place.geometry.coordinates[0], place.geometry.coordinates[1], place.place_name + place.geometry.coordinates[0])
                         setSearchLocation('')
                     }}>{place.place_name}</li>
                 })}

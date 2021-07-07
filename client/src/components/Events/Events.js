@@ -78,11 +78,12 @@ const Events = ({ history }) => {
         }
     }
     //choose new location logic
-    const handleChooseLocation = (name, long, lat) => {
+    const handleChooseLocation = (name, long, lat, id) => {
         setNewLocation({
             name,
             long,
-            lat
+            lat,
+            id
         })
     }
     //abort choice logic 
@@ -140,8 +141,8 @@ const Events = ({ history }) => {
             <button className={`${chooseLocation && 'hide'} btn-lg btn-see`} size='small' onClick={handleShowList}>
                 See All Events
             </button>
-            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
-                <div key={'123dfg'} className='events-ls' >
+            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> :
+                <div key={'123dfg'} className={` ${(!showList && clickedLocation.length > 1) ? 'events-ls' : 'hide'}`} >
                     <button className='btn-close' onClick={handleMarkerClick} >
                         <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
                     </button>
@@ -166,34 +167,35 @@ const Events = ({ history }) => {
                             }
                         }))}
                     </div>
+                </div>}
+
+            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : <div key={'123ddgg'} className={` ${showList === false ? 'hide' : 'events-ls'}`} >
+                <button className='btn-close' onClick={handleShowList} >
+                    <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
+                </button>
+                <h2 className='hd-md hd-ls'>Events</h2>
+                <EventsFilters />
+                <div className='events-cards'>
+                    {events.map((event => {
+                        return <EventInfoCard
+                            id={event._id}
+                            key={event._id}
+                            name={event.name}
+                            genre={event.genre}
+                            location={event.locationName}
+                            date={moment(event.startTime).format('MMMM Do YYYY')}
+                            startTime={moment(event.startTime).format('H:mm')}
+                            endTime={moment(event.endTime).format('H:mm')}
+                            about={event.about}
+                            tags={event.tags}
+                            creator={event.creator}
+                            createdAt={moment(event.createdAt).format('MMMM Do YYYY, H:mm')}
+                            active={event.active}
+                        />
+                    }))}
                 </div>
-                : showList &&
-                <div key={'123ddgg'} className='events-ls' >
-                    <button className='btn-close' onClick={handleShowList} >
-                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
-                    </button>
-                    <h2 className='hd-md hd-ls'>Events</h2>
-                    <EventsFilters />
-                    <div className='events-cards'>
-                        {events.map((event => {
-                            return <EventInfoCard
-                                id={event._id}
-                                key={event._id}
-                                name={event.name}
-                                genre={event.genre}
-                                location={event.locationName}
-                                date={moment(event.startTime).format('MMMM Do YYYY')}
-                                startTime={moment(event.startTime).format('H:mm')}
-                                endTime={moment(event.endTime).format('H:mm')}
-                                about={event.about}
-                                tags={event.tags}
-                                creator={event.creator}
-                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, H:mm')}
-                                active={event.active}
-                            />
-                        }))}
-                    </div>
-                </div>
+            </div>
+
             }
             <div className='events-map'>
                 <EventMap

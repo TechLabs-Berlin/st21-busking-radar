@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useRef, useState, useEffect, } from 'react';
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
@@ -22,9 +22,9 @@ const EventMap = ({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [lng, lat],
-            zoom: 11
+            zoom: zoom
         });
-    }, [events.length])
+    }, [events.length, lng, lat, zoom])
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
         map.current.on('move', () => {
@@ -33,9 +33,9 @@ const EventMap = ({
             setZoom(map.current.getZoom().toFixed(2));
         });
     }, []);
-
+    let eventsIds = []
     useEffect(() => {
-        let eventsLong = []
+
         events.map(event => {
             let eventsNumber = 0;
             for (let i = 0; i < events.length; i++) {
@@ -43,6 +43,13 @@ const EventMap = ({
                     eventsNumber++
                 }
             }
+            eventsIds.push(event._id)
+            map.current._markers.forEach(marker => {
+                if (eventsIds.includes(marker._element.id) === false) {
+                    return marker.remove()
+                }
+            })
+
             let customMarker = document.createElement('div');
             customMarker.id = `${event._id}`
             customMarker.className = 'marker';
@@ -55,31 +62,35 @@ const EventMap = ({
                 });
 
             })
-
-
-            customMarker.innerHTML = `<span><b> ${eventsNumber} </b></span>`
+            customMarker.innerHTML = `<span><b>${eventsNumber}</b></span>`
             let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
                 .addTo(map.current)
-            for (let i = 0; i < events.length; i++) {
-                eventsLong.push(event.geometry.coordinates[0])
-            }
             return marker
         })
+        console.log(eventsIds)
+        console.log(map.current._markers)
         //This is not the best code ever, but it works! I could maybe try to improve it later
         //it removes the markers if the events are filtered by dates. It loops too much and makes everything work slowly
-        map.current._markers.map(marker => {
-            for (let i = 0; i < eventsLong.length; i++) {
-                if (eventsLong.includes(marker._lngLat.lng) === false) {
-                    return marker.remove()
-                }
-            }
-        })
+
+
+
+        // for (let i = 0; i < eventsIds.length; i++) {
+        //     map.current._markers
+        //     if (eventsIds[i] !== marker._element.id) {
+        //         marker.remove()
+        //     }
+        // }
+
+        console.log(eventsIds)
+        console.log(map.current._markers)
+
     }, [events.length])
     useEffect(() => {
         if (newLocation) {
             prevNewLocation.current = newLocation
             let newCostumMarker = document.createElement('div');
+            newCostumMarker.id = newLocation.id
             newCostumMarker.className = 'marker';
             newCostumMarker.className = 'newMarker';
             newCostumMarker.innerHTML = `<span></span>`
@@ -93,8 +104,8 @@ const EventMap = ({
             return newMarker
         } else if (prevNewLocation.current) {
             //this deletes the chosen new location if the choice is aborted
-            map.current._markers.map(marker => {
-                if (marker._lngLat.lng === prevNewLocation.current.long) {
+            map.current._markers.forEach(marker => {
+                if (marker._element.id === prevNewLocation.current.id) {
                     return marker.remove()
                 }
             })

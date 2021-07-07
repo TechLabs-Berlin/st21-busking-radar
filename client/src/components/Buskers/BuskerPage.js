@@ -21,7 +21,7 @@ const BuskerPage = ({ match, history }) => {
         //this runs before the rendering
         dispatch(startGetUsers())
         dispatch(startGetAllEvents())
-    }, [])
+    }, [dispatch])
     return (
         <main className='prof-page' id='busker-page'>
             <button className='btn-back btn-back-buskers-page' onClick={() => {
@@ -44,7 +44,7 @@ const BuskerPage = ({ match, history }) => {
                     }
                 })}
             </div>
-            {genre == 'undefined' && about == 'undefined' ? <p>No info</p> : <div className='prof-info'>
+            {genre === 'undefined' && about === 'undefined' ? <p>No info</p> : <div className='prof-info'>
                 <p className='prof-info-genre'>{genre}</p>
                 <p className='prof-info-about'>{about}</p>
             </div>}
