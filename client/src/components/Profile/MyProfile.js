@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import moment from 'moment';
 import axios from 'axios';
@@ -15,6 +15,7 @@ const MyProfile = ({ history }) => {
     const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     const [showEvents, setShowEvents] = useState(false)
     const [intervalMs, setIntervalMs] = useState(2000)
+    const [mounted, setMounted] = useState(false)
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
@@ -23,10 +24,10 @@ const MyProfile = ({ history }) => {
     //Fetching events!!!
     //auto fetching with react query
     const now = moment();
-    const { status, data } = useQuery('events',
+    useQuery('events',
         async () => {
             const res = await axios.get('/events')
-            return res.data.map(event => {
+            return res.data.forEach(event => {
                 if (moment(event.startTime).isSameOrBefore(now) &&
                     moment(event.endTime).isSameOrAfter(now) &&
                     event.active === false) {
@@ -51,9 +52,17 @@ const MyProfile = ({ history }) => {
 
         }
         , {
-            refetchInterval: intervalMs
+            refetchInterval: intervalMs,
+            enabled: mounted //<-this is a clean up to stop auto fetch when we leave the page
         })
 
+    useEffect(() => {
+        setMounted(true)
+
+        return () => {
+            setMounted(false)
+        }
+    }, [])
     return (
         <main className='prof-page'>
             <div className='prof-bg'></div>
@@ -68,11 +77,11 @@ const MyProfile = ({ history }) => {
             <div className='soc-links-container'>
                 {auth.user.socialLinks.map(link => {
                     if (link.name === 'facebook') {
-                        return <a href={link.link}><i class="fab fa-2x fa-facebook-square icon-color"></i> </a>
+                        return <a key={link.link} href={link.link}><i class="fab fa-2x fa-facebook-square icon-color"></i> </a>
                     } else if (link.name === 'youtube') {
-                        return <a href={link.link}><i class="fab fa-2x fa-youtube icon-color"></i></a>
+                        return <a key={link.link} href={link.link}><i class="fab fa-2x fa-youtube icon-color"></i></a>
                     } else {
-                        return <a href={link.link}><i class="fab fa-2x fa-spotify icon-color"></i></a>
+                        return <a key={link.link} href={link.link}><i class="fab fa-2x fa-spotify icon-color"></i></a>
                     }
                 })}
             </div>

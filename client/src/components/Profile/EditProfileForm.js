@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { startUpdateUserInfo } from '../../actions/auth';
 
@@ -8,7 +8,8 @@ import { startUpdateUserInfo } from '../../actions/auth';
 const EditProfileForm = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const error = useSelector((state) => state.error)
+    //late include the error
+    // const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
         name: props.auth.user ? props.auth.user.name : '',
         email: props.auth.user ? props.auth.user.email : '',
@@ -95,7 +96,7 @@ const EditProfileForm = (props) => {
 
             <div className='prof-edit' >
                 <div className='prof-pic-container'>
-                    <img className='prof-pic' src={userData.profilePic} />
+                    <img alt='profile-pic' className='prof-pic' src={userData.profilePic} />
                 </div>
                 <div className='file-input-container'>
                     <label>Upload profile picture </label>

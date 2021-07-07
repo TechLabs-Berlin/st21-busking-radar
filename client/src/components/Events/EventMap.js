@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
@@ -9,14 +9,14 @@ const EventMap = ({
     events
 }) => {
     const mapContainer = useRef(null);
-    const map = useRef(null)
+    const map = useRef(null);
     const [lng, setLng] = useState(13.404954);
     const [lat, setLat] = useState(52.520008);
     const [zoom, setZoom] = useState(11);
     const prevNewLocation = useRef(null)
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
     useEffect(() => {
-        if (map.current) return;
+        // if (map.current) return;   //for some reason this method does not delete all markers. Therefore the map has to be rerendered check down there
         // map render only once
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
@@ -24,66 +24,45 @@ const EventMap = ({
             center: [lng, lat],
             zoom: zoom
         });
-    }, [events.length, lng, lat, zoom])
-    useEffect(() => {
-        if (!map.current) return; // wait for map to initialize
-        map.current.on('move', () => {
-            setLng(map.current.getCenter().lng.toFixed(4));
-            setLat(map.current.getCenter().lat.toFixed(4));
-            setZoom(map.current.getZoom().toFixed(2));
-        });
-    }, []);
-    let eventsIds = []
-    useEffect(() => {
 
-        events.map(event => {
+    }, [events.length])
+
+
+    useEffect(() => {
+        let eventsIds = []
+        events.forEach(event => {
+            eventsIds.push(event._id)
             let eventsNumber = 0;
             for (let i = 0; i < events.length; i++) {
                 if (events[i].geometry.coordinates[0] === event.geometry.coordinates[0]) {
                     eventsNumber++
                 }
             }
-            eventsIds.push(event._id)
-            map.current._markers.forEach(marker => {
-                if (eventsIds.includes(marker._element.id) === false) {
-                    return marker.remove()
-                }
-            })
 
             let customMarker = document.createElement('div');
             customMarker.id = `${event._id}`
             customMarker.className = 'marker';
             customMarker.addEventListener('click', () => {
                 handleMarkerClick(event.geometry.coordinates, event.locationName)
-
                 map.current.flyTo({
                     center: event.geometry.coordinates,
                     zoom: 13.5
                 });
 
             })
+            // eventsIds.push(event._id)
             customMarker.innerHTML = `<span><b>${eventsNumber}</b></span>`
             let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
                 .addTo(map.current)
             return marker
         })
-        console.log(eventsIds)
-        console.log(map.current._markers)
-        //This is not the best code ever, but it works! I could maybe try to improve it later
-        //it removes the markers if the events are filtered by dates. It loops too much and makes everything work slowly
-
-
-
-        // for (let i = 0; i < eventsIds.length; i++) {
-        //     map.current._markers
-        //     if (eventsIds[i] !== marker._element.id) {
-        //         marker.remove()
-        //     }
-        // }
-
-        console.log(eventsIds)
-        console.log(map.current._markers)
+        //for some reason this method does not delete all markers. This has to be solved later
+        map.current._markers.forEach(marker => {
+            if (eventsIds.includes(marker._element.id) === false) {
+                marker.remove()
+            }
+        })
 
     }, [events.length])
     useEffect(() => {
@@ -111,6 +90,14 @@ const EventMap = ({
             })
         }
     }, [newLocation])
+    useEffect(() => {
+        if (!map.current) return; // wait for map to initialize
+        map.current.on('move', () => {
+            setLng(map.current.getCenter().lng.toFixed(4));
+            setLat(map.current.getCenter().lat.toFixed(4));
+            setZoom(map.current.getZoom().toFixed(2));
+        });
+    }, []);
     return (
         <div id='events-map' className='events-map'>
             <div id='map-container' ref={mapContainer} className='map-container' />

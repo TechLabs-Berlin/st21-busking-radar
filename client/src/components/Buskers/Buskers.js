@@ -20,6 +20,7 @@ const Buskers = ({ history }) => {
             <div className='buskers-list'>
                 {users.map(user => {
                     return <BuskerInfoCard
+                        key={user._id + user.name}
                         name={user.name}
                         socialLinks={user.socialLinks}
                         genre={user.genre}

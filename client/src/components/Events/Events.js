@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,10 +30,10 @@ const Events = ({ history }) => {
     //Fetching events!!!
     //auto fetching with react query
     const now = moment();
-    const { status, data } = useQuery('events',
+    useQuery('events',
         async () => {
             const res = await axios.get('/events')
-            return res.data.map(event => {
+            return res.data.forEach(event => {
                 if (moment(event.startTime).isSameOrBefore(now) &&
                     moment(event.endTime).isSameOrAfter(now) &&
                     event.active === false) {
@@ -78,12 +78,11 @@ const Events = ({ history }) => {
         }
     }
     //choose new location logic
-    const handleChooseLocation = (name, long, lat, id) => {
+    const handleChooseLocation = (name, long, lat) => {
         setNewLocation({
             name,
             long,
-            lat,
-            id
+            lat
         })
     }
     //abort choice logic 
@@ -141,14 +140,14 @@ const Events = ({ history }) => {
             <button className={`${chooseLocation && 'hide'} btn-lg btn-see`} size='small' onClick={handleShowList}>
                 See All Events
             </button>
-            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> :
-                <div key={'123dfg'} className={` ${(!showList && clickedLocation.length > 1) ? 'events-ls' : 'hide'}`} >
+            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
+                <div key={'123dfg'} className='events-ls' >
                     <button className='btn-close' onClick={handleMarkerClick} >
                         <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
                     </button>
                     <h2 className='hd-md hd-ls'>Events at {clickedLocation[2]}</h2>
                     <div className='events-cards'>
-                        {events.map((event => {
+                        {events.forEach((event => {
                             if (event.geometry.coordinates[0] === clickedLocation[0]) {
                                 return <EventInfoCard
                                     id={event._id}
@@ -167,35 +166,34 @@ const Events = ({ history }) => {
                             }
                         }))}
                     </div>
-                </div>}
-
-            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : <div key={'123ddgg'} className={` ${showList === false ? 'hide' : 'events-ls'}`} >
-                <button className='btn-close' onClick={handleShowList} >
-                    <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
-                </button>
-                <h2 className='hd-md hd-ls'>Events</h2>
-                <EventsFilters />
-                <div className='events-cards'>
-                    {events.map((event => {
-                        return <EventInfoCard
-                            id={event._id}
-                            key={event._id}
-                            name={event.name}
-                            genre={event.genre}
-                            location={event.locationName}
-                            date={moment(event.startTime).format('MMMM Do YYYY')}
-                            startTime={moment(event.startTime).format('H:mm')}
-                            endTime={moment(event.endTime).format('H:mm')}
-                            about={event.about}
-                            tags={event.tags}
-                            creator={event.creator}
-                            createdAt={moment(event.createdAt).format('MMMM Do YYYY, H:mm')}
-                            active={event.active}
-                        />
-                    }))}
                 </div>
-            </div>
-
+                : showList &&
+                <div key={'123ddgg'} className='events-ls' >
+                    <button className='btn-close' onClick={handleShowList} >
+                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
+                    </button>
+                    <h2 className='hd-md hd-ls'>Events</h2>
+                    <EventsFilters />
+                    <div className='events-cards'>
+                        {events.map((event => {
+                            return <EventInfoCard
+                                id={event._id}
+                                key={event._id}
+                                name={event.name}
+                                genre={event.genre}
+                                location={event.locationName}
+                                date={moment(event.startTime).format('MMMM Do YYYY')}
+                                startTime={moment(event.startTime).format('H:mm')}
+                                endTime={moment(event.endTime).format('H:mm')}
+                                about={event.about}
+                                tags={event.tags}
+                                creator={event.creator}
+                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, H:mm')}
+                                active={event.active}
+                            />
+                        }))}
+                    </div>
+                </div>
             }
             <div className='events-map'>
                 <EventMap
@@ -211,5 +209,4 @@ const Events = ({ history }) => {
 
 
 export default Events;
-
 
