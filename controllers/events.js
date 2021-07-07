@@ -31,7 +31,7 @@ module.exports.createEvent = async (req, res) => {
         }
     })[0]
     if (similarEvent && event.confirmation === false) {
-        return res.status(400).json({ msg: `Another event is booked at that time between ${moment(similarEvent.startTime).format('h:mm:ss a')} ${moment(similarEvent.endTime).format('h:mm:ss a')} in this location` })
+        return res.status(400).json({ msg: `Another event is booked on the same day between ${moment(similarEvent.startTime).format('H:mm')} ${moment(similarEvent.endTime).format('H:mm')} at this location` })
     } else {
         const newEvent = new Event(event)
         newEvent.save()

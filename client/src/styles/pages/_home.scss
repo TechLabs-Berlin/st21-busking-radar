@@ -25,6 +25,9 @@ main{
     .guest{
         text-align: center;
         width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     &.landing-signed{
         flex-direction: column;

@@ -66,5 +66,12 @@ main{
         .bg-buskers-page{
             z-index: 2;
         }
+        .prof-info-events{
+            overflow: scroll;
+            &::-webkit-scrollbar {
+                width: 0px; 
+                background: transparent; 
+                };
+        }
     }
 }
