@@ -13,7 +13,7 @@ app.use(express.json());
 // app.use(cors());
 
 // ** MIDDLEWARE ** // 
-const whitelist = ['http://localhost:3000', 'http://localhost:8080',]
+const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
 const corsOptions = {
     origin: function (origin, callback) {
         console.log("** Origin of request " + origin)
