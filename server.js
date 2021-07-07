@@ -4,6 +4,7 @@ const cors = require('cors');
 const config = require('config')
 const app = express();
 const path = require('path')
+const publicPath = path.join(__dirname, 'client', 'build')
 
 
 
@@ -48,10 +49,10 @@ app.use('/geocoding', geocodingRoutes);
 
 if (process.env.NODE_ENV === 'production') {
     // Serve any static files
-    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use(express.static(path.join(publicPath)));
     // Handle React routing, return all requests to React app
-    app.get('*', function (req, res) {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(publicPath, 'index.html'));
     });
 }
 
@@ -65,6 +66,7 @@ mongoose.connect(CONNECTION_URL, {
 }).catch((e) => {
     console.log('This did not work', e.message)
 })
+mongoose.set('useFindAndModify', false)
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is up! Port: ${PORT}!`)
@@ -72,5 +74,5 @@ app.listen(PORT, () => {
 
 
 
-mongoose.set('useFindAndModify', false)
+
 
