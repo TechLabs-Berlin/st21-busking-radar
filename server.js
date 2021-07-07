@@ -61,12 +61,12 @@ const CONNECTION_URL = config.get('mongoURI')
 mongoose.connect(CONNECTION_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-}).then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is up! Port: ${PORT}!`)
-    })
 }).catch((e) => {
     console.log('This did not work', e.message)
+})
+
+app.listen(PORT, () => {
+    console.log(`Server is up! Port: ${PORT}!`)
 })
 
 
