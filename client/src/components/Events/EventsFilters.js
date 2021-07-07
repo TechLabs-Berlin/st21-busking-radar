@@ -20,10 +20,10 @@ const EventsFilters = (props) => {
             setEndDate(startDate)
         }
         dispatch(setStartDate(startDate))
-    }, [startDate])
+    }, [startDate, dispatch])
     useEffect(() => {
         dispatch(setEndDate(endDate))
-    }, [endDate])
+    }, [endDate, dispatch])
 
 
     const handleShowDatesFilters = () => {

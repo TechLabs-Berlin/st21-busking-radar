@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './components/Generic/Header';
 import Events from './components/Events/Events';
@@ -31,7 +31,7 @@ const App = () => {
   //as it takes  some time to load the user and change authetication status 
   useEffect(() => {
     dispatch(loadUser())
-  })
+  }, [dispatch])
 
   //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
   //test for it. Is it possible? Check it out later for sure!!!)

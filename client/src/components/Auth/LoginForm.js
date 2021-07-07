@@ -24,7 +24,7 @@ const LoginForm = (props) => {
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
     useEffect(() => {
         if (error.id === 'LOGIN_FAIL') {
             setUserData({ error: error.msg.msg })
@@ -44,13 +44,6 @@ const LoginForm = (props) => {
         dispatch(login(userData))
         setUserData({ ...userData, loggedIn: true })
     }
-    useEffect(() => {
-        //I can't find the better solution now. If you have time later, you should think about it. 
-        //the conditional push up there does not work, due to the scope. When we push the button, the whole handle submit happens within
-        //the scope of that function, which means the auth.isAuthenticated will be null, as the login has not happened yet. 
-        if (props.auth.isAuthenticated && userData.loggedIn)
-            props.history.push('/events')
-    }, [props.auth])
 
     return (
         <form className='form login' onSubmit={handleSubmit}>

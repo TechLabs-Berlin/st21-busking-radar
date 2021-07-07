@@ -21,7 +21,7 @@ const BuskerPage = ({ match, history }) => {
         //this runs before the rendering
         dispatch(startGetUsers())
         dispatch(startGetAllEvents())
-    }, [])
+    }, [dispatch])
     return (
         <main className='prof-page' id='busker-page'>
             <button className='btn-back btn-back-buskers-page' onClick={() => {
@@ -36,15 +36,15 @@ const BuskerPage = ({ match, history }) => {
             <div className='soc-links-container'>
                 {links.map(link => {
                     if (link.name === 'facebook') {
-                        return <a href={link.link}><i class="fab fa-2x fa-facebook-square icon-color"></i> </a>
+                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-facebook-square icon-color"></i> </a>
                     } else if (link.name === 'youtube') {
-                        return <a href={link.link}><i class="fab fa-2x fa-youtube icon-color"></i></a>
+                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-youtube icon-color"></i></a>
                     } else {
-                        return <a href={link.link}><i class="fab fa-2x fa-spotify icon-color"></i></a>
+                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-spotify icon-color"></i></a>
                     }
                 })}
             </div>
-            {genre == 'undefined' && about == 'undefined' ? <p>No info</p> : <div className='prof-info'>
+            {genre === 'undefined' && about === 'undefined' ? <p>No info</p> : <div className='prof-info'>
                 <p className='prof-info-genre'>{genre}</p>
                 <p className='prof-info-about'>{about}</p>
             </div>}

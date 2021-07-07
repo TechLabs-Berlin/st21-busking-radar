@@ -30,14 +30,14 @@ const RegForm = ({ handleModal, history }) => {
                 open: true,
                 userName: userData.name
             })
-    }, [auth])
+    }, [auth, handleModal, userData.name])
     //changing clear errors
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
     const handleChange = (e) => {
         setUserData({
             ...userData,

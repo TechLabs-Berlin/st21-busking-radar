@@ -8,10 +8,10 @@ const Buskers = ({ history }) => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(startGetAllEvents())
-    }, [])
+    }, [dispatch])
     useLayoutEffect(() => {
         dispatch(startGetUsers());
-    }, [])
+    }, [dispatch])
     const users = useSelector(state => state.users)
     return (
         <main className='buskers-page'>
@@ -20,6 +20,7 @@ const Buskers = ({ history }) => {
             <div className='buskers-list'>
                 {users.map(user => {
                     return <BuskerInfoCard
+                        key={user._id + user.name}
                         name={user.name}
                         socialLinks={user.socialLinks}
                         genre={user.genre}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { startSearchNewLocation } from '../../actions/geocoder';
 
@@ -14,7 +14,7 @@ const Geocoder = ({ handleChooseLocation, handleAbortChoice }) => {
 
     const sendReq = useCallback(() => {
         dispatch(startSearchNewLocation(searchLocation))
-    })
+    }, [dispatch])
     const suggestedLocations = useSelector((state) => state.suggestedLocations)
     return (
         <div className='geocoder' key='e456geocoder'>
@@ -24,7 +24,7 @@ const Geocoder = ({ handleChooseLocation, handleAbortChoice }) => {
                 {searchLocation !== '' && suggestedLocations.map(place => {
                     return <li className='item-result' onClick={async () => {
                         await handleAbortChoice()
-                        handleChooseLocation(place.place_name, place.geometry.coordinates[0], place.geometry.coordinates[1])
+                        handleChooseLocation(place.place_name, place.geometry.coordinates[0], place.geometry.coordinates[1], place.place_name + place.geometry.coordinates[0])
                         setSearchLocation('')
                     }}>{place.place_name}</li>
                 })}

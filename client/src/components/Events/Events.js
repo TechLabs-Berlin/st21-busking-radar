@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,10 +30,10 @@ const Events = ({ history }) => {
     //Fetching events!!!
     //auto fetching with react query
     const now = moment();
-    const { status, data } = useQuery('events',
+    useQuery('events',
         async () => {
             const res = await axios.get('/events')
-            return res.data.map(event => {
+            return res.data.forEach(event => {
                 if (moment(event.startTime).isSameOrBefore(now) &&
                     moment(event.endTime).isSameOrAfter(now) &&
                     event.active === false) {
@@ -147,7 +147,7 @@ const Events = ({ history }) => {
                     </button>
                     <h2 className='hd-md hd-ls'>Events at {clickedLocation[2]}</h2>
                     <div className='events-cards'>
-                        {events.map((event => {
+                        {events.forEach((event => {
                             if (event.geometry.coordinates[0] === clickedLocation[0]) {
                                 return <EventInfoCard
                                     id={event._id}
@@ -209,5 +209,4 @@ const Events = ({ history }) => {
 
 
 export default Events;
-
 

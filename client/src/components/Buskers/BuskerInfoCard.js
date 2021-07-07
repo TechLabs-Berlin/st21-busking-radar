@@ -13,11 +13,11 @@ const BuskerInfoCard = ({ name, profilePic, socialLinks, genre, about, history, 
                 <div className='soc-links-container' >
                     {socialLinks.map(link => {
                         if (link.name === 'facebook') {
-                            return <a href={link.link}><i class="fab fa-2x fa-facebook-square icon-color"></i>  </a>
+                            return <a href={link.link + link.name}><i class="fab fa-2x fa-facebook-square icon-color"></i>  </a>
                         } else if (link.name === 'youtube') {
-                            return <a href={link.link}><i class="fab fa-2x fa-youtube icon-color"></i></a>
+                            return <a href={link.link + link.name}><i class="fab fa-2x fa-youtube icon-color"></i></a>
                         } else {
-                            return <a href={link.link}><i class="fab fa-2x fa-spotify icon-color"></i></a>
+                            return <a href={link.link + link.name}><i class="fab fa-2x fa-spotify icon-color"></i></a>
                         }
                     })}
                 </div>

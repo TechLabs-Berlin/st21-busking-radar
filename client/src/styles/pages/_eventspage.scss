@@ -13,6 +13,9 @@ main{
             z-index: 1;
             background: gray;
             width: 100%;
+            .hide{
+                display: none;
+            }
             .events-ls{
                 .hd-md{
                     text-align: center;

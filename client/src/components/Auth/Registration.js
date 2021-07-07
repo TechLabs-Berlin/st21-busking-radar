@@ -41,10 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Registration = ({ history }) => {
     const [openModal, setOpenModal] = useState(false)
-    const [userName, setUserName] = useState('')
     const handleModal = (open) => {
         setOpenModal(open.open)
-        setUserName(open.userName)
     }
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
@@ -63,7 +61,7 @@ const Registration = ({ history }) => {
             >
                 <div style={modalStyle} className={`${classes.paper} modal-container`} >
                     <CheckCircleIcon style={{ fill: 'rgba(164, 74, 63, 0.87)', fontSize: '50' }} />
-                    <h2 className='hd-md' >Amazing!</h2>
+                    <h2 style={{ color: 'rgba(164, 74, 63, 0.87)' }} >Amazing!</h2>
                     <p className='text-sub'>You can create events and share  them with your fans</p>
                     <button className='btn-lg' onClick={() => {
                         history.push({
