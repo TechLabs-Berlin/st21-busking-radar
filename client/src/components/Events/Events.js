@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
 import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CloseIcon from '@material-ui/icons/Close';
-import { Grid, CircularProgress, Button } from '@material-ui/core';
 import EventInfoCard from './EventInfoCard';
 import EventMap from './EventMap';
 import Geocoder from './Geocoder';
@@ -19,10 +14,10 @@ import selectEvents from './../../filters/events';
 
 
 
+
 //polling mechanism
 const Events = ({ history }) => {
     const [showList, setShowList] = useState(false)
-    const [showFilters, setShowFilters] = useState(false)
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
@@ -35,10 +30,10 @@ const Events = ({ history }) => {
     //Fetching events!!!
     //auto fetching with react query
     const now = moment();
-    const { status, data } = useQuery('events',
+    useQuery('events',
         async () => {
             const res = await axios.get('/events')
-            return res.data.map(event => {
+            return res.data.forEach(event => {
                 if (moment(event.startTime).isSameOrBefore(now) &&
                     moment(event.endTime).isSameOrAfter(now) &&
                     event.active === false) {
@@ -69,15 +64,10 @@ const Events = ({ history }) => {
     const events = useSelector((state) => selectEvents(state.events, state.filters))
     const createEvent = () => {
         setChooseLocation(true)
-        setShowFilters(false)
         setShowList(false)
         setClickedLocation([])
     }
     //Handlers
-    const handleShowFilters = () => {
-        setShowFilters(!showFilters)
-        setShowList(false)
-    }
     //confirm the choice of the new location logic
     const handleConfirmChoice = () => {
         if (newLocation) {
@@ -102,7 +92,6 @@ const Events = ({ history }) => {
     //Show list logic
     const handleShowList = () => {
         setShowList(!showList)
-        setShowFilters(false)
         setClickedLocation([])
     }
     //show events in the clicked location logic
@@ -112,101 +101,98 @@ const Events = ({ history }) => {
         } else {
             setClickedLocation([coordinates[0], coordinates[1], name])
         }
-        setShowFilters(false)
         setShowList(false)
     }
+    //initiallizing events filters
+
     return (
         <main id='events' className='events'>
-            <div className='events-search'>
-                <h1 id='hd-events' className='hd-lg' >Events</h1>
-                {chooseLocation === true && !newLocation
+            <div className='logo logo-events'></div>
+            <Geocoder
+                handleChooseLocation={handleChooseLocation}
+                newLocation={newLocation}
+                handleAbortChoice={handleAbortChoice}
+            />
+            {chooseLocation === true && !newLocation
+                ?
+                <p className='text-sub text-choose'>
+                    Please choose the event location by typing an address
+                </p>
+                :
+                (chooseLocation === true && newLocation)
                     ?
-                    <p>
-                        Please choose the event location from the list or by typing an address
-                        <Geocoder handleChooseLocation={handleChooseLocation}
-                            newLocation={newLocation}
-                        />
-                    </p>
+                    <div className='choice-container'>
+                        <p className='text-sub text-choose'>Chosen location: <span>"{newLocation.name}"</span> </p>
+                        <button className='btn-lg' size='small' onClick={handleConfirmChoice}>
+                            Confirm choice
+                        </button>
+                        <button className='btn-lg' onClick={handleAbortChoice}>
+                            Cancel
+                        </button>
+                    </div>
                     :
-                    (chooseLocation === true && newLocation)
-                        ?
-                        <div className=''>
-                            <p>Chosen event location: {newLocation.name}</p>
-                            <Button className='btn-lg' size='small' onClick={handleConfirmChoice}>Confirm and proceed
-                                <ArrowForwardIosIcon />
-                            </Button>
-                            <Button onClick={handleAbortChoice}>
-                                Choose another location
-                                <ArrowBackIosIcon />
-                            </Button>
-                        </div>
-                        :
-                        <div className='events-btn'>
-                            <Button className='btn-lg' size='small' onClick={createEvent}>
-                                <AddBoxIcon />
-                                Create Event
-                            </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowList}>
-                                <KeyboardArrowDownIcon />
-                                Show All Events
-                            </Button>
-                            <Button className='btn-lg' size='small' onClick={handleShowFilters}>
-                                <KeyboardArrowDownIcon />
-                                Show filters
-                            </Button>
-                        </div>
-                }
-                <div className={`filters ${!showFilters ? 'hide' : ''}`}><EventsFilters /></div>
-            </div>
-
-            {events.length === 0 ? <CircularProgress /> : (!showList && clickedLocation.length > 1) ?
-                <div key={'123dfg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    <Button onClick={() => handleMarkerClick()} size='small'>
-                        <CloseIcon />
-                    </Button>
-                    <h2>Events at {clickedLocation[2]}</h2>
-                    {events.map((event => {
-                        if (event.geometry.coordinates[0] === clickedLocation[0]) {
-                            return <Grid item xs={10} sm={8}>
-                                <EventInfoCard
+                    <div className='events-btn'>
+                        <button className='btn-lg' size='small' onClick={createEvent}>
+                            Create Event
+                        </button>
+                    </div>
+            }
+            <button className={`${chooseLocation && 'hide'} btn-lg btn-see`} size='small' onClick={handleShowList}>
+                See All Events
+            </button>
+            {events.length === 0 ? <h2 className='hd-md'>No events are scheduled for this day</h2> : (!showList && clickedLocation.length > 1) ?
+                <div key={'123dfg'} className='events-ls' >
+                    <button className='btn-close' onClick={handleMarkerClick} >
+                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
+                    </button>
+                    <h2 className='hd-md hd-ls'>Events at {clickedLocation[2]}</h2>
+                    <div className='events-cards'>
+                        {events.forEach((event => {
+                            if (event.geometry.coordinates[0] === clickedLocation[0]) {
+                                return <EventInfoCard
                                     id={event._id}
                                     key={event._id}
                                     name={event.name}
                                     genre={event.genre}
                                     location={event.locationName}
                                     date={moment(event.startTime).format('MMMM Do YYYY')}
-                                    startTime={moment(event.startTime).format('h:mm:ss a')}
-                                    endTime={moment(event.endTime).format('h:mm:ss a')}
+                                    startTime={moment(event.startTime).format('H:mm')}
+                                    endTime={moment(event.endTime).format('H:mm')}
                                     about={event.about}
                                     tags={event.tags}
                                     creator={event.creator}
                                     active={event.active}
                                 />
-                            </Grid>
-                        }
-                    }))}
+                            }
+                        }))}
+                    </div>
                 </div>
                 : showList &&
-                <div key={'123ddgg'} className='events-ls' container alignItems='stretch' direction='row' spacing={3}>
-                    {events.map((event => {
-                        return <Grid item xs={10} sm={8}>
-                            <EventInfoCard
+                <div key={'123ddgg'} className='events-ls' >
+                    <button className='btn-close' onClick={handleShowList} >
+                        <CloseIcon fontSize='large' style={{ color: "rgba(164, 74, 63, 0.87)", backgroundColor: "#E5E5E5" }} />
+                    </button>
+                    <h2 className='hd-md hd-ls'>Events</h2>
+                    <EventsFilters />
+                    <div className='events-cards'>
+                        {events.map((event => {
+                            return <EventInfoCard
                                 id={event._id}
                                 key={event._id}
                                 name={event.name}
                                 genre={event.genre}
                                 location={event.locationName}
                                 date={moment(event.startTime).format('MMMM Do YYYY')}
-                                startTime={moment(event.startTime).format('h:mm:ss a')}
-                                endTime={moment(event.endTime).format('h:mm:ss a')}
+                                startTime={moment(event.startTime).format('H:mm')}
+                                endTime={moment(event.endTime).format('H:mm')}
                                 about={event.about}
                                 tags={event.tags}
                                 creator={event.creator}
-                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                createdAt={moment(event.createdAt).format('MMMM Do YYYY, H:mm')}
                                 active={event.active}
                             />
-                        </Grid>
-                    }))}
+                        }))}
+                    </div>
                 </div>
             }
             <div className='events-map'>
@@ -223,5 +209,4 @@ const Events = ({ history }) => {
 
 
 export default Events;
-
 

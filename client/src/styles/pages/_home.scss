@@ -1,0 +1,46 @@
+
+main{
+    &.landing{
+        .text-sub{
+            color: $primary-color;
+        }
+        .hd-md-home{
+            margin: 1em 0;
+            color: $primary-color;
+        }
+    
+    }
+    .sign-up{
+        display: flex;
+        flex-direction: row;
+        width: 70%;
+        margin-top: 1em;
+        top: 1em;
+        font-size: 1.2em;
+        .btn-sm{
+            margin-left: 1em;
+            font-weight: 800;
+        }
+    }
+    .guest{
+        text-align: center;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &.landing-signed{
+        flex-direction: column;
+        height: 50vh;
+        .text-sub{
+            color: $primary-color;
+        }
+        .hd-lg{
+            text-align: center;
+        }
+        .btn-lg{
+            width: 8em;
+        }
+    }
+
+}

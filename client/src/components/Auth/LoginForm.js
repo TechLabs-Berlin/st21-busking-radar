@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
 import { login } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
@@ -26,7 +24,7 @@ const LoginForm = (props) => {
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
     useEffect(() => {
         if (error.id === 'LOGIN_FAIL') {
             setUserData({ error: error.msg.msg })
@@ -46,25 +44,15 @@ const LoginForm = (props) => {
         dispatch(login(userData))
         setUserData({ ...userData, loggedIn: true })
     }
-    useEffect(() => {
-        //I can't find the better solution now. If you have time later, you should think about it. 
-        //the conditional push up there does not work, due to the scope. When we push the button, the whole handle submit happens within
-        //the scope of that function, which means the auth.isAuthenticated will be null, as the login has not happened yet. 
-        if (props.auth.isAuthenticated && userData.loggedIn)
-            props.history.push(`/events`)
-    }, [props.auth])
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form login' onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            <p>Email</p>
-            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            <p>Password</p>
-            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-            <Button type='submit' className='btn-lg' size='small'>
-                <PublishIcon />
-                Login
-            </Button>
+            <input className='input login-input' type="text" placeholder="Email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
+            <input className='input login-input' type="password" placeholder="Password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <button type='submit' className='btn-lg btn-sign-in' size='small'>
+                Sign In
+            </button>
         </form>
     )
 }

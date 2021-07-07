@@ -1,0 +1,28 @@
+
+.reg-container{
+    height: 80vh;
+    .modal-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .hd-md{
+            color: $secondary-color;
+        }
+    }
+        .form{
+            height: 40vh;
+            justify-content: space-between;
+            .sign-in{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+                font-size: 1.2em;
+                .btn-sm{
+                    margin-left: 1em;
+                    font-weight: 800;
+                }
+            }
+        }
+    }

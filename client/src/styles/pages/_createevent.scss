@@ -1,0 +1,15 @@
+
+.create-event{
+        width: 100%;
+        height: 80vh;
+        margin-top: 0em;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 2em;
+        align-items: center;
+        color: $secondary-color;
+        font-style: inherit;
+        font-weight: 700;
+        z-index: 2;
+    }

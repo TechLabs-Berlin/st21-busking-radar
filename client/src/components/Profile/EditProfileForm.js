@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 import { startUpdateUserInfo } from '../../actions/auth';
 
 
@@ -9,7 +8,8 @@ import { startUpdateUserInfo } from '../../actions/auth';
 const EditProfileForm = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const error = useSelector((state) => state.error)
+    //late include the error
+    // const error = useSelector((state) => state.error)
     const [userData, setUserData] = useState({
         name: props.auth.user ? props.auth.user.name : '',
         email: props.auth.user ? props.auth.user.email : '',
@@ -92,37 +92,39 @@ const EditProfileForm = (props) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className='profile-edit' >
-                <img src={userData.profilePic} />
-                <div className='file-input'>
-                    <label>Upload Image</label>
-                    <input type="file" accept="image/jpeg"
+        <form className='prof-edit-form' onSubmit={handleSubmit}>
+
+            <div className='prof-edit' >
+                <div className='prof-pic-container'>
+                    <img alt='profile-pic' className='prof-pic' src={userData.profilePic} />
+                </div>
+                <div className='file-input-container'>
+                    <label>Upload profile picture </label>
+                    <input className='file-input' placeholder='upload profile pic' type="file" accept="image/jpeg"
                         onChange={uploadImage} />
                 </div>
-                <label>Name</label>
-                <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-                <label>Genre</label>
-                <input type="text" placeholder="genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
-                <label>About</label>
-                <input type="text" placeholder="about" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
+                <input className='input' type="text" placeholder="Name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
+                <input className='input' type="text" placeholder="Genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
+                <textarea className='input textarea' cols='4' maxLength='80' rows='4' type="text" placeholder="About me" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
                 <form className='soc-links-form'  >
-                    <label>Social links</label>
-                    {userData.socialLinks.map(link => <p>{link.name}: {link.link}</p>)}
-                    <select name="name" value={socLink.name} id="soc-links" className='soc-links-select' onChange={handleSocLinkChange} >
+                    <label>Social links: </label>
+                    <select className='input' name="name" value={socLink.name} id="soc-links" className='soc-links-select' onChange={handleSocLinkChange} >
                         <option value="facebook" className="soc-links-option">Facebook</option>
                         <option value="spotify" className="soc-links-option">Spotify</option>
                         <option value="youtube" className="soc-links-option">Youtube</option>
                     </select>
-                    <input className='soc-links-input' type="text" placeholder="social link" name="link" autoFocus value={socLink.link || ''} onChange={handleSocLinkChange} />
-                    <Button onClick={saveSocLink} >Save link</Button>
+                    <input className='soc-links-input' type="text" placeholder="Social link" name="link" autoFocus value={socLink.link || ''} onChange={handleSocLinkChange} />
+                    <button className='btn-sm' onClick={saveSocLink} >Save link</button>
+                    {userData.socialLinks.map(link => <p>{link.name}: {link.link}</p>)}
                 </form>
             </div>
-            <Button type='submit' className='btn-lg' size='small' >
-                Save Changes
-            </Button>
-            <Button onClick={navigateToProfile}>Cancel</Button>
-        </form>
+            <div className='btn-container'>
+                <button type='submit' className='btn-lg' size='small' >
+                    Save
+                </button>
+                <button className='btn-lg' onClick={navigateToProfile} > Cancel</button>
+            </div>
+        </form >
     )
 }
 

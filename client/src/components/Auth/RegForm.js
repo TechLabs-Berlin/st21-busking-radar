@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import FileBase from 'react-file-base64';
-import { Button } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
-import { loadUser, register } from '../../actions/auth';
+import { register } from '../../actions/auth';
 import { clearErrors } from '../../actions/error';
 
 
 
-const RegForm = (props) => {
-    const history = useHistory();
+const RegForm = ({ handleModal, history }) => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth)
     const error = useSelector((state) => state.error)
@@ -31,15 +26,18 @@ const RegForm = (props) => {
 
     useEffect(() => {
         if (auth.isAuthenticated)
-            history.push(`/user/${auth.user._id}`)
-    }, [auth])
+            handleModal({
+                open: true,
+                userName: userData.name
+            })
+    }, [auth, handleModal, userData.name])
     //changing clear errors
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
     const handleChange = (e) => {
         setUserData({
             ...userData,
@@ -51,20 +49,23 @@ const RegForm = (props) => {
         e.preventDefault()
         dispatch(register(userData))
     }
-
+    const navToHome = () => {
+        history.push('/')
+    }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form' onSubmit={handleSubmit}>
             {userData.error && <p>{userData.error}</p>}
-            <input type="text" placeholder="name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
-            <p>Password</p>
-            <input type="password" placeholder="password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
-            <p>Email</p>
-            <input type="text" placeholder="email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
-            <Button type='submit' className='btn-lg' size='small' >
-                <PublishIcon />
+            <input className='input' type="text" placeholder="Name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
+            <input className='input' type="password" placeholder="Password" name="password" autoFocus value={userData.password || ''} onChange={handleChange} />
+            <input className='input' type="text" placeholder="Email" name="email" autoFocus value={userData.email || ''} onChange={handleChange} />
+            <div className='sign-in'>
+                <p>Already a member?</p>
+                <button className='btn-sm' onClick={navToHome}>Sign In</button>
+            </div>
+            <button type='submit' className='btn-lg' size='small' >
                 Submit
-            </Button>
+            </button>
         </form>
     )
 }

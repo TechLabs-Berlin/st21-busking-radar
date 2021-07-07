@@ -1,0 +1,38 @@
+$bg-color: rgb(229, 229, 229);
+$bg-img-home: url('../../images/background-home.png');
+$img-logo: url('../../images/Component\ 1.svg');
+$bg-img-prof: url('../../images/background-profile1.jfif');
+$default-image: url('../../images/logo-busking\ radar22\ 3.png');
+$primary-color: #FFFF;
+$secondary-color: rgba(164, 74, 63, 0.87);
+$error-color: rgb(196, 13, 13);
+$hover-color: rgb(212, 212, 14);
+$bg-image-lg: url('../../images/background-large.png');
+$event-color: rgb(9, 109, 9);
+
+//animation mixins
+
+@mixin easeOutIn {
+    transition: all 0.7s ease-in-out;
+}
+
+
+//responsive
+
+@mixin mediaMd {
+    @media screen and (min-width: 767px){
+     @content
+     }
+ };
+
+ @mixin mediaLg {
+    @media screen and (min-width: 768px) {
+     @content
+     }
+ };
+
+ @mixin mediaXl {
+    @media screen and (min-width: 1171px){
+     @content
+     }
+ };

@@ -1,0 +1,99 @@
+
+.menu{
+    margin-top: 0;
+    z-index: 3;
+    width: 100%;
+    .text-sub{
+        color: $primary-color;
+        width: 60%;
+    }
+    .menu-btn{
+        width: 35px;
+        height: 35px;
+        z-index: 7;
+        position: fixed;
+        left: 1.1em;
+        top: 1.1em;
+        cursor: pointer;
+        background: $secondary-color;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        @include easeOutIn;
+        padding-top: 5px;
+        .btn-line{
+            width: 20px;
+            height: 3px;
+            margin-left: 8px;
+            margin-top: 4px;
+            background: $primary-color;
+            @include easeOutIn;
+        }
+        .btn-line-last{
+            width: 14px;
+        }
+        &.close{
+            transform: rotate(180deg);
+            .btn-line{ 
+                background: $primary-color;
+                //line 1 rotate
+                &:nth-child(1){
+                    transform: rotate(45deg) translate(5px, 3px);
+                }
+                //line 2 hide
+                &:nth-child(2){
+                    opacity: 0;
+                }
+                //line 3 rotate
+                &:nth-child(3){
+                    transform: rotate(-45deg) translate(7px, -5px);
+                    width: 20px;
+                }
+            }
+        }
+    }
+    
+    .menu-nav{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        height: 100vh;
+        width: 80vw;
+        font-size: 2em;
+        z-index: 5;
+        margin: 0;
+        padding: 0;
+        background: darken($color: $secondary-color, $amount: 5);
+        list-style: none;
+        transform: translate3d(-200%, 0, 0);
+        @include easeOutIn;
+    
+    
+        //slide in from top
+        &.show{
+            transform: translate3d(0, 0, 0);
+        }
+        .nav-link{
+            text-decoration: none;
+            color: $primary-color;
+        }
+        .btn-lg{
+            opacity: 1;
+            z-index: 100;
+            width: 70%;
+            background: $bg-color;
+            color: $secondary-color;
+            font-size: 0.4em;
+            font-weight: 900;
+        }
+        .text-sub{
+            font-size: 0.4em;
+        }
+    }
+}

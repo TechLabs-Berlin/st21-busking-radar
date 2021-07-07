@@ -1,21 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { logout } from '../../actions/auth';
-import { Button } from '@material-ui/core';
 
-const Logout = () => {
+const Logout = ({ history, toggleMenu }) => {
     const dispatch = useDispatch();
-    const history = useHistory();
     const handleLogout = () => {
         dispatch(logout());
-        history.push('/')
+        history.push('/');
+        toggleMenu()
     }
 
     return (
-        <Button size='small' className='btn-lg' onClick={handleLogout} >
+        <button className='btn-lg' onClick={handleLogout} >
             Logout
-        </Button>
+        </button>
     )
 
 }

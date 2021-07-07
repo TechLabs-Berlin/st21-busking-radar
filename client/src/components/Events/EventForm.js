@@ -4,20 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Button, Modal } from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
+import { Modal } from '@material-ui/core';
 import moment from 'moment';
 import { clearErrors } from '../../actions/error';
 import { startCreateEvent } from '../../actions/events';
 
 //material ui modal styles
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
-
 function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
+    const top = 50
+    const left = 50
 
     return {
         top: `${top}%`,
@@ -29,14 +24,19 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: 400,
+        width: '80%',
+        height: '50vh',
+        fontSize: '1.2em',
         backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
+        borderRadius: '20px',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
 }));
-
 
 const EventForm = (props) => {
     const [eventData, setEventData] = useState({
@@ -68,13 +68,13 @@ const EventForm = (props) => {
         if (error.id === 'SIMILAR_EVENT_EXISTS') {
             setEventData({ ...eventData, error: error.msg.msg })
         }
-    }, [error])
+    }, [error, eventData])
     useEffect(() => {
         //return function is similar to the component will unmount in the class components
         return () => {
             dispatch(clearErrors())
         }
-    }, [])
+    }, [dispatch])
 
     //handlers
     const handleModal = () => {
@@ -82,7 +82,6 @@ const EventForm = (props) => {
             props.history.push('/events')
             setOpenModal(!openModal)
         } else if (eventData.error) {
-            console.log(eventData)
             dispatch(startCreateEvent({ ...eventData, confirmation: true }))
             props.history.push('/events')
             setOpenModal(!openModal)
@@ -98,8 +97,8 @@ const EventForm = (props) => {
     }
 
     //date-time picker
-    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date)
-    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date)
+    const [startTime, setStartTime] = useState(props.event ? moment(props.event.startTime).toDate() : new Date())
+    const [endTime, setEndTime] = useState(props.event ? moment(props.event.endTime).toDate() : new Date())
     const handleStartTimeChange = (date) => {
         dispatch(clearErrors())
         setEventData({ ...eventData, error: '' })
@@ -134,19 +133,19 @@ const EventForm = (props) => {
         e.preventDefault()
     }
     return (
-        <div className='cr-event-form-container'>
-            <form className='cr-event-form' onSubmit={handleSubmit}>
-                <p>Location:</p>
-                <input type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
-                <p>Event name</p>
-                <input type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
-                <p>Genre</p>
-                <input type="text" placeholder="genre" name="genre" autoFocus value={eventData.genre || ''} onChange={handleChange} />
-                <p>About</p>
-                <input type="text" placeholder="about" name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
-                <p>Tags</p>
-                <input type="text" placeholder="tags" name="tags" autoFocus value={eventData.tags || ''} onChange={handleChange} />
-                <p>Event begins:</p>
+        <div className='create-event-form-container'>
+            {eventData.error && <p className='error'>{eventData.error}</p>}
+            <button className='btn-sm btn-back' onClick={() => {
+                props.history.goBack()
+            }}><i class="fas fa-2x fa-chevron-left icon-color"></i>
+            </button>
+            <form className='event-form' onSubmit={handleSubmit}>
+                <label>Location:</label>
+                <input className='input' type="text" placeholder="Please type in the location name" name="locationName" autoFocus value={eventData.locationName || ''} onChange={handleChange} />
+                <input className='input' type="text" placeholder="event name" name="name" autoFocus value={eventData.name || ''} onChange={handleChange} />
+                <input className='input' type="text" placeholder="genre" name="genre" autoFocus value={eventData.genre || ''} onChange={handleChange} />
+                <textarea className='input textarea' type="text" placeholder="description (max 80 characters)" cols='4' maxLength='80' rows='4' name="about" autoFocus value={eventData.about || ''} onChange={handleChange} />
+                <label>Event begins:</label>
                 <DatePicker
                     selected={startTime}
                     name='startTime'
@@ -155,8 +154,9 @@ const EventForm = (props) => {
                     timeFormat="HH:mm"
                     dateFormat="MMMM d, yyyy HH:mm aa"
                     minDate={new Date()}
+                    popperPlacement='bottom-right'
                 />
-                <p>Event ends:</p>
+                <label>Event ends:</label>
                 <DatePicker
                     selected={endTime}
                     name='startTime'
@@ -165,12 +165,11 @@ const EventForm = (props) => {
                     timeFormat="HH:mm"
                     dateFormat="MMMM d, yyyy HH:mm aa"
                     minDate={new Date()}
+                    popperPlacement='bottom-right'
                 />
-                {eventData.error && <p>{eventData.error}</p>}
-                <Button type='submit' className='btn-lg' size='small' >
-                    <PublishIcon />
-                    Create Event
-                </Button>
+                <button type='submit' className='btn-lg' size='small' >
+                    Submit
+                </button>
             </form>
             <Modal
                 open={openModal}
@@ -180,10 +179,11 @@ const EventForm = (props) => {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
             >
-                <div style={modalStyle} className={classes.paper} >
-                    <h2 id="simple-modal-title">{eventData.error ? eventData.error : 'Event was created'}</h2>
-                    <Button onClick={handleModal}>{eventData.error ? 'Submit anyway' : 'submit'}</Button>
-                    {eventData.error && <Button onClick={() => { setOpenModal(!openModal) }}>Go Back</Button>}
+                <div style={modalStyle} className={`${classes.paper} modal-container`} >
+                    {eventData.error && <h2 className='hd-modal'>Ooops!</h2>}
+                    <p id="simple-modal-title" className='text-sub'>{eventData.error ? eventData.error : 'Event was created'}</p>
+                    <button className='btn-lg' onClick={handleModal}>{eventData.error ? 'Submit anyway' : 'submit'}</button>
+                    {eventData.error && <button className='btn-lg' onClick={() => { setOpenModal(!openModal) }}>Go Back</button>}
                 </div>
             </Modal>
         </div>

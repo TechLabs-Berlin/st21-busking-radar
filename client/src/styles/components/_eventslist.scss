@@ -1,0 +1,16 @@
+main{
+    &.prof-page{
+.prof-events-ls{
+    margin-top: 1em;
+    position: relative;
+    overflow-y: scroll;
+    height: calc(100% - 100px);
+    width: 100%;
+    z-index: 4;
+    &::-webkit-scrollbar {
+        width: 0px; 
+        background: transparent; 
+        };
+}
+    }
+}
