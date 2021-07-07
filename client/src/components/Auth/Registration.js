@@ -24,7 +24,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: '60%',
+        width: '80%',
         height: '50vh',
         fontSize: '1.2em',
         backgroundColor: theme.palette.background.paper,

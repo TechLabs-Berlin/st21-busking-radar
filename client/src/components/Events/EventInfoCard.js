@@ -22,7 +22,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: '60%',
+        width: '80%',
         height: '50vh',
         fontSize: '1.2em',
         backgroundColor: theme.palette.background.paper,
@@ -60,7 +60,7 @@ const EventInfoCard = ({ creator,
     const [modalStyle] = useState(getModalStyle);
     return (
         <div id='event-cd' className='event-cd'>
-            {active === true && <p>Event is happenning now!</p>}
+            {active === true && <p className='event-active'>This event is happenning now!</p>}
             <h3 className='hd-sm event-name'>{name}</h3>
             <p className='event-creator'>{creator}</p>
             <p className='event-date'>{date}</p>
