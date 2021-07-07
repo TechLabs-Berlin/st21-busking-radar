@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const config = require('config')
 const app = express();
-const PORT = process.env.PORT || 8080;
+const path = require('path')
+
 
 
 
 app.set('PORT', PORT);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
 // ** MIDDLEWARE ** // 
 const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
@@ -50,7 +51,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     // Handle React routing, return all requests to React app
     app.get('*', function (req, res) {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
 
@@ -64,7 +65,7 @@ mongoose.connect(CONNECTION_URL, {
 }).catch((e) => {
     console.log('This did not work', e.message)
 })
-
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is up! Port: ${PORT}!`)
 })
