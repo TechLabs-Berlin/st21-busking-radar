@@ -15,21 +15,7 @@ app.use(express.static(path.join(publicPath)));
 app.use(express.json());
 app.use(cors());
 
-//** MIDDLEWARE ** // 
-// const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
-// const corsOptions = {
-//     origin: function (origin, callback) {
-//         console.log("** Origin of request " + origin)
-//         if (whitelist.indexOf(origin) !== -1 || !origin) {
-//             console.log("Origin acceptable")
-//             callback(null, true)
-//         } else {
-//             console.log("Origin rejected")
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     }
-// }
-// app.use(cors(corsOptions))
+
 const PORT = process.env.PORT || 8080;
 
 app.set('PORT', PORT);
@@ -38,9 +24,7 @@ const eventsRouter = require('./routes/events.js');
 const geocodingRouter = require('./routes/geocoding.js');
 const userRouter = require('./routes/user.js')
 const authRouter = require('./routes/auth.js')
-// const profileRoutes = require('./routes/profile.js')
-//this says that every route in the routes/events is gonna start with /events
-//all the routes are now is localhost:8080/events
+
 
 
 
@@ -55,7 +39,7 @@ app.use('/api', authRouter);
 //     app.get('/*', function (req, res) {
 //         res.sendFile(path.join(publicPath, 'index.html'));
 //     });
-// }
+// } //<- at the moment we don't need that
 
 //connecting to mongoose => connection url must be secured later!!! after mongodb+srv should be the username and password written
 //in order to be able to connect ask me for the password and username, but please always delete them before pushing to github
