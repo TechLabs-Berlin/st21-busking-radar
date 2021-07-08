@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { useSelector, useDispatch } from 'react-redux';
 import EventInfoCard from '../Events/EventInfoCard';
-import selectEvents from '../../filters/events';
 import { startGetUsers } from '../../actions/users';
 import { startGetAllEvents } from '../../actions/events';
 
@@ -13,7 +12,6 @@ const BuskerPage = ({ match, history }) => {
     const { search } = useLocation();
     const { name, genre, socialLinks, about } = queryString.parse(search)
     const sortedEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id))
-    const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     const users = useSelector(state => state.users)
     const user = users.filter(user => user._id === match.params.id)[0]
     const links = JSON.parse(socialLinks)
@@ -48,8 +46,8 @@ const BuskerPage = ({ match, history }) => {
                 <p className='prof-info-genre'>{genre}</p>
                 <p className='prof-info-about'>{about}</p>
             </div>}
-            {filteredEvents.length === 0 ? <p>No events</p> : <div className='prof-info-events'>
-                {filteredEvents.map(event => {
+            {sortedEvents.length === 0 ? <p>No events</p> : <div className='prof-info-events'>
+                {sortedEvents.map(event => {
                     return <EventInfoCard
                         id={event._id}
                         key={event._id}
