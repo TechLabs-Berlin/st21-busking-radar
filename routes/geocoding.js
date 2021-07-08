@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const geocodingRouter = express.Router();
 
 const locations = require('../controllers/geocoding.js')
 
-router.post('/', locations.chooseNewLocation)
+geocodingRouter.post('/geocoding', locations.chooseNewLocation)
 
-module.exports = router
+module.exports = geocodingRouter

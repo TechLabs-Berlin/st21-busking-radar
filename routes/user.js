@@ -1,14 +1,14 @@
 const express = require('express');
-const router = express.Router();
+const userRouter = express.Router();
 const auth = require('../middleware/auth.js');
 
 
 const users = require('../controllers/user.js')
 
-router.get('/getusers', users.getUsers)
+userRouter.get('/user/getusers', users.getUsers)
 
-router.post('/', users.signUpUser)
+userRouter.post('/user', users.signUpUser)
 
-router.patch('/update/:id', auth, users.updateUser)
+userRouter.patch('/user/update/:id', auth, users.updateUser)
 
-module.exports = router;
+module.exports = userRouter;

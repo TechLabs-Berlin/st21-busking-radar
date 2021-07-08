@@ -11,7 +11,7 @@ const searchNewLocation = (suggestedLocations) => {
 
 export const startSearchNewLocation = (keyword = 'berlin') => async (dispatch) => {
     try {
-        const { data } = await axios.post('/geocoding', { query: keyword });
+        const { data } = await axios.post('/api/geocoding', { query: keyword });
         dispatch(searchNewLocation(data))
     } catch (e) {
         console.log('this did not work', e.message);

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const eventsRouter = express.Router();
 const auth = require('../middleware/auth.js'); //<-- this middleware is needed in order to protect private routes
 // so if someone hits the create, delete or update event accidentaly, 
 //he won't be able to do that unless he is authenticated and has a token
@@ -12,12 +12,12 @@ const auth = require('../middleware/auth.js'); //<-- this middleware is needed i
 //We are doing it this 'old' way for learning purposes. 
 const events = require('../controllers/events.js')
 
-router.get('/', events.getEvents)
+eventsRouter.get('/events', events.getEvents)
 
-router.post('/', auth, events.createEvent)
+eventsRouter.post('/events', auth, events.createEvent)
 
-router.patch('/update/:id', events.updateEvent)
+eventsRouter.patch('/events/update/:id', events.updateEvent)
 
-router.delete('/:id', auth, events.deleteEvent)
+eventsRouter.delete('/events/:id', auth, events.deleteEvent)
 
-module.exports = router;
+module.exports = eventsRouter;

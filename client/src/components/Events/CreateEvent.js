@@ -1,10 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import EventForm from './EventForm';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
+import { startCreateEvent } from '../../actions/events';
 
 const CreateEvent = () => {
+    const dispatch = useDispatch;
     const auth = useSelector(state => state.auth)
     const history = useHistory();
     const { search } = useLocation();
@@ -17,6 +19,9 @@ const CreateEvent = () => {
                 auth={auth}
                 newLocation={newLocation}
                 history={history} />
+            handleSubmit={(eventData) => {
+                dispatch(startCreateEvent(eventData))
+            }}
         </main>
 
     )

@@ -15,7 +15,7 @@ export const startGetAllEvents = () => async (dispatch) => {
     try {
         //we do not need to specify the root more hear than just '/events' because in the backend route it is also 
         //get() which getting the data from the database and sending it back (Am I right?! I should check it later again!).
-        const { data } = await axios.get('/events')
+        const { data } = await axios.get('/api/events')
         dispatch(getAllEvents(data))
     } catch (e) {
         dispatch(returnErrors(e.message))
@@ -33,7 +33,7 @@ const createEvent = (eventData) => {
 
 export const startCreateEvent = (eventData) => async (dispatch, getState) => {
     try {
-        const { data } = await axios.post('/events', eventData, tokenConfig(getState));
+        const { data } = await axios.post('/api/events', eventData, tokenConfig(getState));
         //here we are descructuring and dispatching to the local state the same data that was send to the server 
         dispatch(createEvent(data))
     } catch (e) {
@@ -57,7 +57,7 @@ export const startUpdateEvent = (id, updates) => async (dispatch) => {
     //tokenConfig(getState) you should add the protected update later,
     //after you make a separate unprotected route, which would auto fetch and update the status of the event
     try {
-        const { data } = await axios.patch(`/events/update/${id}`, updates);
+        const { data } = await axios.patch(`/api/events/update/${id}`, updates);
 
         dispatch(updateEvent(data))
     } catch (e) {
@@ -77,7 +77,7 @@ const deleteEvent = (id) => {
 export const startDeleteEvent = (id) => async (dispatch, getState) => {
     try {
         //for some reason, if I await for axios.delete the action does not dispatch to store
-        axios.delete(`/events/${id}`, tokenConfig(getState))
+        axios.delete(`/api/events/${id}`, tokenConfig(getState))
         dispatch(deleteEvent(id))
     } catch (e) {
         dispatch(returnErrors(e.message))

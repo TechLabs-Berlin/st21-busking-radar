@@ -11,10 +11,11 @@ const publicPath = path.join(__dirname, 'client', 'build')
 
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(publicPath)));
 app.use(express.json());
 app.use(cors());
 
-// ** MIDDLEWARE ** // 
+//** MIDDLEWARE ** // 
 // const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://buskingradar.herokuapp.com']
 // const corsOptions = {
 //     origin: function (origin, callback) {
@@ -33,18 +34,20 @@ const PORT = process.env.PORT || 8080;
 
 app.set('PORT', PORT);
 //importing routes
-const eventRoutes = require('./routes/events.js');
-const geocodingRoutes = require('./routes/geocoding.js');
-const userRoutes = require('./routes/user.js')
-const authRoutes = require('./routes/auth.js')
+const eventsRouter = require('./routes/events.js');
+const geocodingRouter = require('./routes/geocoding.js');
+const userRouter = require('./routes/user.js')
+const authRouter = require('./routes/auth.js')
 // const profileRoutes = require('./routes/profile.js')
 //this says that every route in the routes/events is gonna start with /events
 //all the routes are now is localhost:8080/events
 
-app.use('/events', eventRoutes);
-app.use('/user', userRoutes);
-app.use('/auth', authRoutes);
-app.use('/geocoding', geocodingRoutes);
+
+
+app.use('/api', geocodingRouter);
+app.use('/api', eventsRouter);
+app.use('/api', userRouter);
+app.use('/api', authRouter);
 // if (process.env.NODE_ENV === 'production') {
 //     // Serve any static files
 //     app.use(express.static(path.join(publicPath)));
@@ -65,14 +68,22 @@ mongoose.connect(CONNECTION_URL, {
     console.log('This did not work', e.message)
 })
 mongoose.set('useFindAndModify', false)
-app.use(express.static(path.join(publicPath)));
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(publicPath, 'index.html'));
-});
 
 // app.use('/profile', profileRoutes);
 
+// const routes = require('./routes/index.js');//API routes
+// const apiRouter = express.Router();
 
+// app.use('/api', apiRouter);
+// apiRouter.use('/user', routes.userRoutes);
+// apiRouter.use('/geocoding', routes.geocodingRoutes);
+// apiRouter.use('/events', routes.eventRoutes);
+// apiRouter.use('/auth', routes.authRoutes); //All API routes
+
+
+app.get('/*', function (req, res) {
+    res.sendFile(path.resolve(publicPath, 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`Server is up! Port: ${PORT}!`)

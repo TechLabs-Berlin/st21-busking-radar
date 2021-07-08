@@ -1,13 +1,13 @@
 const express = require('express');
-const router = express.Router();
+const authRouter = express.Router();
 const auth = require('../middleware/auth.js')
 
 
 const authen = require('../controllers/auth.js');
 
-router.get('/', auth, authen.getUserData);
+authRouter.get('/auth', auth, authen.getUserData);
 
-router.post('/', authen.authUser);
+authRouter.post('/auth', authen.authUser);
 
 // router.post('/', events.createEvent)
 
@@ -15,4 +15,4 @@ router.post('/', authen.authUser);
 
 // router.delete('/:id', events.deleteEvent)
 
-module.exports = router;
+module.exports = authRouter;

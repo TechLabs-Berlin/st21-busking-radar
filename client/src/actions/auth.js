@@ -25,7 +25,7 @@ export const loadUser = () => (dispatch, getState) => {
     //user loading
     dispatch(userLoading());
 
-    axios.get('/auth', tokenConfig(getState)).then((res) => {
+    axios.get('/api/auth', tokenConfig(getState)).then((res) => {
         // const userData = JSON.parse(res.data)
         dispatch(userLoaded(res.data))
     }).catch(e => {
@@ -53,7 +53,7 @@ export const register = (payload) => (dispatch) => {
     }
     //Request body
     const body = JSON.stringify(payload)
-    axios.post('/user', body, config).then((res) => {
+    axios.post('/api/user', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
         dispatch(registerSuccess(res.data))
 
@@ -89,7 +89,7 @@ export const login = ({ email, password }) => (dispatch) => {
     }
     //Request body
     const body = JSON.stringify({ email, password })
-    axios.post('/auth', body, config).then((res) => {
+    axios.post('/api/auth', body, config).then((res) => {
         localStorage.setItem("token", res.data.token)
         return dispatch(loginSuccess(res.data))
     }).catch(e => {
@@ -134,7 +134,7 @@ export const tokenConfig = getState => {
 export const startUpdateUserInfo = (updates, id) => async (dispatch, getState) => {
     try {
         const body = JSON.stringify(updates)
-        axios.patch(`/user/update/${id}`, body, tokenConfig(getState))
+        axios.patch(`/api/user/update/${id}`, body, tokenConfig(getState))
         dispatch(userLoaded(updates))
     } catch (e) {
         console.log(e, 'this did not work')

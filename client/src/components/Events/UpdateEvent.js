@@ -19,7 +19,6 @@ const UpdateEvent = ({ match, history }) => {
                 history={history}
                 handleSubmit={((event) => {
                     dispatch(startUpdateEvent(selectedEvent._id, event))
-                    history.push('/events')
                 })}
             />
         </div>

@@ -11,7 +11,7 @@ const getUsers = (payload) => {
 
 export const startGetUsers = () => async (dispatch) => {
     try {
-        const { data } = await axios.get('/user/getusers')
+        const { data } = await axios.get('/api/user/getusers')
         dispatch(getUsers(data))
     } catch (e) {
         dispatch(returnErrors(e.message))

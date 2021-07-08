@@ -127,7 +127,7 @@ const EventForm = (props) => {
         } else if (!eventData.geometry || !eventData.locationName) {
             setEventData({ ...eventData, error: 'Please provide location' })
         } else {
-            dispatch(startCreateEvent(eventData))
+            props.handleSubmit(eventData)
             setOpenModal(!openModal)
         }
         e.preventDefault()
