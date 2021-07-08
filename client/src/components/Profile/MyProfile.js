@@ -12,7 +12,6 @@ import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
 const MyProfile = ({ history }) => {
     const auth = useSelector(state => state.auth)
     const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id))
-    const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     const [showEvents, setShowEvents] = useState(false)
     const [intervalMs, setIntervalMs] = useState(500)
     const [mounted, setMounted] = useState(false)
@@ -90,7 +89,7 @@ const MyProfile = ({ history }) => {
                 <p className='prof-info-about'>{auth.user.about}</p>
             </div>
             <button className='btn-md btn-events' onClick={() => setShowEvents(!showEvents)}>events</button>
-            {showEvents && <EventsList sortedEvents={filteredEvents}
+            {showEvents && <EventsList sortedEvents={sortedEvents}
                 auth={auth}
             />}
         </main>
