@@ -69,16 +69,6 @@ mongoose.connect(CONNECTION_URL, {
 })
 mongoose.set('useFindAndModify', false)
 
-// app.use('/profile', profileRoutes);
-
-// const routes = require('./routes/index.js');//API routes
-// const apiRouter = express.Router();
-
-// app.use('/api', apiRouter);
-// apiRouter.use('/user', routes.userRoutes);
-// apiRouter.use('/geocoding', routes.geocodingRoutes);
-// apiRouter.use('/events', routes.eventRoutes);
-// apiRouter.use('/auth', routes.authRoutes); //All API routes
 
 
 app.get('/*', function (req, res) {

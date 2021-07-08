@@ -21,7 +21,7 @@ const Events = ({ history }) => {
     const [newLocation, setNewLocation] = useState(null)
     const [chooseLocation, setChooseLocation] = useState(false)
     const [clickedLocation, setClickedLocation] = useState([]);
-    const [intervalMs, setIntervalMs] = useState(2000)
+    const [intervalMs, setIntervalMs] = useState(500)
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
     //test for it. Is it possible? Check it out later for sure!!!)
@@ -78,11 +78,12 @@ const Events = ({ history }) => {
         }
     }
     //choose new location logic
-    const handleChooseLocation = (name, long, lat) => {
+    const handleChooseLocation = (name, long, lat, id) => {
         setNewLocation({
             name,
             long,
-            lat
+            lat,
+            id
         })
     }
     //abort choice logic 

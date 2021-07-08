@@ -14,7 +14,7 @@ const MyProfile = ({ history }) => {
     const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id))
     const filteredEvents = useSelector(state => selectEvents(sortedEvents, state.filters))
     const [showEvents, setShowEvents] = useState(false)
-    const [intervalMs, setIntervalMs] = useState(2000)
+    const [intervalMs, setIntervalMs] = useState(500)
     const [mounted, setMounted] = useState(false)
     //supporting hooks 
     //useDispatch is a new hook that replaced mapDispatchToProps. The Question, however, is how can we write a 
@@ -26,7 +26,7 @@ const MyProfile = ({ history }) => {
     const now = moment();
     useQuery('events',
         async () => {
-            const res = await axios.get('/events')
+            const res = await axios.get('/api/events')
             return res.data.forEach(event => {
                 if (moment(event.startTime).isSameOrBefore(now) &&
                     moment(event.endTime).isSameOrAfter(now) &&

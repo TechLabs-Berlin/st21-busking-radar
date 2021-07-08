@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { startCreateEvent } from '../../actions/events';
 
 const CreateEvent = () => {
-    const dispatch = useDispatch;
+    const dispatch = useDispatch();
     const auth = useSelector(state => state.auth)
     const history = useHistory();
     const { search } = useLocation();
@@ -18,10 +18,12 @@ const CreateEvent = () => {
             <EventForm
                 auth={auth}
                 newLocation={newLocation}
-                history={history} />
-            handleSubmit={(eventData) => {
-                dispatch(startCreateEvent(eventData))
-            }}
+                history={history}
+                handleSubmit={(eventData) => {
+                    dispatch(startCreateEvent(eventData))
+                }}
+            />
+
         </main>
 
     )

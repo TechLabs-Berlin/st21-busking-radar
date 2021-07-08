@@ -105,7 +105,7 @@ const EditProfileForm = (props) => {
                 </div>
                 <input className='input' type="text" placeholder="Name" name="name" autoFocus value={userData.name || ''} onChange={handleChange} />
                 <input className='input' type="text" placeholder="Genre" name="genre" autoFocus value={userData.genre || ''} onChange={handleChange} />
-                <textarea className='input textarea' cols='4' maxLength='80' rows='4' type="text" placeholder="About me" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
+                <textarea className='input textarea' cols='4' maxLength='200' rows='4' type="text" placeholder="About me" name="about" autoFocus value={userData.about || ''} onChange={handleChange} />
                 <form className='soc-links-form'  >
                     <label>Social links: </label>
                     <select className='input' name="name" value={socLink.name} id="soc-links" className='soc-links-select' onChange={handleSocLinkChange} >

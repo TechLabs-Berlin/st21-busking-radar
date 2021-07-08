@@ -5,7 +5,7 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 //choosing event location using mapbox geocoding
 
 module.exports.chooseNewLocation = async (req, res) => {
-    let { query } = req.body
+    let { query } = await req.body
     if (query === '') {   // this code fixes the problem of the error, which is thrown when user tries to pass the empty query
         query = 'Berlin' // on the client side. It is not the most elegant solution, but it is ok for now
     }

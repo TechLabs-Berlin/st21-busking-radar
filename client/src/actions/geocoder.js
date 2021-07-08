@@ -9,7 +9,7 @@ const searchNewLocation = (suggestedLocations) => {
 
 //get the geolocation suggestion
 
-export const startSearchNewLocation = (keyword = 'berlin') => async (dispatch) => {
+export const startSearchNewLocation = (keyword = 'Berlin') => async (dispatch) => {
     try {
         const { data } = await axios.post('/api/geocoding', { query: keyword });
         dispatch(searchNewLocation(data))
