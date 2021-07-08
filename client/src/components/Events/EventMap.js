@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 
@@ -14,7 +14,7 @@ const EventMap = ({
     const [lat, setLat] = useState(52.520008);
     const [zoom, setZoom] = useState(11);
     const prevNewLocation = useRef(null)
-    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+    mapboxgl.accessToken = "pk.eyJ1IjoiYmFzYW4iLCJhIjoiY2twOWk5dXNzMGo1MDJvbXBuMm1mYzRtaSJ9.Jx7_c_BVbQCOANk-dFYldA"
     useEffect(() => {
         // if (map.current) return;   //for some reason this method does not delete all markers. Therefore the map has to be rerendered check down there
         // map render only once
@@ -106,4 +106,3 @@ const EventMap = ({
 }
 
 export default EventMap;
-
