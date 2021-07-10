@@ -6,9 +6,9 @@ TEAM
 - Andrew Moussa UX
 - Basan Kuberlinov Project Lead and WD
 - Celestine Onwuka WD
-- Claudia UX 
+- Claudia Cappai UX 
 - Ken Dolman WD
-- Padcha DS 
+- Padcha Runtasevee DS 
 - Sefine K. DS
 - Mentor: Bernardo Sunderhus
 
