@@ -1,5 +1,5 @@
-#Busking Radar
-##Blog post
+# Busking Radar
+## Blog post
 
 Busking Radar is an app that makes outdoor live entertainment easily discoverable for any user and helps buskers draw a larger audience to their performances. We are very happy to have successfully finished this project and we would like to share with you our path through its creation. 
 *UX/UI:* We started the process by a brainstorming session about what features should the app include. For this purpose, we used the Prioritization grid, to evaluate the features in terms of importance and feasibility. 
