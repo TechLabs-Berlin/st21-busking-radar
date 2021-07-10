@@ -1,5 +1,5 @@
-#Busking Radar
-##Summary
+# Busking Radar
+## Summary
 
 Busking Radar makes outdoor live entertainment easily discoverable for any user and helps buskers draw a larger audience to their performances. 
 
