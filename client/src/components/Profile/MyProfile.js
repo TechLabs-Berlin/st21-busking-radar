@@ -4,17 +4,20 @@ import moment from 'moment';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import EventsList from './EventsList';
-import selectEvents from '../../filters/events';
 import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
 // import EventsFilters from '../Events/EventsFilters';
 
 
 const MyProfile = ({ history }) => {
+    const now = moment();
     const auth = useSelector(state => state.auth)
-    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id)).sort((a, b) => {
+    const futureEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id)).sort((a, b) => {
         return a.endTime < b.endTime ? -1 : 1
-    })
-    const [showEvents, setShowEvents] = useState(false)
+    }).filter(event => moment(event.endTime).unix() > now.unix())
+    const pastEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id)).sort((a, b) => {
+        return a.endTime < b.endTime ? -1 : 1
+    }).filter(event => moment(event.endTime).unix() < now.unix())
+    const [showEvents, setShowEvents] = useState('future')
     const [intervalMs, setIntervalMs] = useState(500)
     const [mounted, setMounted] = useState(false)
     //supporting hooks 
@@ -24,7 +27,6 @@ const MyProfile = ({ history }) => {
     //useSelector here is a new hook, which replaces the mapStateToProps middleware
     //Fetching events!!!
     //auto fetching with react query
-    const now = moment();
     useQuery('events',
         async () => {
             const res = await axios.get('/api/events')
@@ -90,10 +92,14 @@ const MyProfile = ({ history }) => {
                 <p className='prof-info-genre'>{auth.user.genre}</p>
                 <p className='prof-info-about'>{auth.user.about}</p>
             </div>
-            <button className='btn-md btn-events' onClick={() => setShowEvents(!showEvents)}>events</button>
-            {showEvents && <EventsList sortedEvents={sortedEvents}
+            <div className='btns-container'>
+                <button className='btn-md btn-events' onClick={() => setShowEvents('future')}>future events</button>
+                <button className='btn-md btn-events' onClick={() => setShowEvents('pasts')}>past events</button>
+            </div>
+            <EventsList sortedEvents={showEvents === 'future' ? futureEvents : pastEvents}
                 auth={auth}
-            />}
+
+            />
         </main>
     )
 }
