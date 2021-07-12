@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
@@ -8,12 +8,17 @@ import { startGetUsers } from '../../actions/users';
 import { startGetAllEvents } from '../../actions/events';
 
 const BuskerPage = ({ match, history }) => {
+    const now = moment();
+    const [showEvents, setShowEvents] = useState('future')
     const dispatch = useDispatch();
     const { search } = useLocation();
     const { name, genre, socialLinks, about } = queryString.parse(search)
-    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id)).sort((a, b) => {
+    const futureEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id)).sort((a, b) => {
         return a.endTime < b.endTime ? -1 : 1
-    })
+    }).filter(event => moment(event.endTime).unix() > now.unix())
+    const pastEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id)).sort((a, b) => {
+        return a.endTime < b.endTime ? -1 : 1
+    }).filter(event => moment(event.endTime).unix() < now.unix())
     const users = useSelector(state => state.users)
     const user = users.filter(user => user._id === match.params.id)[0]
     const links = JSON.parse(socialLinks)
@@ -36,11 +41,11 @@ const BuskerPage = ({ match, history }) => {
             <div className='soc-links-container'>
                 {links.map(link => {
                     if (link.name === 'facebook') {
-                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-facebook-square icon-color"></i> </a>
+                        return <a href={link.link}><i key={link.link} class="fab fa-2x fa-facebook-square icon-color"></i> </a>
                     } else if (link.name === 'youtube') {
-                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-youtube icon-color"></i></a>
+                        return <a href={link.link}><i key={link.link} class="fab fa-2x fa-youtube icon-color"></i></a>
                     } else {
-                        return <a href={link.link}><i key={user._id + link.link} class="fab fa-2x fa-spotify icon-color"></i></a>
+                        return <a href={link.link}><i key={link.link} class="fab fa-2x fa-spotify icon-color"></i></a>
                     }
                 })}
             </div>
@@ -48,8 +53,12 @@ const BuskerPage = ({ match, history }) => {
                 <p className='prof-info-genre'>{genre}</p>
                 <p className='prof-info-about'>{about}</p>
             </div>}
-            {sortedEvents.length === 0 ? <p>No events</p> : <div className='prof-info-events'>
-                {sortedEvents.map(event => {
+            <div className='btns-container'>
+                <button className='btn-md btn-events' onClick={() => setShowEvents('future')}>future events</button>
+                <button className='btn-md btn-events' onClick={() => setShowEvents('past')}>past events</button>
+            </div>
+            {futureEvents.length === 0 || pastEvents === 0 ? <p>No events</p> : <div className='prof-info-events'>
+                {showEvents === 'future' ? futureEvents.map(event => {
                     return <EventInfoCard
                         id={event._id}
                         key={event._id}
@@ -64,7 +73,25 @@ const BuskerPage = ({ match, history }) => {
                         creator={event.creator}
                         active={event.active}
                     />
-                })}
+                })
+                    :
+                    pastEvents.map(event => {
+                        return <EventInfoCard
+                            id={event._id}
+                            key={event._id}
+                            name={event.name}
+                            genre={event.genre}
+                            location={event.locationName}
+                            date={moment(event.startTime).format('MMMM Do YYYY')}
+                            startTime={moment(event.startTime).format('H:mm')}
+                            endTime={moment(event.endTime).format('H:mm')}
+                            about={event.about}
+                            tags={event.tags}
+                            creator={event.creator}
+                            active={event.active}
+                        />
+                    })
+                }
             </div>}
         </main>
     )

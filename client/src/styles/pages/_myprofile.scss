@@ -38,6 +38,12 @@ main{
             position: relative;
             left: 1em;
         }
+        .btns-container{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 100%;
+        }
         .btn-md{
             position: absolute;
             left: 1.1em;
