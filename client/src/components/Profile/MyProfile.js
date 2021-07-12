@@ -94,7 +94,7 @@ const MyProfile = ({ history }) => {
             </div>
             <div className='btns-container'>
                 <button className='btn-md btn-events' onClick={() => setShowEvents('future')}>future events</button>
-                <button className='btn-md btn-events' onClick={() => setShowEvents('pasts')}>past events</button>
+                <button className='btn-md btn-events' onClick={() => setShowEvents('past')}>past events</button>
             </div>
             <EventsList sortedEvents={showEvents === 'future' ? futureEvents : pastEvents}
                 auth={auth}
