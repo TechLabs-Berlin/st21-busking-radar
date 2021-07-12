@@ -11,7 +11,9 @@ import { startGetAllEvents, startUpdateEvent } from '../../actions/events';
 
 const MyProfile = ({ history }) => {
     const auth = useSelector(state => state.auth)
-    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id))
+    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === auth.user._id)).sort((a, b) => {
+        return a.endTime < b.endTime ? -1 : 1
+    })
     const [showEvents, setShowEvents] = useState(false)
     const [intervalMs, setIntervalMs] = useState(500)
     const [mounted, setMounted] = useState(false)

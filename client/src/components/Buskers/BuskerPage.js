@@ -11,7 +11,9 @@ const BuskerPage = ({ match, history }) => {
     const dispatch = useDispatch();
     const { search } = useLocation();
     const { name, genre, socialLinks, about } = queryString.parse(search)
-    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id))
+    const sortedEvents = useSelector(state => state.events.filter(event => event.userId === match.params.id)).sort((a, b) => {
+        return a.endTime < b.endTime ? -1 : 1
+    })
     const users = useSelector(state => state.users)
     const user = users.filter(user => user._id === match.params.id)[0]
     const links = JSON.parse(socialLinks)
