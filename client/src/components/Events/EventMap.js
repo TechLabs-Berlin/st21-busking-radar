@@ -30,8 +30,13 @@ const EventMap = ({
 
     useEffect(() => {
         let eventsIds = []
-        events.forEach(event => {
-            eventsIds.push(event._id)
+
+        // for (let j = 0; j < map.current._markers.length; j++) {
+        //     map.current._markers[j].remove()
+        // }
+
+        events.map(event => {
+
             let eventsNumber = 0;
             for (let i = 0; i < events.length; i++) {
                 if (events[i].geometry.coordinates[0] === event.geometry.coordinates[0]) {
@@ -50,21 +55,22 @@ const EventMap = ({
                 });
 
             })
-            // eventsIds.push(event._id)
+            eventsIds.push(event._id)
             customMarker.innerHTML = `<span><b>${eventsNumber}</b></span>`
             let marker = new mapboxgl.Marker(customMarker)
                 .setLngLat(event.geometry.coordinates)
                 .addTo(map.current)
             return marker
         })
-        //for some reason this method does not delete all markers. This has to be solved later
-        map.current._markers.forEach(marker => {
+        //for some reason this method does not delete all markers.This has to be solved later
+        debugger;
+        return map.current._markers.map(marker => {
             if (eventsIds.includes(marker._element.id) === false) {
-                marker.remove()
+                return marker.remove()
             }
         })
-
     }, [events.length])
+
     useEffect(() => {
         if (newLocation) {
             prevNewLocation.current = newLocation
