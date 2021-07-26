@@ -1,6 +1,7 @@
 # st21-busking-radar
 
 Busking Radar is the final group project which was created in order to complete the Berlin TechLabs Bootcamp. The team disciplines included UX/UI design, Web Development, and Data Science. All disciplines were put into practice to develop Busking Radar. Using interactive map for displaying street performances the Busking Radar makes outdoor live entertainment easily discoverable for any user and helps buskers draw a larger audience to their performances.
+Visit project https://buskingradar.herokuapp.com/
 
 TEAM
 - Andrew Moussa UX
